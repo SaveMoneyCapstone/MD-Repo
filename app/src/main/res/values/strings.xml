@@ -20,5 +20,20 @@
     <string name="message_regis">create an account to access all the features of SaveMoney</string>
     <string name="btn_ready_login">Already have an account? Login</string>
 
+    <!--    botton navigation bar-->
+    <string name="dashboard">Dashboard</string>
+    <string name="transaksi">Transaksi</string>
+    <string name="statistik">Statistik</string>
+    <string name="lainnya">Lainnya</string>
+    <string name="add_expenditure">Tambah</string>
+
+    <!--    dashboard-->
+    <string name="halo_username">Halo, %1$s</string>
+    <string name="income_text">Pemasukan</string>
+    <string name="expenses_text">Pengeluaran</string>
+    <string name="balance">Rp. %1$s</string>
+    <string name="income">Rp. %1$s</string>
+    <string name="expenses">Rp. %1$s</string>
+
 
 </resources>

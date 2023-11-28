@@ -6,6 +6,7 @@ import android.text.*
 import android.widget.*
 import androidx.appcompat.app.*
 import com.dicoding.savemoney.databinding.*
+import com.dicoding.savemoney.ui.main.*
 import com.dicoding.savemoney.ui.signup.*
 
 @Suppress("SameParameterValue")
@@ -33,6 +34,9 @@ class LoginActivity : AppCompatActivity() {
             if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
                 showErrorDialog("Email dan Password harus diisi.")
                 return@setOnClickListener
+            } else {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
             }
         }
     }

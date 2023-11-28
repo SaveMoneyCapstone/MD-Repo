@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_dashboard"
+        android:icon="@drawable/dashboard"
+        android:title="@string/dashboard" />
+    <item
+        android:id="@+id/navigation_transaction"
+        android:icon="@drawable/transaction"
+        android:title="@string/transaksi" />
+    <item
+        android:id="@+id/navigation_statistic"
+        android:icon="@drawable/statistic"
+        android:title="@string/statistik" />
+    <item
+        android:id="@+id/navigation_other"
+        android:icon="@drawable/lainnya"
+        android:title="@string/lainnya" />
+
+</menu>

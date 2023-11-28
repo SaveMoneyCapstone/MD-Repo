@@ -21,7 +21,7 @@ class SignUpActivity : AppCompatActivity() {
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
+        setSupportActionBar(binding.toolbarSignup)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         setMyButtonEnable()

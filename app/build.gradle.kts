@@ -40,6 +40,8 @@ android {
 }
 
 dependencies {
+    implementation("androidx.navigation:navigation-fragment:2.7.5")
+    val nav_version = "2.5.3"
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -51,4 +53,14 @@ dependencies {
 
     //gms signup account google
     implementation ("com.google.android.gms:play-services-auth:20.7.0")
+
+    //navigation
+    implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
+    implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
+
+    //card
+    implementation("androidx.cardview:cardview:1.0.0")
+
+    //bar
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.0.3")
 }

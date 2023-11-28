@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/navigation_dashboard">
+
+
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="com.dicoding.savemoney.ui.fragment.dashboard.DashboardFragment"
+        android:label="@string/dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_transaction"
+        android:name="com.dicoding.savemoney.ui.fragment.transaction.TransactionFragment"
+        android:label="@string/transaksi"
+        tools:layout="@layout/fragment_transaction" />
+
+    <fragment
+        android:id="@+id/navigation_statistic"
+        android:name="com.dicoding.savemoney.ui.fragment.statistic.StatisticFragment"
+        android:label="@string/statistik"
+        tools:layout="@layout/fragment_statistic" />
+
+
+    <fragment
+        android:id="@+id/navigation_other"
+        android:name="com.dicoding.savemoney.ui.fragment.other.OtherFragment"
+        android:label="@string/lainnya"
+        tools:layout="@layout/fragment_other" />
+</navigation>
