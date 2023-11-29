@@ -17,14 +17,14 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="100px"
-            android:layout_height="100px"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:src="@drawable/cash"
-            tools:src="@drawable/cash" />
+            android:src="@drawable/cash"/>
+<!--            tools:src="@drawable/cash" />-->
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -54,14 +54,14 @@
         app:layout_constraintTop_toBottomOf="@id/layout_amount">
 
         <ImageView
-            android:layout_width="100px"
-            android:layout_height="100px"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:src="@drawable/cash"
-            tools:src="@drawable/cash" />
+            android:src="@drawable/cash" />
+<!--            tools:src="@drawable/cash" />-->
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -81,29 +81,62 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/cat_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_notes">
+        app:layout_constraintTop_toBottomOf="@id/notes_layout">
 
         <ImageView
-            android:layout_width="100px"
-            android:layout_height="100px"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:src="@drawable/cash"
-            tools:src="@drawable/cash" />
+            android:src="@drawable/cash" />
+        <!--            tools:src="@drawable/cash" />-->
 
         <Spinner
-            android:layout_width="50dp"
+            android:id="@+id/category"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:entries="@array/income_cat" />
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cat_layout">
 
+        <ImageButton
+            style="@style/Base.Widget.AppCompat.ImageButton"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="date"
+            android:onClick="showDatePicker"
+            android:src="@drawable/ic_date" />
+
+        <TextView
+            android:id="@+id/add_tv_due_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="Due date" />
     </LinearLayout>
 
     <ProgressBar

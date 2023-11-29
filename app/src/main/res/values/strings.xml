@@ -29,13 +29,25 @@
 
     <!--    dashboard-->
     <string name="halo_username">Halo, %1$s</string>
-    <string name="income_text">Pemasukan</string>
-    <string name="expenses_text">Pengeluaran</string>
+    <string name="income_text">Income</string>
+    <string name="expenses_text">Expenses</string>
     <string name="balance">Rp. %1$s</string>
     <string name="income">Rp. %1$s</string>
     <string name="expenses">Rp. %1$s</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-
+    <!--    category income-->
+    <string name="salary">Salary</string>
+    <string name="gift">Gift</string>
+    <string name="selling">Selling</string>
+    <string name="other">Other</string>
+    
+    <!-- category expenses    <-->
+    <string name="food_beverages">Food &amp; Beverages</string>
+    <string name="bills_utilities">Bills &amp; utilites</string>
+    
+    <!-- tab add   -->
+    <string name="incomes_tab">Income</string>
+    <string name="expenses_tab">Expenses</string>
 </resources>
