@@ -60,7 +60,7 @@
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/cash" />
+            android:src="@drawable/icon_notes" />
         <!--            tools:src="@drawable/cash" />-->
 
         <com.google.android.material.textfield.TextInputLayout
@@ -97,7 +97,7 @@
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/cash" />
+            android:src="@drawable/baseline_category_24" />
         <!--            tools:src="@drawable/cash" />-->
 
         <Spinner
@@ -138,6 +138,17 @@
             android:layout_marginTop="16dp"
             android:text="Due date" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/add_expenses_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/blue"
+        android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
         android:id="@+id/progressBar"
