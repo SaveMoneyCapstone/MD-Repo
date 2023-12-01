@@ -1,4 +1,6 @@
 package com.dicoding.savemoney.ui.add_expenditure
 
-class AddExpenditureViewModel {
+import androidx.lifecycle.ViewModel
+
+class AddExpenditureViewModel() : ViewModel() {
 }
