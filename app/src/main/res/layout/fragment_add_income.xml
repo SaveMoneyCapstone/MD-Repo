@@ -60,7 +60,7 @@
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/cash" />
+            android:src="@drawable/icon_notes" />
 <!--            tools:src="@drawable/cash" />-->
 
         <com.google.android.material.textfield.TextInputLayout
@@ -97,7 +97,7 @@
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/cash" />
+            android:src="@drawable/baseline_category_24" />
         <!--            tools:src="@drawable/cash" />-->
 
         <Spinner
