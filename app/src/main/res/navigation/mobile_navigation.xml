@@ -15,19 +15,19 @@
     <fragment
         android:id="@+id/navigation_transaction"
         android:name="com.dicoding.savemoney.ui.fragment.transaction.TransactionFragment"
-        android:label="@string/transaksi"
+        android:label="@string/transaction"
         tools:layout="@layout/fragment_transaction" />
 
     <fragment
         android:id="@+id/navigation_statistic"
         android:name="com.dicoding.savemoney.ui.fragment.statistic.StatisticFragment"
-        android:label="@string/statistik"
+        android:label="@string/statistic"
         tools:layout="@layout/fragment_statistic" />
 
 
     <fragment
         android:id="@+id/navigation_other"
         android:name="com.dicoding.savemoney.ui.fragment.other.OtherFragment"
-        android:label="@string/lainnya"
+        android:label="@string/other"
         tools:layout="@layout/fragment_other" />
 </navigation>

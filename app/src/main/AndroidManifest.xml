@@ -13,7 +13,8 @@
         android:theme="@style/Theme.SaveMoney"
         tools:targetApi="31">
         <activity
-            android:name=".ui.add_expenditure.AddExpenditureActivity"
+            android:name=".ui.add.AddExpenseActivity"
+android:theme="@style/Theme.SaveMoney"
             android:exported="false" />
         <activity
             android:name=".ui.login.LoginActivity"

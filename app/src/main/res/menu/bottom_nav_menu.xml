@@ -8,14 +8,14 @@
     <item
         android:id="@+id/navigation_transaction"
         android:icon="@drawable/transaction"
-        android:title="@string/transaksi" />
+        android:title="@string/transaction" />
     <item
         android:id="@+id/navigation_statistic"
         android:icon="@drawable/statistic"
-        android:title="@string/statistik" />
+        android:title="@string/statistic" />
     <item
         android:id="@+id/navigation_other"
-        android:icon="@drawable/lainnya"
-        android:title="@string/lainnya" />
+        android:icon="@drawable/other"
+        android:title="@string/other" />
 
 </menu>

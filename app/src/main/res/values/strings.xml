@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Save Money</string>
 
-    <!-- login pages -->
+    <!--    login pages-->
     <string name="title_login">Login</string>
     <string name="message_login">Please login to continue</string>
     <string name="dont_have_an_account">Don\'t have an account? Registrasi</string>
@@ -11,7 +11,7 @@
     <string name="hint_name">Nama</string>
     <string name="btn_login_text">Login</string>
 
-    <!-- signup pages -->
+    <!--    signup pages-->
     <string name="message_password">Password must be at least 8 characters</string>
     <string name="title_register">Register</string>
     <string name="name">Nama</string>
@@ -20,11 +20,11 @@
     <string name="message_regis">create an account to access all the features of SaveMoney</string>
     <string name="btn_ready_login">Already have an account? Login</string>
 
-    <!--    botton navigation bar-->
+    <!--   bottom navigation bar-->
     <string name="dashboard">Dashboard</string>
-    <string name="transaksi">Transaksi</string>
-    <string name="statistik">Statistik</string>
-    <string name="lainnya">Lainnya</string>
+    <string name="transaction">Transaksi</string>
+    <string name="statistic">Statistik</string>
+    <string name="other">Lainnya</string>
     <string name="add_expenditure">Tambah</string>
 
     <!--    dashboard-->
@@ -34,6 +34,36 @@
     <string name="balance">Rp. %1$s</string>
     <string name="income">Rp. %1$s</string>
     <string name="expenses">Rp. %1$s</string>
+    <string name="logout">Logout</string>
+    <string name="balance_text">Saldo</string>
+
+    <!--    title view pager-->
+    <string name="title_pager_income">Pemasukan</string>
+    <string name="title_pager_expense">Pengeluaran</string>
+
+    <!--    title appbar add-->
+    <string name="tambah_data">Tambah Data</string>
+
+    <!--    Night Mode Preference-->
+    <string name="pref_dark_title">Dark mode</string>
+    <string name="pref_key_dark" translatable="false">key_dark_mode</string>
+    <string name="pref_dark_follow_system" translatable="false">follow_system</string>
+    <string name="pref_dark_on" translatable="false">on</string>
+    <string name="pref_dark_off" translatable="false">off</string>
+    <string name="dark_mode_auto">Automatic</string>
+    <string name="dark_mode_on">Dark mode</string>
+    <string name="dark_mode_off">Light mode</string>
+
+    <!--    category-->
+    <string name="foods_drinks">Makanan &amp; Minuman</string>
+    <string name="entertainment">Hiburan</string>
+    <string name="clothes">Pakaian</string>
+    <string name="Mobility">Mobilitas</string>
+    <string name="other_category">Dll</string>
+    <string name="due_data_expense">Tanggal pengeluaran</string>
+    <string name="btn_add_expense">Tambahkan Pengeluaran</string>
+    <string name="amount_of_expenditure">Jumlah pengeluaran</string>
+    <string name="note">Catatan</string>
 
 
 </resources>
