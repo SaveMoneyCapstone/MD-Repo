@@ -1,7 +1,12 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+<<<<<<< HEAD
     id("com.google.gms.google-services")
+=======
+    id("kotlin-parcelize")
+    id("com.google.devtools.ksp")
+>>>>>>> origin/main
 }
 
 android {
@@ -66,4 +71,20 @@ dependencies {
 
     //bar
     implementation ("com.github.PhilJay:MPAndroidChart:v3.0.3")
+
+    //room
+    implementation("androidx.room:room-paging:2.4.0-rc01")
+    implementation("androidx.room:room-runtime:2.5.2")
+    implementation ("androidx.room:room-ktx:2.4.2")
+    implementation ("androidx.paging:paging-runtime-ktx:3.1.1")
+    ksp("androidx.room:room-compiler:2.5.2")
+
+    //viewmodel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
+    implementation("androidx.activity:activity-ktx:1.7.2")
+    implementation ("androidx.fragment:fragment-ktx:1.2.5")
+    implementation ("androidx.viewpager2:viewpager2:1.0.0")
+
+
 }
