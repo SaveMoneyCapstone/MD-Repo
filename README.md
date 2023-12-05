@@ -1,2 +1,2 @@
 # saveMoney-App
-## Progres masih develop design UI/UX pada menu Dashboard dan sudah membuatkan example line chart untuk memantau perkembangan keuangan
+## create scenarios for retrieving data using retrofit for stock product features and stock company information
