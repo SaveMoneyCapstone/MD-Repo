@@ -10,9 +10,9 @@
         android:icon="@drawable/transaction"
         android:title="@string/transaction" />
     <item
-        android:id="@+id/navigation_statistic"
-        android:icon="@drawable/statistic"
-        android:title="@string/statistic" />
+        android:id="@+id/navigation_profile_company"
+        android:icon="@drawable/news"
+        android:title="@string/company" />
     <item
         android:id="@+id/navigation_other"
         android:icon="@drawable/other"

@@ -2,12 +2,12 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.SaveMoney" parent="Theme.Material3.DayNight">
         <!-- Customize your dark theme here. -->
-        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimary">@color/blue</item>
 
     </style>
 
     <style name="NavigationBar" >
-        <item name="colorPrimary">@color/bg_nav_bar</item>
+        <item name="colorPrimary">@color/blue</item>
 
     </style>
 

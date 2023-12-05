@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/logout"
+        android:id="@+id/setting"
         android:orderInCategory="100"
-        android:title="@string/logout"
+        android:title="@string/setting"
         app:showAsAction="never" />
 
     <item

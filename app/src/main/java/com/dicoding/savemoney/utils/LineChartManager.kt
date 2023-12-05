@@ -1,41 +1,18 @@
-package com.dicoding.savemoney.ui.fragment.statistic
+package com.dicoding.savemoney.utils
 
-import android.annotation.*
 import android.graphics.*
-import android.os.*
-import android.view.*
-import android.widget.*
-import androidx.fragment.app.*
-import androidx.lifecycle.*
-import com.dicoding.savemoney.*
 import com.dicoding.savemoney.ui.fragment.dashboard.*
 import com.github.mikephil.charting.charts.*
 import com.github.mikephil.charting.components.*
 import com.github.mikephil.charting.data.*
-import com.github.mikephil.charting.formatter.IAxisValueFormatter
+import com.github.mikephil.charting.formatter.*
 import java.text.*
 import java.util.*
 
+class LineChartManager(private val lineChart: LineChart) {
 
-class StatisticFragment : Fragment() {
-    private lateinit var mLineChart: LineChart
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-    @SuppressLint("MissingInflatedId")
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        val root = inflater.inflate(R.layout.fragment_statistic, container, false)
-
-        mLineChart = root.findViewById(R.id.chart)
-
+    fun setupLineChart() {
         val currentDate = Calendar.getInstance()
-
         val dates = ArrayList<String>()
         val dateFormatter = SimpleDateFormat("dd-MMM", Locale.getDefault())
 
@@ -49,7 +26,7 @@ class StatisticFragment : Fragment() {
         }
 
         val axisDateFormatter = AxisDateFormatter(dates.toArray(arrayOfNulls<String>(dates.size)))
-        mLineChart.xAxis?.valueFormatter = axisDateFormatter
+        lineChart.xAxis?.valueFormatter = axisDateFormatter
 
         val dataPemasukan = ArrayList<Entry>()
         val dataPengeluaran = ArrayList<Entry>()
@@ -58,34 +35,26 @@ class StatisticFragment : Fragment() {
             val date = currentDate.clone() as Calendar
             date.set(Calendar.DAY_OF_MONTH, i)
 
-            val pemasukanHarian =
-                Random().nextInt(500000) + 1000000
-            val pengeluaranHarian =
-                Random().nextInt(500000) + 300000
+            val pemasukanHarian = Random().nextInt(500000) + 1000000
+            val pengeluaranHarian = Random().nextInt(500000) + 300000
 
             dataPemasukan.add(Entry(date.timeInMillis.toFloat(), pemasukanHarian.toFloat()))
             dataPengeluaran.add(Entry(date.timeInMillis.toFloat(), pengeluaranHarian.toFloat()))
         }
 
         val pemasukanLineDataSet = LineDataSet(dataPemasukan, "Pemasukan")
-        pemasukanLineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-        pemasukanLineDataSet.color = Color.GREEN
-        pemasukanLineDataSet.circleRadius = 5f
-        pemasukanLineDataSet.setCircleColor(Color.GREEN)
+        configureLineDataSet(pemasukanLineDataSet, Color.GREEN)
 
         val pengeluaranDataSet = LineDataSet(dataPengeluaran, "Pengeluaran")
-        pengeluaranDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-        pengeluaranDataSet.color = Color.BLUE
-        pengeluaranDataSet.circleRadius = 5f
-        pengeluaranDataSet.setCircleColor(Color.BLUE)
+        configureLineDataSet(pengeluaranDataSet, Color.BLUE)
 
-        val leftAxis: YAxis = mLineChart.axisLeft
+        val leftAxis: YAxis = lineChart.axisLeft
         leftAxis.valueFormatter =
             IAxisValueFormatter { value, _ ->
                 String.format("%.0f", value)
             }
 
-        val xAxis: XAxis = mLineChart.xAxis
+        val xAxis: XAxis = lineChart.xAxis
         xAxis.valueFormatter =
             IAxisValueFormatter { value, _ ->
                 String.format("%.0f", value)
@@ -94,21 +63,25 @@ class StatisticFragment : Fragment() {
         xAxis.labelCount = 1
         xAxis.position = XAxis.XAxisPosition.BOTTOM
 
-        val legend = mLineChart.legend
+        val legend = lineChart.legend
         legend.isEnabled = true
         legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
         legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
         legend.orientation = Legend.LegendOrientation.HORIZONTAL
         legend.setDrawInside(false)
 
-        mLineChart.axisRight.isEnabled = false
+        lineChart.axisRight.isEnabled = false
 
-        mLineChart.description.isEnabled = false
+        lineChart.description.isEnabled = false
 
-        mLineChart.data = LineData(pemasukanLineDataSet, pengeluaranDataSet)
-        mLineChart.animateXY(100, 500)
+        lineChart.data = LineData(pemasukanLineDataSet, pengeluaranDataSet)
+        lineChart.animateXY(100, 500)
+    }
 
-        return root
-
+    private fun configureLineDataSet(lineDataSet: LineDataSet, color: Int) {
+        lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+        lineDataSet.color = color
+        lineDataSet.circleRadius = 5f
+        lineDataSet.setCircleColor(color)
     }
 }

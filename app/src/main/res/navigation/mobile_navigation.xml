@@ -19,10 +19,10 @@
         tools:layout="@layout/fragment_transaction" />
 
     <fragment
-        android:id="@+id/navigation_statistic"
-        android:name="com.dicoding.savemoney.ui.fragment.statistic.StatisticFragment"
-        android:label="@string/statistic"
-        tools:layout="@layout/fragment_statistic" />
+        android:id="@+id/navigation_profile_company"
+        android:name="com.dicoding.savemoney.ui.fragment.listbei.ListBeiFragment"
+        android:label="@string/news"
+        tools:layout="@layout/fragment_list_bei" />
 
 
     <fragment

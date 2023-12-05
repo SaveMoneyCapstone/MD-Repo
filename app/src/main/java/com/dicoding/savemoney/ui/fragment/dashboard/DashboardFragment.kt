@@ -8,9 +8,16 @@ import android.view.*
 import android.widget.*
 import androidx.fragment.app.*
 import androidx.lifecycle.*
+import androidx.recyclerview.widget.*
 import com.dicoding.savemoney.*
+import com.dicoding.savemoney.adapter.*
+import com.dicoding.savemoney.data.*
+import com.dicoding.savemoney.databinding.*
 import com.dicoding.savemoney.ui.add.*
+import com.dicoding.savemoney.ui.fragment.listbei.*
 import com.dicoding.savemoney.ui.login.*
+import com.dicoding.savemoney.ui.setting.*
+import com.dicoding.savemoney.utils.*
 import com.github.mikephil.charting.charts.*
 import com.github.mikephil.charting.components.*
 import com.github.mikephil.charting.data.*
@@ -20,59 +27,78 @@ import com.google.android.material.floatingactionbutton.*
 import java.text.*
 import java.util.*
 
-@Suppress("DEPRECATION")
 class DashboardFragment : Fragment() {
-    private lateinit var dashboardViewModel: DashboardViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
+    private lateinit var lineChartManager: LineChartManager
+    private lateinit var adapter: CompanyProfileAdapter
+    private var _binding: FragmentDashboardBinding? = null
+    private val binding get() = _binding!!
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
-        dashboardViewModel = ViewModelProvider(this)[DashboardViewModel::class.java]
-        val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
-
-
-        val fab: FloatingActionButton = root.findViewById(R.id.fab)
-        fab.setOnClickListener {
-            val intent = Intent(requireActivity(), AddExpenseActivity::class.java)
-            startActivity(intent)
-        }
-
-        return root
+    ): View {
+        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.appbar_dashboard_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val viewModel: CompanyProfileViewModel by viewModels {
+            ViewModelFactory.getInstance(requireActivity())
+        }
+
+        //example line chart
+        lineChartManager = LineChartManager(binding.chart)
+        lineChartManager.setupLineChart()
+
+
+        viewModel.profileCompany.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is ResultState.Loading -> {
+                    isLoading(true)
+                    showNoDataMessage(getString(R.string.news_memuat_data))
+                }
+
+                is ResultState.Success -> {
+                    isLoading(false)
+                    val data = result.data.data
+                    adapter.submitList(listOf(data))
+                }
+
+                is ResultState.Error -> {
+                    Toast.makeText(requireContext(), result.error, Toast.LENGTH_SHORT).show()
+                    showNoDataMessage(getString(R.string.news_gagal_memuat_data))
+                }
+            }
+        }
+
+        viewModel.fetchCompanyProfile("BBCA")
+
+        adapter = CompanyProfileAdapter()
+
+        binding.rvCompanyProfile.apply {
+            layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
+            adapter = adapter
+        }
+
+    }
+    private fun isLoading(isLoading: Boolean) {
+        binding.progresBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.menu_notification -> {
-                Toast.makeText(requireContext(), "Notification Menu Clicked", Toast.LENGTH_SHORT)
-                    .show()
-                true
-            }
-
-            R.id.menu_profile -> {
-                Toast.makeText(requireContext(), "Profile Menu Clicked", Toast.LENGTH_SHORT).show()
-                true
-            }
-
-            R.id.logout -> {
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
+    private fun showNoDataMessage(message: String?) {
+        binding.tvMessage.apply {
+            visibility = if (!message.isNullOrBlank()) View.VISIBLE else View.GONE
+            text = message
         }
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
