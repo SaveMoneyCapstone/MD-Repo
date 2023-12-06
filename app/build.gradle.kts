@@ -1,12 +1,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-<<<<<<< HEAD
     id("com.google.gms.google-services")
-=======
     id("kotlin-parcelize")
     id("com.google.devtools.ksp")
->>>>>>> origin/main
 }
 
 android {

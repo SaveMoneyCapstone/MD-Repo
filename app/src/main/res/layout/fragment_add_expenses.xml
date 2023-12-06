@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.add_expenditure.AddIncomeFragment"
     android:padding="16dp">
 
     <LinearLayout
@@ -38,6 +37,7 @@
                 android:id="@+id/add_ed_amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -119,6 +119,7 @@
         app:layout_constraintTop_toBottomOf="@id/cat_layout">
 
         <ImageButton
+            android:id="@+id/date"
             style="@style/Base.Widget.AppCompat.ImageButton"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
@@ -126,8 +127,8 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="date"
             android:onClick="showDatePicker"
+            android:contentDescription="date"
             android:src="@drawable/ic_date" />
 
         <TextView
@@ -147,8 +148,10 @@
         android:text="Save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.038"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.353" />
 
     <ProgressBar
         android:id="@+id/progressBar"

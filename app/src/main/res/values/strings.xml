@@ -34,7 +34,6 @@
     <string name="balance">Rp. %1$s</string>
     <string name="income">Rp. %1$s</string>
     <string name="expenses">Rp. %1$s</string>
-<<<<<<< HEAD
     <string name="logout">Logout</string>
     <string name="balance_text">Saldo</string>
 
@@ -74,7 +73,7 @@
     <string name="salary">Salary</string>
     <string name="gift">Gift</string>
     <string name="selling">Selling</string>
-    <string name="other">Other</string>
+    <string name="others">Other</string>
     
     <!-- category expenses    <-->
     <string name="food_beverages">Food &amp; Beverages</string>
