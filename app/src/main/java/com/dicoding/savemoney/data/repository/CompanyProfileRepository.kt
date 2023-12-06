@@ -1,30 +1,35 @@
 package com.dicoding.savemoney.data.repository
 
-import com.dicoding.savemoney.BuildConfig
+import androidx.lifecycle.*
+import com.dicoding.savemoney.BuildConfig.API_KEY
 import com.dicoding.savemoney.data.*
 import com.dicoding.savemoney.data.api.*
 import com.dicoding.savemoney.data.response.*
 
 class CompanyProfileRepository(private val apiService: ApiService) {
 
-    suspend fun getCompanyProfile( symbol: String): ResultState<ProfileCompanyResponse> {
-        return try {
-            val response = apiService.getProfileCompany(BuildConfig.API_KEY, symbol)
+    fun getCompanyProfile(symbol: String): LiveData<ResultState<ProfileCompanyResponse>> =
+        liveData {
+            emit(ResultState.Loading)
+            try {
+                val response = apiService.getProfileCompany(API_KEY, symbol)
+                if (response.isSuccessful) {
+                    val profileCompanyResponse = response.body()?.data
+                    if (profileCompanyResponse != null) {
+                        val companyResponse = ProfileCompanyResponse(profileCompanyResponse)
+                        emit(ResultState.Success(companyResponse))
 
-            if (response.isSuccessful) {
-                val profileCompanyResponse = response.body()
-                if (profileCompanyResponse != null) {
-                    ResultState.Success(profileCompanyResponse)
+                    } else {
+                        emit(ResultState.Error("Response body data is null"))
+                    }
+
                 } else {
-                    ResultState.Error("Response body is null")
+                    emit(ResultState.Error("Error: ${response.code()}"))
                 }
-            } else {
-                ResultState.Error("Error: ${response.code()}")
+            } catch (e: Exception) {
+                ResultState.Error("Error: ${e.message}")
             }
-        } catch (e: Exception) {
-            ResultState.Error("Error: ${e.message}")
         }
-    }
 
     companion object {
         @Volatile

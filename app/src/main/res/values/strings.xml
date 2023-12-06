@@ -55,7 +55,7 @@
     <string name="dark_mode_on">Dark mode</string>
     <string name="dark_mode_off">Light mode</string>
 
-<!--    title preference-->
+    <!--    title preference-->
     <string name="title_display">Theme</string>
 
     <!--    category-->
@@ -71,13 +71,17 @@
     <string name="title_app_bar_setting">Setting</string>
     <string name="statistic">statistic</string>
 
-<!--    news-->
+    <!--    news-->
     <string name="label_news">label</string>
     <string name="simbol_news">simbol</string>
     <string name="news_data_tidak_tersedia">Data Tidak Tersedia</string>
     <string name="news_gagal_memuat_data">Gagal Memuat Data</string>
     <string name="news_memuat_data">Memuat Data...</string>
     <string name="company">Company</string>
+    <string name="name_ojk">name_ojk</string>
+    <string name="owner_ojk">owner_ojk</string>
+    <string name="investasi_ojk">Investasi Ojk</string>
+    <string name="menu">Menu</string>
 
 
 </resources>

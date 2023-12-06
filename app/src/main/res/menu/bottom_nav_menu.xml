@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/navigation_dashboard"
@@ -9,6 +10,16 @@
         android:id="@+id/navigation_transaction"
         android:icon="@drawable/transaction"
         android:title="@string/transaction" />
+
+    <item
+        android:id="@+id/navigation_add"
+        android:iconTint="@color/blue"
+        android:visible="true"
+        android:titleCondensed="@string/add_expenditure"
+        android:actionLayout="@layout/activity_add_expense"
+        android:icon="@drawable/add_transaction"
+        android:title="@string/add_expenditure"/>
+
     <item
         android:id="@+id/navigation_profile_company"
         android:icon="@drawable/news"

@@ -6,11 +6,13 @@ import com.dicoding.savemoney.data.repository.*
 import com.dicoding.savemoney.di.*
 import com.dicoding.savemoney.ui.fragment.dashboard.*
 import com.dicoding.savemoney.ui.fragment.listbei.*
+import com.dicoding.savemoney.ui.fragment.ojk.*
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory private constructor(
     private val listBeiRepository: ListBeiRepository,
-    private val companyProfileRepository: CompanyProfileRepository
+    private val companyProfileRepository: CompanyProfileRepository,
+    private val ojkInvestmentRepository: OjkInvestmentRepository
 ) :
     ViewModelProvider.NewInstanceFactory() {
 
@@ -19,6 +21,8 @@ class ViewModelFactory private constructor(
             return ListBeiViewModel(listBeiRepository) as T
         } else if (modelClass.isAssignableFrom(CompanyProfileViewModel::class.java)) {
             return CompanyProfileViewModel(companyProfileRepository) as T
+        } else if (modelClass.isAssignableFrom(OjkInvestmentViewModel::class.java)) {
+            return OjkInvestmentViewModel(ojkInvestmentRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }
@@ -26,11 +30,12 @@ class ViewModelFactory private constructor(
     companion object {
         @Volatile
         private var instance: ViewModelFactory? = null
-        fun getInstance(context: Context): ViewModelFactory =
+        fun getInstance(): ViewModelFactory =
             instance ?: synchronized(this) {
                 instance ?: ViewModelFactory(
-                    Injection.provideRepository(context),
-                    Injection.provideProfileCompanyRepository(context)
+                    Injection.provideRepository(),
+                    Injection.provideProfileCompanyRepository(),
+                    Injection.provideOjkInvestmentRepository()
                 )
             }.also { instance = it }
     }

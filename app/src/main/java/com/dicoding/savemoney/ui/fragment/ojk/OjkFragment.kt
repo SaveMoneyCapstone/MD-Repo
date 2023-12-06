@@ -1,4 +1,4 @@
-package com.dicoding.savemoney.ui.fragment.listbei
+package com.dicoding.savemoney.ui.fragment.ojk
 
 import android.os.*
 import android.view.*
@@ -8,42 +8,52 @@ import androidx.recyclerview.widget.*
 import com.dicoding.savemoney.*
 import com.dicoding.savemoney.adapter.*
 import com.dicoding.savemoney.data.*
+import com.dicoding.savemoney.data.response.*
 import com.dicoding.savemoney.databinding.*
 
-class ListBeiFragment : Fragment() {
 
-    private lateinit var stockAdapter: ListBeiAdapter
-    private var _binding: FragmentListBeiBinding? = null
+class OjkFragment : Fragment() {
+    private lateinit var ojkInvestmentAdapter: OjkInvestmentAdapter
+
+    private var _binding: FragmentOjkBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentListBeiBinding.inflate(inflater, container, false)
+        _binding = FragmentOjkBinding.inflate(inflater, container, false)
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        stockAdapter = ListBeiAdapter()
+        ojkInvestmentAdapter = OjkInvestmentAdapter()
 
-        val viewModel: ListBeiViewModel by viewModels {
+        val viewModel: OjkInvestmentViewModel by viewModels {
             ViewModelFactory.getInstance()
         }
 
-        viewModel.beiCompanies.observe(viewLifecycleOwner) { result ->
+        viewModel.ojkInvestmentData.observe(viewLifecycleOwner) { result ->
             when (result) {
+                is ResultState.Loading -> {
+                    isLoading(true)
+                }
+
                 is ResultState.Success -> {
                     isLoading(false)
-                    val stockData = result.data.data?.results
-                    if (stockData.isNullOrEmpty()) {
-                        showNoDataMessage(getString(R.string.news_data_tidak_tersedia))
-                    } else {
-                        showNoDataMessage(null)
-                        stockAdapter.submitList(stockData)
-
+                    val data = result.data.data?.apps
+                    if (data != null) {
+                        val dataList = data.map { appsItem ->
+                            AppsItem(
+                                owner = appsItem?.owner.orEmpty(),
+                                name = appsItem?.name.orEmpty(),
+                                url = appsItem?.url.orEmpty()
+                            )
+                        }
+                        ojkInvestmentAdapter.submitList(dataList)
                     }
                 }
 
@@ -52,18 +62,17 @@ class ListBeiFragment : Fragment() {
                     showNoDataMessage(getString(R.string.news_gagal_memuat_data))
                 }
 
-                is ResultState.Loading -> {
-                    isLoading(true)
-                    showNoDataMessage(getString(R.string.news_memuat_data))
-                }
+                else -> {}
             }
         }
 
-        binding.rvProduct.apply {
+        binding.rvOjk.apply {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
-            adapter = stockAdapter
+            adapter = ojkInvestmentAdapter
         }
+
+        viewModel.fetchOjkInvestment()
 
     }
 

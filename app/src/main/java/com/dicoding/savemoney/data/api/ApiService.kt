@@ -15,7 +15,9 @@ interface ApiService {
     suspend fun getProfileCompany(
         @Header("X-API-KEY") apiKey: String,
         @Path("symbol") symbol: String
-
     ): Response<ProfileCompanyResponse>
+
+    @GET("api/apps/")
+    suspend fun getOjkInvestment(): Response<OjkResponse>
 }
 

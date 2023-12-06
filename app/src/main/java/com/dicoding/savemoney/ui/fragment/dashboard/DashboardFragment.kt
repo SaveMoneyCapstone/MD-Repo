@@ -27,9 +27,10 @@ import com.google.android.material.floatingactionbutton.*
 import java.text.*
 import java.util.*
 
+@Suppress("KotlinConstantConditions")
 class DashboardFragment : Fragment() {
     private lateinit var lineChartManager: LineChartManager
-    private lateinit var adapter: CompanyProfileAdapter
+    private lateinit var companyProfileAdapter: CompanyProfileAdapter
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
 
@@ -46,13 +47,14 @@ class DashboardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val viewModel: CompanyProfileViewModel by viewModels {
-            ViewModelFactory.getInstance(requireActivity())
+            ViewModelFactory.getInstance()
         }
 
         //example line chart
         lineChartManager = LineChartManager(binding.chart)
         lineChartManager.setupLineChart()
 
+        companyProfileAdapter = CompanyProfileAdapter()
 
         viewModel.profileCompany.observe(viewLifecycleOwner) { result ->
             when (result) {
@@ -64,7 +66,12 @@ class DashboardFragment : Fragment() {
                 is ResultState.Success -> {
                     isLoading(false)
                     val data = result.data.data
-                    adapter.submitList(listOf(data))
+                    if (data != null) {
+                        showNoDataMessage(getString(R.string.news_data_tidak_tersedia))
+                        showNoDataMessage(null)
+                    } else {
+                        companyProfileAdapter.submitList(listOf(data))
+                    }
                 }
 
                 is ResultState.Error -> {
@@ -74,17 +81,14 @@ class DashboardFragment : Fragment() {
             }
         }
 
-        viewModel.fetchCompanyProfile("BBCA")
-
-        adapter = CompanyProfileAdapter()
 
         binding.rvCompanyProfile.apply {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
-            adapter = adapter
+            adapter = companyProfileAdapter
         }
-
     }
+
     private fun isLoading(isLoading: Boolean) {
         binding.progresBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
@@ -95,7 +99,6 @@ class DashboardFragment : Fragment() {
             text = message
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

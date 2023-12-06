@@ -18,6 +18,13 @@
         android:label="@string/transaction"
         tools:layout="@layout/fragment_transaction" />
 
+    <activity
+        android:id="@+id/navigation_add"
+        android:name="com.dicoding.savemoney.ui.add.AddExpenseActivity"
+        android:label="@string/add_expenditure"
+        tools:layout="@layout/activity_add_expense"/>
+
+
     <fragment
         android:id="@+id/navigation_profile_company"
         android:name="com.dicoding.savemoney.ui.fragment.listbei.ListBeiFragment"
@@ -27,7 +34,7 @@
 
     <fragment
         android:id="@+id/navigation_other"
-        android:name="com.dicoding.savemoney.ui.fragment.other.OtherFragment"
+        android:name="com.dicoding.savemoney.ui.fragment.ojk.OjkFragment"
         android:label="@string/other"
-        tools:layout="@layout/fragment_other" />
+        tools:layout="@layout/fragment_ojk" />
 </navigation>

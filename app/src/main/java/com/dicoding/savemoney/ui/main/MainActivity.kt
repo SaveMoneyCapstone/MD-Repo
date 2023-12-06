@@ -1,21 +1,19 @@
 package com.dicoding.savemoney.ui.main
 
-import android.annotation.SuppressLint
-import android.content.Intent
-import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
+import android.annotation.*
+import android.content.*
+import android.os.*
+import android.view.*
+import android.widget.*
+import androidx.appcompat.app.*
+import androidx.navigation.*
+import androidx.navigation.ui.*
 import com.dicoding.savemoney.R
-import com.dicoding.savemoney.ui.add.AddExpenseActivity
-import com.dicoding.savemoney.ui.setting.SettingsActivity
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.dicoding.savemoney.ui.add.*
+import com.dicoding.savemoney.ui.setting.*
+import com.dicoding.savemoney.utils.*
+import com.google.android.material.bottomnavigation.*
+import com.google.android.material.floatingactionbutton.*
 
 class MainActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -30,6 +28,7 @@ class MainActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration.Builder(
             R.id.navigation_dashboard,
             R.id.navigation_transaction,
+            R.id.navigation_transaction,
             R.id.navigation_profile_company,
             R.id.navigation_other
         ).build()
@@ -37,18 +36,18 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        val fab = findViewById<FloatingActionButton>(R.id.fab)
-        fab.setOnClickListener {
-            val intent = Intent(this, AddExpenseActivity::class.java)
-            startActivity(intent)
-        }
+//        val fab = findViewById<FloatingActionButton>(R.id.fab)
+//        fab.setOnClickListener {
+//            val intent = Intent(this@MainActivity, AddExpenseActivity::class.java)
+//            startActivity(intent)
+//        }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             supportActionBar?.title = when (destination.id) {
                 R.id.navigation_dashboard -> "Dashboard"
                 R.id.navigation_transaction -> "Transaction"
                 R.id.navigation_profile_company -> "Data Company BEI"
-                R.id.navigation_other -> "Other"
+                R.id.navigation_other -> "Portal Investasi OJK"
                 else -> "Save Money"
             }
         }

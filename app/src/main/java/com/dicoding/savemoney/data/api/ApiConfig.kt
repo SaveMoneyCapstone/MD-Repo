@@ -1,5 +1,6 @@
 package com.dicoding.savemoney.data.api
 import com.dicoding.savemoney.*
+import com.dicoding.savemoney.utils.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.*
@@ -10,7 +11,12 @@ class ApiConfig {
     companion object {
 
         private const val BASE_URL = "https://api.goapi.io/"
-        fun getApiService(): ApiService {
+        private const val BASE_URL_OJK = "https://ojk-invest-api.vercel.app/"
+        fun getApiService(apyType: GateApi): ApiService {
+            val baseUrl = when(apyType) {
+                GateApi.API1 -> BASE_URL
+                GateApi.API2 -> BASE_URL_OJK
+            }
             val loggingInterceptor = if (BuildConfig.DEBUG) {
                 HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
             }else {
@@ -20,7 +26,7 @@ class ApiConfig {
                 .addInterceptor(loggingInterceptor)
                 .build()
             val retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()
