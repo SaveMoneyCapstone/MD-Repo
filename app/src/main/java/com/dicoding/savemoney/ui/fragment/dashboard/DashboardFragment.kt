@@ -81,6 +81,7 @@ class DashboardFragment : Fragment() {
             }
         }
 
+        viewModel.fetchCompanyProfile()
 
         binding.rvCompanyProfile.apply {
             layoutManager = LinearLayoutManager(context)

@@ -14,4 +14,11 @@
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="placeholder">#6FB6B6B6</color>
+
+    <color name="blue_close">#0707ad</color>
+    <color name="red_change">#d91427</color>
+    <color name="green_percent">#3ae81c</color>
+
+
+
 </resources>

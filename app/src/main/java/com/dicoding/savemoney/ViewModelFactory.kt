@@ -7,6 +7,7 @@ import com.dicoding.savemoney.di.*
 import com.dicoding.savemoney.ui.fragment.dashboard.*
 import com.dicoding.savemoney.ui.fragment.listbei.*
 import com.dicoding.savemoney.ui.fragment.ojk.*
+import com.dicoding.savemoney.ui.saham.*
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory private constructor(
@@ -23,6 +24,8 @@ class ViewModelFactory private constructor(
             return CompanyProfileViewModel(companyProfileRepository) as T
         } else if (modelClass.isAssignableFrom(OjkInvestmentViewModel::class.java)) {
             return OjkInvestmentViewModel(ojkInvestmentRepository) as T
+        }else if (modelClass.isAssignableFrom(SahamTrendingViewModel::class.java)) {
+            return SahamTrendingViewModel(companyProfileRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

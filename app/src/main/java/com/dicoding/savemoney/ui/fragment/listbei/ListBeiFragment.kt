@@ -1,5 +1,6 @@
 package com.dicoding.savemoney.ui.fragment.listbei
 
+import android.content.*
 import android.os.*
 import android.view.*
 import android.widget.*
@@ -9,6 +10,7 @@ import com.dicoding.savemoney.*
 import com.dicoding.savemoney.adapter.*
 import com.dicoding.savemoney.data.*
 import com.dicoding.savemoney.databinding.*
+import com.dicoding.savemoney.ui.saham.*
 
 class ListBeiFragment : Fragment() {
 
@@ -63,6 +65,10 @@ class ListBeiFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
             adapter = stockAdapter
+        }
+
+        binding.btnSahamTrending.setOnClickListener {
+            startActivity(Intent(requireActivity(), SahamTrendingActivity::class.java))
         }
 
     }

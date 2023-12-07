@@ -15,9 +15,14 @@ interface ApiService {
     suspend fun getProfileCompany(
         @Header("X-API-KEY") apiKey: String,
         @Path("symbol") symbol: String
-    ): Response<ProfileCompanyResponse>
+    ): Response<CompanyProfileResponse>
 
     @GET("api/apps/")
     suspend fun getOjkInvestment(): Response<OjkResponse>
+
+    @GET("stock/idx/trending")
+    suspend fun getSahamTrending(
+        @Header("X-API-KEY") apiKey: String,
+    ): Response<SahamTrendingResponse>
 }
 

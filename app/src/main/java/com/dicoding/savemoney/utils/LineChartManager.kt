@@ -1,7 +1,6 @@
 package com.dicoding.savemoney.utils
 
 import android.graphics.*
-import com.dicoding.savemoney.ui.fragment.dashboard.*
 import com.github.mikephil.charting.charts.*
 import com.github.mikephil.charting.components.*
 import com.github.mikephil.charting.data.*
@@ -12,57 +11,28 @@ import java.util.*
 class LineChartManager(private val lineChart: LineChart) {
 
     fun setupLineChart() {
-        val currentDate = Calendar.getInstance()
-        val dates = ArrayList<String>()
-        val dateFormatter = SimpleDateFormat("dd-MMM", Locale.getDefault())
 
-        val firstDayOfMonth = currentDate.getActualMinimum(Calendar.DAY_OF_MONTH)
-        val lastDayOfMonth = currentDate.getActualMaximum(Calendar.DAY_OF_MONTH)
+        val dataPemasukan = listOf(1000000f, 1500000f, 1200000f, 2000000f, 1800000f)
+        val dataPengeluaran = listOf(500000f, 700000f, 600000f, 800000f, 900000f)
 
-        for (i in firstDayOfMonth..lastDayOfMonth) {
-            val date = currentDate.clone() as Calendar
-            date.set(Calendar.DAY_OF_MONTH, i)
-            dates.add(dateFormatter.format(date.time))
-        }
+        // Create LineDataSet for pemasukan
+        val pemasukanLineDataSet = createLineDataSet(dataPemasukan, "Pemasukan", Color.GREEN)
 
-        val axisDateFormatter = AxisDateFormatter(dates.toArray(arrayOfNulls<String>(dates.size)))
-        lineChart.xAxis?.valueFormatter = axisDateFormatter
+        // Create LineDataSet for pengeluaran
+        val pengeluaranDataSet = createLineDataSet(dataPengeluaran, "Pengeluaran", Color.BLUE)
 
-        val dataPemasukan = ArrayList<Entry>()
-        val dataPengeluaran = ArrayList<Entry>()
-
-        for (i in firstDayOfMonth..lastDayOfMonth) {
-            val date = currentDate.clone() as Calendar
-            date.set(Calendar.DAY_OF_MONTH, i)
-
-            val pemasukanHarian = Random().nextInt(500000) + 1000000
-            val pengeluaranHarian = Random().nextInt(500000) + 300000
-
-            dataPemasukan.add(Entry(date.timeInMillis.toFloat(), pemasukanHarian.toFloat()))
-            dataPengeluaran.add(Entry(date.timeInMillis.toFloat(), pengeluaranHarian.toFloat()))
-        }
-
-        val pemasukanLineDataSet = LineDataSet(dataPemasukan, "Pemasukan")
-        configureLineDataSet(pemasukanLineDataSet, Color.GREEN)
-
-        val pengeluaranDataSet = LineDataSet(dataPengeluaran, "Pengeluaran")
-        configureLineDataSet(pengeluaranDataSet, Color.BLUE)
-
+        // Configure Y-axis to display values as integers
         val leftAxis: YAxis = lineChart.axisLeft
-        leftAxis.valueFormatter =
-            IAxisValueFormatter { value, _ ->
-                String.format("%.0f", value)
-            }
+        leftAxis.valueFormatter = CustomYAxisValueFormatter()
 
+        // Configure X-axis to display dates
         val xAxis: XAxis = lineChart.xAxis
-        xAxis.valueFormatter =
-            IAxisValueFormatter { value, _ ->
-                String.format("%.0f", value)
-            }
+        xAxis.valueFormatter = CustomXAxisValueFormatter()
 
         xAxis.labelCount = 1
         xAxis.position = XAxis.XAxisPosition.BOTTOM
 
+        // Configure legend
         val legend = lineChart.legend
         legend.isEnabled = true
         legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
@@ -74,14 +44,45 @@ class LineChartManager(private val lineChart: LineChart) {
 
         lineChart.description.isEnabled = false
 
+        // Set LineData to the chart
         lineChart.data = LineData(pemasukanLineDataSet, pengeluaranDataSet)
+
+        // Animate the chart
         lineChart.animateXY(100, 500)
     }
 
-    private fun configureLineDataSet(lineDataSet: LineDataSet, color: Int) {
-        lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-        lineDataSet.color = color
-        lineDataSet.circleRadius = 5f
-        lineDataSet.setCircleColor(color)
+    private fun createLineDataSet(data: List<Float>, label: String, color: Int): LineDataSet {
+        // Create entries for the LineDataSet
+        val entries = data.mapIndexed { index, value -> Entry(index.toFloat(), value) }
+
+        // Create LineDataSet
+        val dataSet = LineDataSet(entries, label)
+        dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+        dataSet.color = color
+        dataSet.circleRadius = 5f
+        dataSet.setCircleColor(color)
+
+        return dataSet
+
+    }
+
+
+    private class CustomXAxisValueFormatter : ValueFormatter() {
+        override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+            // Format the X-axis label as needed
+            return SimpleDateFormat("dd-MMM", Locale.getDefault()).format(value.toLong())
+        }
+    }
+
+    private class CustomYAxisValueFormatter : ValueFormatter() {
+        override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+            // Format the Y-axis label as needed
+            return value.toInt().toString()
+        }
+
+        override fun getFormattedValue(value: Float): String {
+            // Format the Y-axis value as needed
+            return value.toInt().toString()
+        }
     }
 }

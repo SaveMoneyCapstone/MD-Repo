@@ -76,12 +76,23 @@
     <string name="simbol_news">simbol</string>
     <string name="news_data_tidak_tersedia">Data Tidak Tersedia</string>
     <string name="news_gagal_memuat_data">Gagal Memuat Data</string>
-    <string name="news_memuat_data">Memuat Data...</string>
+    <string name="news_memuat_data">Memuat Data…</string>
     <string name="company">Company</string>
     <string name="name_ojk">name_ojk</string>
     <string name="owner_ojk">owner_ojk</string>
     <string name="investasi_ojk">Investasi Ojk</string>
     <string name="menu">Menu</string>
+    <string name="btn_saham_trending">Saham Trending</string>
+    <string name="close_92">Close: %1$s</string>
+    <string name="change_9">Change: %1$s</string>
+    <string name="percent_8_91">Percent: %1$s</string>
+    <string name="logo">logo</string>
+    <string name="symbol">symbol</string>
+    <string name="close">Harga Penutupan: %1$s</string>
+    <string name="change">Perubahan Harga: %1$s</string>
+    <string name="percent">Persentase Perubahan: %1$s</string>
+    <string name="saham_trending">Saham Trending</string>
+    <string name="grafik_saham">Traffic</string>
 
 
 </resources>

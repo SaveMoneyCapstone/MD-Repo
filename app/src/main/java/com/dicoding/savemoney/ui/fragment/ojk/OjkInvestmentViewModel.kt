@@ -27,4 +27,5 @@ class OjkInvestmentViewModel(private val ojkInvestmentRepository: OjkInvestmentR
             }
         }
     }
+
 }
