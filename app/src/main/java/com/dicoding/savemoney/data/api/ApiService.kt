@@ -6,16 +6,20 @@ import retrofit2.*
 import retrofit2.http.*
 
 interface ApiService {
-    @GET("stock/idx/companies")
-    suspend fun getBeiCompany(
-        @Header("X-API-KEY") apiKey: String,
-    ): Response<ListBeiResponse>
+    @FormUrlEncoded
+    @POST("register")
+    suspend fun register(
+        @Field("name") name: String,
+        @Field("email") email: String,
+        @Field("password") password: String
+    ): RegisterResponse
 
-    @GET("stock/idx/{symbol}/profile")
-    suspend fun getProfileCompany(
-        @Header("X-API-KEY") apiKey: String,
-        @Path("symbol") symbol: String
-    ): Response<CompanyProfileResponse>
+    @FormUrlEncoded
+    @POST("login")
+    suspend fun login(
+        @Field("email") email: String,
+        @Field("password") password: String
+    ): LoginResponse
 
     @GET("api/apps/")
     suspend fun getOjkInvestment(): Response<OjkResponse>

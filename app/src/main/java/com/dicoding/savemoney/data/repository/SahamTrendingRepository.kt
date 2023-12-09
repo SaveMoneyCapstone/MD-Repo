@@ -6,30 +6,8 @@ import com.dicoding.savemoney.data.*
 import com.dicoding.savemoney.data.api.*
 import com.dicoding.savemoney.data.response.*
 
-class CompanyProfileRepository(private val apiService: ApiService) {
+class SahamTrendingRepository(private val apiService: ApiService) {
 
-    fun getCompanyProfile(): LiveData<ResultState<CompanyProfileResponse>> =
-        liveData {
-            emit(ResultState.Loading)
-            try {
-                val response = apiService.getProfileCompany(API_KEY, "BBCA")
-                if (response.isSuccessful) {
-                    val profileCompanyResponse = response.body()?.data
-                    if (profileCompanyResponse != null) {
-                        val companyResponse = CompanyProfileResponse(profileCompanyResponse)
-                        emit(ResultState.Success(companyResponse))
-
-                    } else {
-                        emit(ResultState.Error("Response body data is null"))
-                    }
-
-                } else {
-                    emit(ResultState.Error("Error: ${response.code()}"))
-                }
-            } catch (e: Exception) {
-                ResultState.Error("Error: ${e.message}")
-            }
-        }
 
     fun getSahamTrending(): LiveData<ResultState<SahamTrendingResponse>> =
         liveData {
@@ -56,11 +34,11 @@ class CompanyProfileRepository(private val apiService: ApiService) {
 
     companion object {
         @Volatile
-        private var instance: CompanyProfileRepository? = null
+        private var instance: SahamTrendingRepository? = null
 
-        fun getInstance(apiService: ApiService): CompanyProfileRepository {
+        fun getInstance(apiService: ApiService): SahamTrendingRepository {
             return instance ?: synchronized(this) {
-                instance ?: CompanyProfileRepository(apiService)
+                instance ?: SahamTrendingRepository(apiService)
             }.also { instance = it }
         }
     }

@@ -5,17 +5,24 @@ import android.content.*
 import android.os.*
 import android.view.*
 import android.widget.*
+import androidx.activity.*
 import androidx.appcompat.app.*
 import androidx.navigation.*
 import androidx.navigation.ui.*
+import com.dicoding.savemoney.*
 import com.dicoding.savemoney.R
 import com.dicoding.savemoney.ui.add.*
 import com.dicoding.savemoney.ui.setting.*
+import com.dicoding.savemoney.ui.splash.*
 import com.dicoding.savemoney.utils.*
 import com.google.android.material.bottomnavigation.*
 import com.google.android.material.floatingactionbutton.*
 
 class MainActivity : AppCompatActivity() {
+    private val viewModel: MainViewModel by viewModels {
+        ViewModelFactory.getInstance(this)
+    }
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +36,7 @@ class MainActivity : AppCompatActivity() {
             R.id.navigation_dashboard,
             R.id.navigation_transaction,
             R.id.navigation_transaction,
-            R.id.navigation_profile_company,
+            R.id.navigation_saham,
             R.id.navigation_other
         ).build()
 
@@ -45,8 +52,8 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             supportActionBar?.title = when (destination.id) {
                 R.id.navigation_dashboard -> "Dashboard"
-                R.id.navigation_transaction -> "Transaction"
-                R.id.navigation_profile_company -> "Data Company BEI"
+                R.id.navigation_transaction -> "Transaksi"
+                R.id.navigation_saham -> "Produk Saham"
                 R.id.navigation_other -> "Portal Investasi OJK"
                 else -> "Save Money"
             }
@@ -76,7 +83,26 @@ class MainActivity : AppCompatActivity() {
                 true
             }
 
+            R.id.logout -> {
+                logout()
+                true
+            }
+
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun logout() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Logout")
+        builder.setMessage("Anda yakin ingin keluar?")
+        builder.setPositiveButton("Ya") { _, _ ->
+            viewModel.logout()
+            val intent = Intent(this, SplashScreenActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        builder.setNegativeButton("Tidak") { _, _ -> }
+        builder.show()
     }
 }

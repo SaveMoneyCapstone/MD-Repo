@@ -19,7 +19,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-        buildConfigField("String", "API_KEY", "\"c75f1098-5af1-534c-80b7-f652297b\"")
+        buildConfigField("String", "API_KEY", "\"79af5fa9-d33f-518c-4e6f-ed21bfaa\"")
     }
 
     buildTypes {
@@ -60,6 +60,10 @@ dependencies {
     implementation ("com.google.android.gms:play-services-auth:20.7.0")
     implementation("com.google.firebase:firebase-auth:22.3.0")
 
+    //preference
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+
 
     //navigation
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
@@ -89,7 +93,9 @@ dependencies {
     implementation("androidx.room:room-ktx:$room_version")
     ksp("androidx.room:room-compiler:$room_version")
 
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation("androidx.activity:activity-ktx:1.7.2")
     implementation ("androidx.room:room-ktx:2.5.1")
 }

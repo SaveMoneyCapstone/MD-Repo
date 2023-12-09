@@ -9,16 +9,17 @@ import coil.transform.*
 import com.dicoding.savemoney.*
 import com.dicoding.savemoney.data.response.*
 import com.dicoding.savemoney.databinding.*
+import com.dicoding.savemoney.ui.fragment.ojk.*
+import com.dicoding.savemoney.ui.fragment.sahamtrending.*
 import com.dicoding.savemoney.utils.*
 
-class SahamTrendingAdapter(private val onItemClick: (ResultsItemSaham) -> Unit) :
+class SahamTrendingAdapter :
     ListAdapter<ResultsItemSaham, SahamTrendingAdapter.ViewHolder>(
         DIFF_CALLBACK
     ) {
     class ViewHolder(
         private var binding: ItemSahamTrendingBinding,
-        private val context: Context,
-        private val onItemClick: (ResultsItemSaham) -> Unit
+        private val context: Context
     ) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -29,7 +30,7 @@ class SahamTrendingAdapter(private val onItemClick: (ResultsItemSaham) -> Unit) 
             binding.tvSymbol.text = resultsItemSaham.symbol
             binding.tvName.text = resultsItemSaham.company?.name
             binding.tvClose.text =
-                context.getString(R.string.close, formatCurrency( resultsItemSaham.close ?: 0))
+                context.getString(R.string.close, formatCurrency(resultsItemSaham.close ?: 0))
             binding.tvChange.text =
                 context.getString(R.string.change, formatCurrency(resultsItemSaham.change ?: 0))
             binding.tvPercent.text =
@@ -40,7 +41,9 @@ class SahamTrendingAdapter(private val onItemClick: (ResultsItemSaham) -> Unit) 
                 transformations(CircleCropTransformation())
             }
             itemView.setOnClickListener {
-                onItemClick(resultsItemSaham)
+                val intent = Intent(context, DetailSahamTrendingActivity::class.java)
+                intent.putExtra(DetailSahamTrendingActivity.TAG, resultsItemSaham)
+                context.startActivity(intent)
             }
         }
     }
@@ -51,7 +54,7 @@ class SahamTrendingAdapter(private val onItemClick: (ResultsItemSaham) -> Unit) 
     ): ViewHolder {
         val binding =
             ItemSahamTrendingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding, parent.context, onItemClick)
+        return ViewHolder(binding, parent.context)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -76,6 +79,4 @@ class SahamTrendingAdapter(private val onItemClick: (ResultsItemSaham) -> Unit) 
             }
         }
     }
-
-
 }

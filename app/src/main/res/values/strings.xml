@@ -93,6 +93,9 @@
     <string name="percent">Persentase Perubahan: %1$s</string>
     <string name="saham_trending">Saham Trending</string>
     <string name="grafik_saham">Traffic</string>
+    <string name="logout">Logout</string>
+    <string name="portal">Portal</string>
+    <string name="saham">Saham</string>
 
 
 </resources>

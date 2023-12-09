@@ -2,7 +2,7 @@ package com.dicoding.savemoney.data.response
 
 import com.google.gson.annotations.*
 
-data class CompanyProfileResponse(
+data class ProductSahamResponse(
 
     @field:SerializedName("data")
     val data: DataProfile? = null,

@@ -26,10 +26,10 @@
 
 
     <fragment
-        android:id="@+id/navigation_profile_company"
-        android:name="com.dicoding.savemoney.ui.fragment.listbei.ListBeiFragment"
+        android:id="@+id/navigation_saham"
+        android:name="com.dicoding.savemoney.ui.fragment.sahamtrending.SahamTrendingFragment"
         android:label="@string/news"
-        tools:layout="@layout/fragment_list_bei" />
+        tools:layout="@layout/fragment_saham_trending" />
 
 
     <fragment

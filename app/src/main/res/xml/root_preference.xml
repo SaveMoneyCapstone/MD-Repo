@@ -10,6 +10,7 @@
             app:key="@string/pref_key_dark"
             app:title="@string/pref_dark_title"
             app:useSimpleSummaryProvider="true" />
-
     </PreferenceCategory>
+
+
 </PreferenceScreen>

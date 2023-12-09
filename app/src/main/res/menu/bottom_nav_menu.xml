@@ -21,12 +21,12 @@
         android:title="@string/add_expenditure"/>
 
     <item
-        android:id="@+id/navigation_profile_company"
+        android:id="@+id/navigation_saham"
         android:icon="@drawable/news"
-        android:title="@string/company" />
+        android:title="@string/saham" />
     <item
         android:id="@+id/navigation_other"
         android:icon="@drawable/other"
-        android:title="@string/other" />
+        android:title="@string/portal" />
 
 </menu>

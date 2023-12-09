@@ -1,4 +1,4 @@
-package com.dicoding.savemoney.ui.fragment.ojk
+package com.dicoding.savemoney.ui.fragment.sahamtrending
 
 import android.os.*
 import android.view.*
@@ -8,35 +8,31 @@ import androidx.recyclerview.widget.*
 import com.dicoding.savemoney.*
 import com.dicoding.savemoney.adapter.*
 import com.dicoding.savemoney.data.*
-import com.dicoding.savemoney.data.response.*
 import com.dicoding.savemoney.databinding.*
 
-
-class OjkFragment : Fragment() {
-    private lateinit var ojkInvestmentAdapter: OjkInvestmentAdapter
-
-    private var _binding: FragmentOjkBinding? = null
+class SahamTrendingFragment : Fragment() {
+    private lateinit var sahamTrendingAdapter: SahamTrendingAdapter
+    private var _binding: FragmentSahamTrendingBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel: SahamTrendingViewModel by viewModels {
+        ViewModelFactory.getInstance(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentOjkBinding.inflate(inflater, container, false)
+        _binding = FragmentSahamTrendingBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ojkInvestmentAdapter = OjkInvestmentAdapter()
+        sahamTrendingAdapter = SahamTrendingAdapter()
 
-        val viewModel: OjkInvestmentViewModel by viewModels {
-            ViewModelFactory.getInstance(requireContext())
-        }
-
-        viewModel.ojkInvestmentData.observe(viewLifecycleOwner) { result ->
+        viewModel.fetchSahamTrending.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is ResultState.Loading -> {
                     isLoading(true)
@@ -44,36 +40,23 @@ class OjkFragment : Fragment() {
 
                 is ResultState.Success -> {
                     isLoading(false)
-                    val data = result.data.data?.apps
-                    if (data != null) {
-                        val dataList = data.map { appsItem ->
-                            AppsItem(
-                                owner = appsItem?.owner.orEmpty(),
-                                name = appsItem?.name.orEmpty(),
-                                url = appsItem?.url.orEmpty()
-                            )
-                        }
-                        ojkInvestmentAdapter.submitList(dataList)
-                    }
+                    showNoDataMessage(null)
+                    sahamTrendingAdapter.submitList(result.data.data?.results)
                 }
 
                 is ResultState.Error -> {
+                    isLoading(false)
+                    showNoDataMessage(result.error)
                     Toast.makeText(requireContext(), result.error, Toast.LENGTH_SHORT).show()
-                    showNoDataMessage(getString(R.string.news_gagal_memuat_data))
                 }
-
-                else -> {}
             }
         }
 
-        binding.rvOjk.apply {
+        binding.rvSahamTrending.apply {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
-            adapter = ojkInvestmentAdapter
+            adapter = sahamTrendingAdapter
         }
-
-        viewModel.fetchOjkInvestment()
-
     }
 
     private fun isLoading(isLoading: Boolean) {
@@ -85,10 +68,5 @@ class OjkFragment : Fragment() {
             visibility = if (!message.isNullOrBlank()) View.VISIBLE else View.GONE
             text = message
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

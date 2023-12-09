@@ -80,6 +80,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textEmailAddress"
+            android:background="@drawable/border_buttom"
             tools:alpha="100"
             tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -106,6 +107,7 @@
             android:ems="10"
             android:inputType="textPassword"
             tools:alpha="100"
+            android:background="@drawable/border_buttom"
             tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
