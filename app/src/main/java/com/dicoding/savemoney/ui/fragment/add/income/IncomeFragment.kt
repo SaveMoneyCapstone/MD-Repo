@@ -1,11 +1,15 @@
 package com.dicoding.savemoney.ui.fragment.add.income
 
+import android.content.Intent
 import android.os.*
 import android.view.*
 import android.widget.*
 import androidx.fragment.app.*
+import androidx.navigation.fragment.*
+import com.dicoding.savemoney.R
 import com.dicoding.savemoney.databinding.*
 import com.dicoding.savemoney.firebase.*
+import com.dicoding.savemoney.ui.fragment.dashboard.*
 
 class IncomeFragment : Fragment() {
     private var _binding: FragmentIncomeBinding? = null
@@ -38,8 +42,10 @@ class IncomeFragment : Fragment() {
             Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show()
             return
         }
+        isLoading(true)
 
         firebaseIncomeManager.saveIncome(amount, category, note) { success ->
+            isLoading(false)
             if (success) {
                 Toast.makeText(requireContext(), "Income saved successfully", Toast.LENGTH_SHORT)
                     .show()
@@ -53,5 +59,9 @@ class IncomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun isLoading(isLoading: Boolean) {
+        binding.progressBarIncome.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 }

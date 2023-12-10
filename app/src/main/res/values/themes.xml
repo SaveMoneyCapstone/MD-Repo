@@ -5,12 +5,19 @@
         <item name="android:fontFamily">@font/font_main</item>
     </style>
 
+    <style name="NoBorderOutlinedBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeColor">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+
     <style name="NavigationBar" >
         <item name="colorPrimary">@color/blue</item>
 
     </style>
 
-    <style name="Base.Theme.Auth" parent="Theme.Material3.DayNight">
+    <style name="Base.Theme.Auth" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
         <item name="android:fontFamily">@font/archivo_regular</item>

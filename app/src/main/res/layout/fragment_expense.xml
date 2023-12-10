@@ -43,36 +43,24 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <ProgressBar
+        android:id="@+id/progressBarExpense"
+        style="android:attr/progressBarStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <ImageButton
-            style="@style/Base.Widget.AppCompat.ImageButton"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/due_data_expense"
-            android:onClick="showDatePicker"
-            android:src="@drawable/baseline_date_range_24"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <TextView
-            android:id="@+id/add_tv_due_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/due_data_expense" />
-    </LinearLayout>
-
+        android:visibility="gone"
+        android:layout_gravity="center_horizontal|end"
+        tools:visibility="visible" />
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_add_expense"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:text="@string/btn_add_expense"
         android:background="@drawable/border_buttom"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="bottom|center_horizontal"/>
+
+
+
 
 </LinearLayout>
