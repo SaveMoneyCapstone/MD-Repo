@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "28506334403-i9v9okrifk82a7g6glhaftltqn6hf39l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dicoding.savemoney",
+            "certificate_hash": "f99e49fb661e8b5348d5bb61b709cc24eb789ceb"
+          }
+        },
+        {
           "client_id": "28506334403-gnditdc54li7bcphfqj8faunig4v6um6.apps.googleusercontent.com",
           "client_type": 3
         }

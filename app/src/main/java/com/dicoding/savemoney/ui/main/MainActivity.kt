@@ -11,7 +11,10 @@ import androidx.navigation.*
 import androidx.navigation.ui.*
 import com.dicoding.savemoney.*
 import com.dicoding.savemoney.R
+import com.dicoding.savemoney.data.preference.*
+import com.dicoding.savemoney.firebase.*
 import com.dicoding.savemoney.ui.add.*
+import com.dicoding.savemoney.ui.login.*
 import com.dicoding.savemoney.ui.setting.*
 import com.dicoding.savemoney.ui.splash.*
 import com.dicoding.savemoney.utils.*
@@ -19,14 +22,23 @@ import com.google.android.material.bottomnavigation.*
 import com.google.android.material.floatingactionbutton.*
 
 class MainActivity : AppCompatActivity() {
-    private val viewModel: MainViewModel by viewModels {
-        ViewModelFactory.getInstance(this)
-    }
+    private lateinit var userSessionManager: UserSessionManager
+//    private val viewModel: MainViewModel by viewModels {
+//        ViewModelFactory.getInstance()
+//    }
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
+        userSessionManager = UserSessionManager(this)
+        if (!userSessionManager.isUserLoggedIn()) {
+            val intent = Intent(this, SplashScreenActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
@@ -84,25 +96,14 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.logout -> {
-                logout()
+                userSessionManager.logoutUser()
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
                 true
             }
 
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    private fun logout() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Logout")
-        builder.setMessage("Anda yakin ingin keluar?")
-        builder.setPositiveButton("Ya") { _, _ ->
-            viewModel.logout()
-            val intent = Intent(this, SplashScreenActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-        builder.setNegativeButton("Tidak") { _, _ -> }
-        builder.show()
     }
 }

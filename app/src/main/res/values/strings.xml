@@ -28,12 +28,12 @@
     <string name="add_expenditure">Tambah</string>
 
     <!--    dashboard-->
-    <string name="halo_username">Halo, %1$s</string>
+    <string name="welcome">Welcome, %1$s!</string>
     <string name="income_text">Pemasukan</string>
     <string name="expenses_text">Pengeluaran</string>
-    <string name="balance">Rp. %1$s</string>
-    <string name="income">Rp. %1$s</string>
-    <string name="expenses">Rp. %1$s</string>
+    <string name="balance">%1$s</string>
+    <string name="income">%1$s</string>
+    <string name="expenses">%1$s</string>
     <string name="setting">Settings</string>
     <string name="balance_text">Saldo</string>
 
@@ -97,5 +97,15 @@
     <string name="portal">Portal</string>
     <string name="saham">Saham</string>
 
+    
+    
+    
+    <string name="name_required_error">name_required_error</string>
+    <string name="email_required_error">email_required_error</string>
+    <string name="password_required_error">password_required_error</string>
+    <string name="hort_password_error">hort_password_error</string>
+    <string name="malformed_email_error">malformed_email_error</string>
+    <string name="tanggal_pendapatan">Tanggal pendapatan</string>
+    <string name="tambahkan_pendapatan">Tambahkan Pendapatan</string>
 
 </resources>

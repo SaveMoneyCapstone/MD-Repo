@@ -20,9 +20,9 @@
 
     <activity
         android:id="@+id/navigation_add"
-        android:name="com.dicoding.savemoney.ui.add.AddExpenseActivity"
+            android:name="com.dicoding.savemoney.ui.add.AddTransactionActivity"
         android:label="@string/add_expenditure"
-        tools:layout="@layout/activity_add_expense"/>
+        tools:layout="@layout/activity_add_transaction"/>
 
 
     <fragment

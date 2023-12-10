@@ -18,4 +18,8 @@ class SettingsActivity : AppCompatActivity() {
         supportActionBar?.title = getString(R.string.title_app_bar_setting)
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return true
+    }
 }

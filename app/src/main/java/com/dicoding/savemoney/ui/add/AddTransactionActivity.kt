@@ -7,12 +7,12 @@ import com.dicoding.savemoney.*
 import com.dicoding.savemoney.databinding.*
 import com.google.android.material.tabs.*
 
-class AddExpenseActivity : AppCompatActivity() {
+class AddTransactionActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityAddExpenseBinding
+    private lateinit var binding: ActivityAddTransactionBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAddExpenseBinding.inflate(layoutInflater)
+        binding = ActivityAddTransactionBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 

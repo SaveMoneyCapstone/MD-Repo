@@ -13,10 +13,6 @@
 
     <item
         android:id="@+id/navigation_add"
-        android:iconTint="@color/blue"
-        android:visible="true"
-        android:titleCondensed="@string/add_expenditure"
-        android:actionLayout="@layout/activity_add_expense"
         android:icon="@drawable/add_transaction"
         android:title="@string/add_expenditure"/>
 

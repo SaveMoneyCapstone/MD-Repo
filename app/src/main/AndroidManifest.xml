@@ -19,16 +19,13 @@
             android:name=".ui.fragment.sahamtrending.DetailSahamTrendingActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.sahamtrending.SahamTrendingActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.fragment.ojk.DetailOjkInvestmentActivity"
             android:exported="false" />
         <activity
             android:name=".ui.setting.SettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.add.AddExpenseActivity"
+            android:name=".ui.add.AddTransactionActivity"
             android:exported="false"
             android:theme="@style/Theme.SaveMoney" />
         <activity
@@ -40,11 +37,11 @@
             android:exported="false"
             android:theme="@style/Base.Theme.Auth" />
         <activity
-            android:name=".ui.main.MainActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.splash.SplashScreenActivity"
             android:theme="@style/Base.Theme.Auth"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

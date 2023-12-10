@@ -33,7 +33,7 @@ class OjkFragment : Fragment() {
         ojkInvestmentAdapter = OjkInvestmentAdapter()
 
         val viewModel: OjkInvestmentViewModel by viewModels {
-            ViewModelFactory.getInstance(requireContext())
+            ViewModelFactory.getInstance()
         }
 
         viewModel.ojkInvestmentData.observe(viewLifecycleOwner) { result ->

@@ -16,7 +16,7 @@ class SahamTrendingFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: SahamTrendingViewModel by viewModels {
-        ViewModelFactory.getInstance(requireContext())
+        ViewModelFactory.getInstance()
     }
 
     override fun onCreateView(

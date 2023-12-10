@@ -1,55 +1,21 @@
+@file:Suppress("SameParameterValue")
+
 package com.dicoding.savemoney.utils
 
 import android.graphics.*
+import android.util.*
 import com.github.mikephil.charting.charts.*
 import com.github.mikephil.charting.components.*
 import com.github.mikephil.charting.data.*
-import com.github.mikephil.charting.formatter.*
-import java.text.*
-import java.util.*
+import com.google.firebase.auth.*
+import com.google.firebase.firestore.*
+import java.util.Date
 
+@Suppress("SameParameterValue")
 class LineChartManager(private val lineChart: LineChart) {
 
-    fun setupLineChart() {
-
-        val dataPemasukan = listOf(1000000f, 1500000f, 1200000f, 2000000f, 1800000f)
-        val dataPengeluaran = listOf(500000f, 700000f, 600000f, 800000f, 900000f)
-
-        // Create LineDataSet for pemasukan
-        val pemasukanLineDataSet = createLineDataSet(dataPemasukan, "Pemasukan", Color.GREEN)
-
-        // Create LineDataSet for pengeluaran
-        val pengeluaranDataSet = createLineDataSet(dataPengeluaran, "Pengeluaran", Color.BLUE)
-
-        // Configure Y-axis to display values as integers
-        val leftAxis: YAxis = lineChart.axisLeft
-        leftAxis.valueFormatter = CustomYAxisValueFormatter()
-
-        // Configure X-axis to display dates
-        val xAxis: XAxis = lineChart.xAxis
-        xAxis.valueFormatter = CustomXAxisValueFormatter()
-
-        xAxis.labelCount = 1
-        xAxis.position = XAxis.XAxisPosition.BOTTOM
-
-        // Configure legend
-        val legend = lineChart.legend
-        legend.isEnabled = true
-        legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
-        legend.orientation = Legend.LegendOrientation.HORIZONTAL
-        legend.setDrawInside(false)
-
-        lineChart.axisRight.isEnabled = false
-
-        lineChart.description.isEnabled = false
-
-        // Set LineData to the chart
-        lineChart.data = LineData(pemasukanLineDataSet, pengeluaranDataSet)
-
-        // Animate the chart
-        lineChart.animateXY(100, 500)
-    }
+    private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     private fun createLineDataSet(data: List<Float>, label: String, color: Int): LineDataSet {
         // Create entries for the LineDataSet
@@ -63,26 +29,87 @@ class LineChartManager(private val lineChart: LineChart) {
         dataSet.setCircleColor(color)
 
         return dataSet
-
     }
 
+    fun setupLineChart() {
+        val userId = firebaseAuth.currentUser?.uid
 
-    private class CustomXAxisValueFormatter : ValueFormatter() {
-        override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-            // Format the X-axis label as needed
-            return SimpleDateFormat("dd-MMM", Locale.getDefault()).format(value.toLong())
+        if (userId != null) {
+            fetchChartData(userId) { dataIncome, dataExpense, timestamps ->
+                // Create LineDataSet for income
+                val incomeLineDataSet =
+                    createLineDataSet(dataIncome, "Income", Color.GREEN)
+
+                // Create LineDataSet for expense
+                val expenseDataSet =
+                    createLineDataSet(dataExpense, "Expense", Color.BLUE)
+
+                // Configure Y-axis to display values as integers
+                val leftAxis = lineChart.axisLeft
+                leftAxis.valueFormatter = CustomYAxisValueFormatter()
+
+                // Configure X-axis to display dates
+                val xAxis = lineChart.xAxis
+                xAxis.valueFormatter = CustomXAxisValueFormatter(timestamps)
+
+                xAxis.labelCount = 1
+                xAxis.position = XAxis.XAxisPosition.BOTTOM
+
+                // Configure legend
+                val legend = lineChart.legend
+                legend.isEnabled = true
+                legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+                legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+                legend.orientation = Legend.LegendOrientation.HORIZONTAL
+                legend.setDrawInside(false)
+
+                lineChart.axisRight.isEnabled = false
+
+                lineChart.description.isEnabled = false
+
+                // Set LineData to the chart
+                lineChart.data = LineData(incomeLineDataSet, expenseDataSet)
+
+                // Animate the chart
+                lineChart.animateXY(100, 500)
+            }
         }
     }
 
-    private class CustomYAxisValueFormatter : ValueFormatter() {
-        override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-            // Format the Y-axis label as needed
-            return value.toInt().toString()
-        }
+    private fun fetchChartData(
+        userId: String,
+        callback: (List<Float>, List<Float>, List<Date>) -> Unit
+    ) {
+        // Fetch data from Firebase and call the callback
+        val incomesRef = firestore.collection("users").document(userId).collection("incomes")
+        val expensesRef = firestore.collection("users").document(userId).collection("expense")
 
-        override fun getFormattedValue(value: Float): String {
-            // Format the Y-axis value as needed
-            return value.toInt().toString()
+        val dataIncome = mutableListOf<Float>()
+        val dataExpense = mutableListOf<Float>()
+        val timestamps = mutableListOf<Date>()
+
+        incomesRef.get().addOnSuccessListener { incomesSnapshot ->
+            for (incomeDocument in incomesSnapshot) {
+                val amount = incomeDocument.getDouble("amount") ?: 0.0
+                val timestamp = incomeDocument.getTimestamp("timestamp")
+                dataIncome.add(amount.toFloat())
+                timestamps.add(timestamp?.toDate() ?: Date())
+            }
+
+            expensesRef.get().addOnSuccessListener { expensesSnapshot ->
+                for (expenseDocument in expensesSnapshot) {
+                    val amount = expenseDocument.getDouble("amount") ?: 0.0
+                    val timestamp = expenseDocument.getTimestamp("timestamp")
+                    dataExpense.add(amount.toFloat())
+                    timestamps.add(timestamp?.toDate() ?: Date())
+                }
+
+                callback.invoke(dataIncome, dataExpense, timestamps)
+            }
+        }.addOnFailureListener { exception ->
+            // Handle failure
+            Log.e("LineChartManager", "Error fetching data: ${exception.message}")
         }
     }
+
 }

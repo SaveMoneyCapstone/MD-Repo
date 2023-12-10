@@ -8,3 +8,9 @@ fun formatCurrency(amount: Int): String {
     format.currency = Currency.getInstance("IDR")
     return format.format(amount.toLong())
 }
+
+fun formatCurrencyTransaction(amount: Double): String {
+    val format = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
+    format.currency = Currency.getInstance("IDR")
+    return format.format(amount.toLong())
+}

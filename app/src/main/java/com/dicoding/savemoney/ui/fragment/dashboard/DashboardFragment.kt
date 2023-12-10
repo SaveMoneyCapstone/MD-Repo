@@ -1,5 +1,6 @@
 package com.dicoding.savemoney.ui.fragment.dashboard
 
+import com.dicoding.savemoney.utils.LineChartManager
 import android.annotation.*
 import android.content.*
 import android.graphics.*
@@ -10,9 +11,11 @@ import androidx.fragment.app.*
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.*
 import com.dicoding.savemoney.*
+import com.dicoding.savemoney.R
 import com.dicoding.savemoney.adapter.*
 import com.dicoding.savemoney.data.*
 import com.dicoding.savemoney.databinding.*
+import com.dicoding.savemoney.firebase.*
 import com.dicoding.savemoney.ui.add.*
 import com.dicoding.savemoney.ui.fragment.sahamtrending.*
 import com.dicoding.savemoney.ui.login.*
@@ -24,6 +27,8 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.*
 import com.github.mikephil.charting.utils.*
 import com.google.android.material.floatingactionbutton.*
+import com.google.firebase.auth.*
+import com.google.firebase.firestore.*
 import java.text.*
 import java.util.*
 
@@ -31,6 +36,8 @@ class DashboardFragment : Fragment() {
     private lateinit var lineChartManager: LineChartManager
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var firebaseDataManager: FirebaseDataManager
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
@@ -41,13 +48,37 @@ class DashboardFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        firebaseDataManager = FirebaseDataManager()
 
         //example line chart
         lineChartManager = LineChartManager(binding.chart)
         lineChartManager.setupLineChart()
 
+        // view data user to dashboard
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        currentUser?.let {
+            val userId = it.uid
+            //get data name firestore to dashboard
+            firebaseDataManager.getCurrentUserName(userId) { name ->
+                binding.usernameUser.text = getString(R.string.welcome, name)
+            }
+            //get data balance firestore to dashboard
+            firebaseDataManager.calculateBalance { balance ->
+                binding.balance.text = getString(R.string.balance, balance.toString())
+            }
+            //get data incomes firestore to dashboard
+            firebaseDataManager.getIncomes { incomes ->
+                binding.lotsOfIncome.text = getString(R.string.income, incomes.toString())
+            }
+            //get data expense firestore to dashboard
+            firebaseDataManager.getExpense { expense ->
+                binding.lotsOfExpense.text = getString(R.string.expenses, expense.toString())
+            }
+        }
     }
 
     override fun onDestroyView() {
