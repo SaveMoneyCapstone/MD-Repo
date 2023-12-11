@@ -38,11 +38,11 @@
     <string name="balance_text">Saldo</string>
 
     <!--    title view pager-->
-    <string name="title_pager_income">Pemasukan</string>
-    <string name="title_pager_expense">Pengeluaran</string>
+    <string name="title_pager_income">Income</string>
+    <string name="title_pager_expense">Expenses</string>
 
     <!--    title appbar add-->
-    <string name="tambah_data">Tambah Data</string>
+    <string name="tambah_data">Add Data</string>
 
     <!--    Night Mode Preference-->
     <string name="pref_dark_title">Dark mode</string>
@@ -59,17 +59,17 @@
     <string name="title_display">Theme</string>
 
     <!--    category-->
-    <string name="foods_drinks">Makanan &amp; Minuman</string>
-    <string name="entertainment">Hiburan</string>
-    <string name="clothes">Pakaian</string>
-    <string name="Mobility">Mobilitas</string>
-    <string name="other_category">Dll</string>
-    <string name="due_data_expense">Tanggal pengeluaran</string>
-    <string name="btn_add_expense">Tambahkan Pengeluaran</string>
-    <string name="amount_of_expenditure">Jumlah pengeluaran</string>
-    <string name="note">Catatan</string>
+    <string name="foods_beverages">Food &amp; Beverages</string>
+    <string name="entertainment">Entertainment</string>
+    <string name="clothes">Clothes</string>
+    <string name="Bills_Utilities">Bills &amp; Utilities</string>
+    <string name="other_category">Other</string>
+    <string name="due_data_expense">Date Expenses</string>
+    <string name="btn_add_expense">Add Expenses</string>
+    <string name="amount_of_expenditure">Amount of Expenses</string>
+    <string name="note">Notes</string>
     <string name="title_app_bar_setting">Setting</string>
-    <string name="statistic">statistic</string>
+    <string name="statistic">Statistic</string>
 
     <!--    news-->
     <string name="label_news">label</string>
@@ -97,9 +97,7 @@
     <string name="portal">Portal</string>
     <string name="saham">Saham</string>
 
-    
-    
-    
+
     <string name="name_required_error">name_required_error</string>
     <string name="email_required_error">email_required_error</string>
     <string name="password_required_error">password_required_error</string>
