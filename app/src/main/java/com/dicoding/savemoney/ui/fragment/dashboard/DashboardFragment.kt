@@ -8,8 +8,13 @@ import android.view.*
 import android.widget.*
 import androidx.fragment.app.*
 import androidx.lifecycle.*
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.savemoney.*
+import com.dicoding.savemoney.databinding.FragmentDashboardBinding
+import com.dicoding.savemoney.ui.ViewModelFactory
+import com.dicoding.savemoney.ui.adapter.RecentTransactionsAdapter
 import com.dicoding.savemoney.ui.add.*
+import com.dicoding.savemoney.ui.fragment.transaction.TransactionsActivity
 import com.dicoding.savemoney.ui.login.*
 import com.github.mikephil.charting.charts.*
 import com.github.mikephil.charting.components.*
@@ -22,30 +27,58 @@ import java.util.*
 
 @Suppress("DEPRECATION")
 class DashboardFragment : Fragment() {
-    private lateinit var dashboardViewModel: DashboardViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+    private val viewModel: DashboardViewModel by activityViewModels() {
+        ViewModelFactory.getInstance(requireContext().applicationContext)
     }
+    private var _binding: FragmentDashboardBinding? = null
+    private val binding get() = _binding!!
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        return binding.root
 
-        dashboardViewModel = ViewModelProvider(this)[DashboardViewModel::class.java]
-        val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val layoutManager = LinearLayoutManager(requireActivity())
+        binding.rvRecent.layoutManager = layoutManager
+        viewModel.getData().observe(viewLifecycleOwner) {
+            val adapter = RecentTransactionsAdapter()
+            binding.rvRecent.adapter = adapter
+            adapter.submitList(it)
+        }
+
+        viewModel.getExpenses().observe(viewLifecycleOwner) {
+            binding.lotsOfExpensess.text = RupiahConverter.convertToRupiah(it.toLong())
+        }
+
+        viewModel.getIncome().observe(viewLifecycleOwner) {
+            binding.lotsOfIncome.text = RupiahConverter.convertToRupiah(it.toLong())
+        }
+
+        viewModel.getExpenses().observe(viewLifecycleOwner) {expenses ->
+            viewModel.getIncome().observe(viewLifecycleOwner) {
+                val balance = it-expenses
+                binding.balance.text = RupiahConverter.convertToRupiah(balance.toLong())
+            }
+        }
+
+        binding.viewMore.setOnClickListener {
+            val intent = Intent(requireActivity(), TransactionsActivity::class.java)
+            startActivity(intent)
+        }
 
 
-        val fab: FloatingActionButton = root.findViewById(R.id.fab)
+        val fab: FloatingActionButton = binding.fab
         fab.setOnClickListener {
             val intent = Intent(requireActivity(), AddExpenseActivity::class.java)
             startActivity(intent)
         }
-
-        return root
     }
 
     @Deprecated("Deprecated in Java")

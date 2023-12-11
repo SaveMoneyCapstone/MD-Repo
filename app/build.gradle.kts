@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -83,5 +85,6 @@ dependencies {
     implementation ("androidx.fragment:fragment-ktx:1.2.5")
     implementation ("androidx.viewpager2:viewpager2:1.0.0")
 
+    implementation ("com.github.fajaragungpramana:section-recyclerview:0.0.2")
 
 }

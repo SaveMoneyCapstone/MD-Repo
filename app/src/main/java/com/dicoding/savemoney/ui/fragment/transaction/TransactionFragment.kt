@@ -1,31 +1,30 @@
 package com.dicoding.savemoney.ui.fragment.transaction
 
-import android.os.*
-import android.view.*
-import android.widget.*
-import androidx.fragment.app.*
-import androidx.lifecycle.*
-import com.dicoding.savemoney.*
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.dicoding.savemoney.R
+
 
 class TransactionFragment : Fragment() {
-    private lateinit var transactionViewModel: TransactionViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        transactionViewModel =
-            ViewModelProvider(this)[TransactionViewModel::class.java]
-        val root = inflater.inflate(R.layout.fragment_transaction, container, false)
-        val textView: TextView = root.findViewById(R.id.text_transaction)
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_transaction, container, false)
+    }
 
-        transactionViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-        return root
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    companion object {
     }
 }

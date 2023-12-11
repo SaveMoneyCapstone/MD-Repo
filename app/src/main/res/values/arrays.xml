@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="category">
-        <item>@string/foods_drinks</item>
-        <item>@string/clothes</item>
-        <item>@string/Mobility</item>
-        <item>@string/entertainment</item>
-        <item>@string/other_category</item>
-    </string-array>
+
 
     <string-array name="dark_mode">
         <item>@string/dark_mode_auto</item>

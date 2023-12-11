@@ -12,11 +12,11 @@
         android:label="@string/dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
-    <fragment
+    <activity
         android:id="@+id/navigation_transaction"
-        android:name="com.dicoding.savemoney.ui.fragment.transaction.TransactionFragment"
+        android:name="com.dicoding.savemoney.ui.fragment.transaction.TransactionsActivity"
         android:label="@string/transaction"
-        tools:layout="@layout/fragment_transaction" />
+        tools:layout="@layout/activity_transactions" />
 
     <fragment
         android:id="@+id/navigation_statistic"

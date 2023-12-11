@@ -8,6 +8,7 @@ import android.widget.*
 import androidx.fragment.app.*
 import androidx.lifecycle.*
 import com.dicoding.savemoney.*
+import com.dicoding.savemoney.ui.ViewModelFactory
 import com.dicoding.savemoney.ui.fragment.dashboard.*
 import com.github.mikephil.charting.charts.*
 import com.github.mikephil.charting.components.*
@@ -20,6 +21,10 @@ import java.util.*
 class StatisticFragment : Fragment() {
     private lateinit var mLineChart: LineChart
 
+
+    private val viewModel: StatisticViewModel by activityViewModels() {
+        ViewModelFactory.getInstance(requireContext().applicationContext)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -48,26 +53,37 @@ class StatisticFragment : Fragment() {
             dates.add(dateFormatter.format(date.time))
         }
 
+        var firstDateMillis: Long = System.currentTimeMillis()
+        var endDateMillis: Long = System.currentTimeMillis()
+
         val axisDateFormatter = AxisDateFormatter(dates.toArray(arrayOfNulls<String>(dates.size)))
         mLineChart.xAxis?.valueFormatter = axisDateFormatter
 
         val dataPemasukan = ArrayList<Entry>()
         val dataPengeluaran = ArrayList<Entry>()
 
+
+
         for (i in firstDayOfMonth..lastDayOfMonth) {
             val date = currentDate.clone() as Calendar
             date.set(Calendar.DAY_OF_MONTH, i)
-
+            val first = date.timeInMillis
+            var expensesday: Int
+//            viewModel.getExpensesByDay(first).observe(viewLifecycleOwner) {
+//                expensesday = it.toInt()
+//                expensesday.
+//            }
             val pemasukanHarian =
                 Random().nextInt(500000) + 1000000
+
             val pengeluaranHarian =
                 Random().nextInt(500000) + 300000
 
             dataPemasukan.add(Entry(date.timeInMillis.toFloat(), pemasukanHarian.toFloat()))
-            dataPengeluaran.add(Entry(date.timeInMillis.toFloat(), pengeluaranHarian.toFloat()))
+
         }
 
-        val pemasukanLineDataSet = LineDataSet(dataPemasukan, "Pemasukan")
+        val pemasukanLineDataSet = LineDataSet(dataPemasukan, "Pemasukkan")
         pemasukanLineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
         pemasukanLineDataSet.color = Color.GREEN
         pemasukanLineDataSet.circleRadius = 5f

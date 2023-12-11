@@ -37,7 +37,7 @@
                 android:id="@+id/add_ed_amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
+                android:inputType="number"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -110,6 +110,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/date_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -127,7 +128,6 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:onClick="showDatePicker"
             android:contentDescription="date"
             android:src="@drawable/ic_date" />
 
@@ -144,14 +144,12 @@
         android:id="@+id/add_expenses_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:backgroundTint="@color/blue"
         android:text="Save"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.038"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.353" />
+        app:layout_constraintEnd_toEndOf="@id/date_layout"
+        app:layout_constraintStart_toStartOf="@id/date_layout"
+        app:layout_constraintTop_toBottomOf="@id/date_layout" />
 
     <ProgressBar
         android:id="@+id/progressBar"

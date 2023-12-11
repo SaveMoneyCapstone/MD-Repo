@@ -55,30 +55,28 @@
     <string name="dark_mode_off">Light mode</string>
 
     <!--    category-->
-    <string name="foods_drinks">Makanan &amp; Minuman</string>
-    <string name="entertainment">Hiburan</string>
-    <string name="clothes">Pakaian</string>
-    <string name="Mobility">Mobilitas</string>
-    <string name="other_category">Dll</string>
     <string name="due_data_expense">Tanggal pengeluaran</string>
     <string name="btn_add_expense">Tambahkan Pengeluaran</string>
     <string name="amount_of_expenditure">Jumlah pengeluaran</string>
     <string name="note">Catatan</string>
-=======
+    =======
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
->>>>>>> origin/main
+    >>>>>>> origin/main
 
     <!--    category income-->
     <string name="salary">Salary</string>
     <string name="gift">Gift</string>
     <string name="selling">Selling</string>
     <string name="others">Other</string>
-    
+
     <!-- category expenses    <-->
     <string name="food_beverages">Food &amp; Beverages</string>
     <string name="bills_utilities">Bills &amp; utilites</string>
-    
+    <string name="clothes">Clothes</string>
+    <string name="entertainment">Entertainment</string>
+    <string name="other_category">Others</string>
+
     <!-- tab add   -->
     <string name="incomes_tab">Income</string>
     <string name="expenses_tab">Expenses</string>

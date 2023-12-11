@@ -16,8 +16,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class AddExpenseActivity : AppCompatActivity(), DatePickerFragment.DialogDateListener {
-    private var dueDateMillis: Long = System.currentTimeMillis()
+class AddExpenseActivity : AppCompatActivity(),DatePickerFragment.DialogDateListener {
 //    private val viewModel by viewModels<AddExpenseViewModel> {
 //       ViewModelFactory.getInstance(this)
 //    }
@@ -46,12 +45,14 @@ class AddExpenseActivity : AppCompatActivity(), DatePickerFragment.DialogDateLis
     companion object {
         @StringRes
         private val TAB_TITLES = intArrayOf(R.string.title_pager_income, R.string.title_pager_expense)
+
+        var dueDateMillis: Long = System.currentTimeMillis()
     }
 
-    fun showDatePicker(view: View) {
-        val dialogFragment = DatePickerFragment()
-        dialogFragment.show(supportFragmentManager, "datePicker")
-    }
+//    fun showDatePicker(view: View) {
+//        val dialogFragment = DatePickerFragment()
+//        dialogFragment.show(supportFragmentManager, "datePicker")
+//    }
 
     override fun onDialogDateSet(tag: String?, year: Int, month: Int, dayOfMonth: Int) {
         val calendar = Calendar.getInstance()
@@ -59,6 +60,8 @@ class AddExpenseActivity : AppCompatActivity(), DatePickerFragment.DialogDateLis
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         findViewById<TextView>(R.id.add_tv_due_date).text = dateFormat.format(calendar.time)
 
-        dueDateMillis = calendar.timeInMillis
+        dueDateMillis = dateFormat.calendar.timeInMillis
     }
+
+
 }
