@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="category">
-        <item>@string/foods_drinks</item>
+        <item>@string/foods_beverages</item>
         <item>@string/clothes</item>
-        <item>@string/Mobility</item>
+        <item>@string/Bills_Utilities</item>
         <item>@string/entertainment</item>
         <item>@string/other_category</item>
     </string-array>
 
     <string-array name="income">
         <item>Salary</item>
-        <item>Sampingan</item>
+        <item>Selling</item>
+        <item>Gift</item>
+        <item>Oters</item>
     </string-array>
 
     <string-array name="dark_mode">

@@ -31,7 +31,7 @@ class ExpenseFragment : Fragment() {
     }
 
     private fun saveExpense() {
-        val amount = binding.addEdTitle.text.toString().toDoubleOrNull()
+        val amount = binding.addEdAmount.text.toString().toDoubleOrNull()
         val category = binding.spCategory.selectedItem.toString()
         val note = binding.addEdDescription.text.toString()
 

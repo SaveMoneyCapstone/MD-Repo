@@ -14,6 +14,7 @@ import com.dicoding.savemoney.*
 import com.dicoding.savemoney.R
 import com.dicoding.savemoney.adapter.*
 import com.dicoding.savemoney.data.*
+import com.dicoding.savemoney.data.local.entity.UserData
 import com.dicoding.savemoney.databinding.*
 import com.dicoding.savemoney.firebase.*
 import com.dicoding.savemoney.ui.add.*
@@ -21,6 +22,10 @@ import com.dicoding.savemoney.ui.fragment.sahamtrending.*
 import com.dicoding.savemoney.ui.login.*
 import com.dicoding.savemoney.ui.setting.*
 import com.dicoding.savemoney.utils.*
+import com.dicoding.savemoney.utils.Const.PATH_COLLECTION
+import com.dicoding.savemoney.utils.Const.TIME_STAMP
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.github.mikephil.charting.charts.*
 import com.github.mikephil.charting.components.*
 import com.github.mikephil.charting.data.*
@@ -31,11 +36,18 @@ import com.google.firebase.auth.*
 import com.google.firebase.firestore.*
 import java.text.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class DashboardFragment : Fragment() {
     private lateinit var lineChartManager: LineChartManager
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
+
+//    private lateinit var mAdapter: FirestoreRecyclerAdapter<UserData, TransactionAdapter.MyViewHolder>
+//    private val mFirestore = FirebaseFirestore.getInstance()
+//    private val mUsersCollection = mFirestore.collection(PATH_COLLECTION)
+//    private val mQuery = mUsersCollection.orderBy(TIME_STAMP, Query.Direction.ASCENDING)
+
 
     private lateinit var firebaseDataManager: FirebaseDataManager
 
@@ -57,6 +69,10 @@ class DashboardFragment : Fragment() {
         //example line chart
         lineChartManager = LineChartManager(binding.chart)
         lineChartManager.setupLineChart()
+        val adapter = TransactionAdapter()
+        binding.rvRecent.adapter = adapter
+        var layoutManager = LinearLayoutManager(requireActivity())
+        binding.rvRecent.layoutManager = layoutManager
 
         // view data user to dashboard
         val currentUser = FirebaseAuth.getInstance().currentUser
@@ -78,6 +94,13 @@ class DashboardFragment : Fragment() {
             firebaseDataManager.getExpense { expense ->
                 binding.lotsOfExpense.text = getString(R.string.expenses, expense.toString())
             }
+
+//            firebaseDataManager.getHistory { dataAmount, dataCategory, dataNote, timeStamps ->
+//                val adapter = RecentTransactionsAdapter()
+//                binding.rvRecent.adapter = adapter
+//                val list = ArrayList<String>(dataAmount,dataCategory,timeStamps)
+//                adapter.submitList(list)
+//            }
         }
     }
 
