@@ -47,6 +47,7 @@ android {
 dependencies {
     implementation("androidx.navigation:navigation-fragment:2.7.5")
     implementation("com.google.firebase:firebase-firestore:24.10.0")
+
     val nav_version = "2.5.3"
 
     implementation("androidx.core:core-ktx:1.9.0")

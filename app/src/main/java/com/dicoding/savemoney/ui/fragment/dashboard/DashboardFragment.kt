@@ -15,7 +15,6 @@ import com.dicoding.savemoney.R
 import com.dicoding.savemoney.adapter.*
 import com.dicoding.savemoney.data.*
 import com.dicoding.savemoney.data.Transaction
-import com.dicoding.savemoney.data.local.entity.UserData
 import com.dicoding.savemoney.databinding.*
 import com.dicoding.savemoney.firebase.*
 import com.dicoding.savemoney.ui.add.*
@@ -23,10 +22,6 @@ import com.dicoding.savemoney.ui.fragment.sahamtrending.*
 import com.dicoding.savemoney.ui.login.*
 import com.dicoding.savemoney.ui.setting.*
 import com.dicoding.savemoney.utils.*
-import com.dicoding.savemoney.utils.Const.PATH_COLLECTION
-import com.dicoding.savemoney.utils.Const.TIME_STAMP
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter
-import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.github.mikephil.charting.charts.*
 import com.github.mikephil.charting.components.*
 import com.github.mikephil.charting.data.*
@@ -37,7 +32,6 @@ import com.google.firebase.auth.*
 import com.google.firebase.firestore.*
 import java.text.*
 import java.util.*
-import java.util.EventListener
 import kotlin.collections.ArrayList
 
 class DashboardFragment : Fragment() {
@@ -101,35 +95,12 @@ class DashboardFragment : Fragment() {
             }
 
 
-           firebaseDataManager.getHistory {
+           firebaseDataManager.getHistory { list ->
                binding.rvRecent.adapter = adapter
-               adapter.submitList(it)
+               adapter.submitList(list)
             }
         }
     }
-
-    private fun EventChangeListener() {
-        val userId = firebaseAuth.currentUser?.uid
-        if (userId != null) {
-            firestore.collection("users").document(userId).collection("expense").addSnapshotListener(object : com.google.firebase.firestore.EventListener<QuerySnapshot>{
-                override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
-
-                        if (error != null) {
-
-                        }
-
-                    for (dc: DocumentChange in value?.documentChanges!!) {
-                        if(dc.type == DocumentChange.Type.ADDED) {
-                            userList.add(dc.document.toObject(Transaction::class.java))
-                        }
-                    }
-                    adapter.notifyDataSetChanged()
-                }
-
-            })
-        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

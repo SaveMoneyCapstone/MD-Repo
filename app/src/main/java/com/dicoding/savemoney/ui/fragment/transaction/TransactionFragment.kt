@@ -10,9 +10,6 @@ import com.dicoding.savemoney.*
 class TransactionFragment : Fragment() {
     private lateinit var transactionViewModel: TransactionViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -21,11 +18,12 @@ class TransactionFragment : Fragment() {
         transactionViewModel =
             ViewModelProvider(this)[TransactionViewModel::class.java]
         val root = inflater.inflate(R.layout.fragment_transaction, container, false)
-        val textView: TextView = root.findViewById(R.id.text_transaction)
 
-        transactionViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
     }
 }

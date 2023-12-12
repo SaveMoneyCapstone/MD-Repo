@@ -105,5 +105,7 @@
     <string name="malformed_email_error">malformed_email_error</string>
     <string name="tanggal_pendapatan">Tanggal pendapatan</string>
     <string name="tambahkan_pendapatan">Tambahkan Pendapatan</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

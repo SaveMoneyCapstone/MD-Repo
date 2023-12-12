@@ -121,10 +121,6 @@ class FirebaseDataManager {
 
                 expensesRef.get().addOnSuccessListener { expensesSnapshot ->
                     for (expenseDocument in expensesSnapshot) {
-                        val amount = expenseDocument.getDouble("amount") ?: 0.0
-                        val category = expenseDocument.getString("category")
-                        val notes = expenseDocument.getString("note")
-                        val timestamp = expenseDocument.getTimestamp("timestamp")
                         userList.add(expenseDocument.toObject(Transaction::class.java))
 
                     }
