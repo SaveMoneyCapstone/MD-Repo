@@ -1,11 +1,9 @@
 package com.dicoding.savemoney.data
 
+import java.util.Date
+
 // Transaction.kt
-data class Transaction(
-    val amount: Double,
-    val category: String,
-    val note: String,
-    val timestamp: Long
+data class Transaction(var amount: Double ?= null, var category: String ?= null, var note: String ?= null, var timestamp: Date ?= null
 )
 
 // Expense.kt

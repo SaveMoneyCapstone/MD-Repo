@@ -9,6 +9,8 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.dicoding.savemoney.adapter.SahamTrendingAdapter.Companion.DIFF_CALLBACK
+import com.dicoding.savemoney.data.Transaction
 import com.dicoding.savemoney.data.local.entity.UserData
 import com.dicoding.savemoney.databinding.ItemTransactionsBinding
 import com.dicoding.savemoney.firebase.FirebaseDataManager
@@ -18,28 +20,22 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import okhttp3.internal.notify
 
-class TransactionAdapter: ListAdapter<UserData, TransactionAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class TransactionAdapter: ListAdapter<Transaction, TransactionAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
     private lateinit var firebaseDataManager: FirebaseDataManager
-    inner class MyViewHolder(private val binding: ItemTransactionsBinding) : RecyclerView.ViewHolder(binding.root) {
+
+    inner class MyViewHolder(private val binding: ItemTransactionsBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         @RequiresApi(Build.VERSION_CODES.O)
-        fun bind(userData: UserData) {
-            val currentUser = FirebaseAuth.getInstance().currentUser
-            currentUser?.let {
-                val userId = it.uid
-
-                with(binding) {
-                    firebaseDataManager.getHistory() {amountData, categoryData, notesData, timestamp ->
-                        amount.text = amountData.toString()
-                        category.text = categoryData.toString()
-                        date.text = timestamp.toString()
-                    }
-                }
-            }
+        fun bind(userData: Transaction) {
+           with(binding) {
+               amount.text = userData.amount.toString()
+               category.text = userData.category.toString()
+               date.text = userData.timestamp.toString()
+           }
         }
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding =
@@ -49,21 +45,21 @@ class TransactionAdapter: ListAdapter<UserData, TransactionAdapter.MyViewHolder>
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val item = getItem(position)
-        holder.bind(item)
+        val user = getItem(position)
+        holder.bind(user)
     }
 
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<UserData>() {
-            override fun areItemsTheSame(oldItem: UserData, newItem: UserData): Boolean {
-                return oldItem.id == newItem.id
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Transaction>() {
+
+            override fun areItemsTheSame(oldItem: Transaction, newItem: Transaction): Boolean {
+                TODO("Not yet implemented")
             }
 
-            override fun areContentsTheSame(oldItem: UserData, newItem: UserData): Boolean {
-                return oldItem.id == newItem.id
+            override fun areContentsTheSame(oldItem: Transaction, newItem: Transaction): Boolean {
+                TODO("Not yet implemented")
             }
         }
     }
-
 }

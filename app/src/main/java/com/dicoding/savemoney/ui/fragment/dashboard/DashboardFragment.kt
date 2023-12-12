@@ -14,6 +14,7 @@ import com.dicoding.savemoney.*
 import com.dicoding.savemoney.R
 import com.dicoding.savemoney.adapter.*
 import com.dicoding.savemoney.data.*
+import com.dicoding.savemoney.data.Transaction
 import com.dicoding.savemoney.data.local.entity.UserData
 import com.dicoding.savemoney.databinding.*
 import com.dicoding.savemoney.firebase.*
@@ -36,6 +37,7 @@ import com.google.firebase.auth.*
 import com.google.firebase.firestore.*
 import java.text.*
 import java.util.*
+import java.util.EventListener
 import kotlin.collections.ArrayList
 
 class DashboardFragment : Fragment() {
@@ -48,8 +50,11 @@ class DashboardFragment : Fragment() {
 //    private val mUsersCollection = mFirestore.collection(PATH_COLLECTION)
 //    private val mQuery = mUsersCollection.orderBy(TIME_STAMP, Query.Direction.ASCENDING)
 
-
+    private lateinit var userList: ArrayList<Transaction>
     private lateinit var firebaseDataManager: FirebaseDataManager
+    private lateinit var adapter : TransactionAdapter
+    private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
@@ -70,10 +75,10 @@ class DashboardFragment : Fragment() {
         lineChartManager = LineChartManager(binding.chart)
         lineChartManager.setupLineChart()
         val adapter = TransactionAdapter()
-        binding.rvRecent.adapter = adapter
         var layoutManager = LinearLayoutManager(requireActivity())
         binding.rvRecent.layoutManager = layoutManager
 
+        userList = arrayListOf()
         // view data user to dashboard
         val currentUser = FirebaseAuth.getInstance().currentUser
         currentUser?.let {
@@ -95,12 +100,33 @@ class DashboardFragment : Fragment() {
                 binding.lotsOfExpense.text = getString(R.string.expenses, expense.toString())
             }
 
-//            firebaseDataManager.getHistory { dataAmount, dataCategory, dataNote, timeStamps ->
-//                val adapter = RecentTransactionsAdapter()
-//                binding.rvRecent.adapter = adapter
-//                val list = ArrayList<String>(dataAmount,dataCategory,timeStamps)
-//                adapter.submitList(list)
-//            }
+
+           firebaseDataManager.getHistory {
+               binding.rvRecent.adapter = adapter
+               adapter.submitList(it)
+            }
+        }
+    }
+
+    private fun EventChangeListener() {
+        val userId = firebaseAuth.currentUser?.uid
+        if (userId != null) {
+            firestore.collection("users").document(userId).collection("expense").addSnapshotListener(object : com.google.firebase.firestore.EventListener<QuerySnapshot>{
+                override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
+
+                        if (error != null) {
+
+                        }
+
+                    for (dc: DocumentChange in value?.documentChanges!!) {
+                        if(dc.type == DocumentChange.Type.ADDED) {
+                            userList.add(dc.document.toObject(Transaction::class.java))
+                        }
+                    }
+                    adapter.notifyDataSetChanged()
+                }
+
+            })
         }
     }
 

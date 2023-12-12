@@ -91,6 +91,7 @@ class LineChartManager(private val lineChart: LineChart) {
         incomesRef.get().addOnSuccessListener { incomesSnapshot ->
             for (incomeDocument in incomesSnapshot) {
                 val amount = incomeDocument.getDouble("amount") ?: 0.0
+                val category = incomeDocument.getString("category")
                 val timestamp = incomeDocument.getTimestamp("timestamp")
                 dataIncome.add(amount.toFloat())
                 timestamps.add(timestamp?.toDate() ?: Date())
