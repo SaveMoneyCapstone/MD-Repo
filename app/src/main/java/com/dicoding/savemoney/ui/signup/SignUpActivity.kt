@@ -18,7 +18,7 @@ class SignUpActivity : AppCompatActivity() {
         setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        authManager = FirebaseAuthManager()
+        authManager = FirebaseAuthManager(this)
 
         binding.loginButtonText.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)

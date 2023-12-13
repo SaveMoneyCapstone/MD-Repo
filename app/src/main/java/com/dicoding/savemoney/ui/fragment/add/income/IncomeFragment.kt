@@ -1,21 +1,24 @@
 package com.dicoding.savemoney.ui.fragment.add.income
 
-import android.content.Intent
+import android.annotation.*
+import android.app.*
 import android.os.*
 import android.view.*
 import android.widget.*
 import androidx.fragment.app.*
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.*
 import com.dicoding.savemoney.R
 import com.dicoding.savemoney.databinding.*
 import com.dicoding.savemoney.firebase.*
-import com.dicoding.savemoney.ui.fragment.dashboard.*
 
+@Suppress("DEPRECATION")
 class IncomeFragment : Fragment() {
     private var _binding: FragmentIncomeBinding? = null
     private val binding get() = _binding!!
 
     private val firebaseIncomeManager: FirebaseIncomeManager = FirebaseIncomeManager()
+    private lateinit var progressDialog: ProgressDialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,13 +36,14 @@ class IncomeFragment : Fragment() {
         }
     }
 
+    @SuppressLint("UseRequireInsteadOfGet")
     private fun saveIncome() {
         val amount = binding.addEdTitle.text.toString().toDoubleOrNull()
         val category = binding.spCategory.selectedItem.toString()
         val note = binding.addEdDescription.text.toString()
 
         if (amount == null || category.isEmpty()) {
-            Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), R.string.please_fill_in_all_fields, Toast.LENGTH_SHORT).show()
             return
         }
         isLoading(true)
@@ -47,10 +51,16 @@ class IncomeFragment : Fragment() {
         firebaseIncomeManager.saveIncome(amount, category, note) { success ->
             isLoading(false)
             if (success) {
-                Toast.makeText(requireContext(), "Income saved successfully", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(),
+                    getString(R.string.income_saved_successfully), Toast.LENGTH_SHORT)
                     .show()
+                binding.addEdTitle.text?.clear()
+                binding.addEdDescription.text?.clear()
+
+
             } else {
-                Toast.makeText(requireContext(), "Failed to save income", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(),
+                    getString(R.string.failed_to_save_income), Toast.LENGTH_SHORT)
                     .show()
             }
         }
@@ -62,6 +72,12 @@ class IncomeFragment : Fragment() {
     }
 
     private fun isLoading(isLoading: Boolean) {
-        binding.progressBarIncome.visibility = if (isLoading) View.VISIBLE else View.GONE
+        if (isLoading) {
+            progressDialog = ProgressDialog(requireContext())
+            progressDialog.setMessage("Loading...")
+            progressDialog.show()
+        } else {
+            progressDialog.dismiss()
+        }
     }
 }

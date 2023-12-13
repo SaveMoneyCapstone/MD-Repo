@@ -60,11 +60,10 @@ dependencies {
     //gms signup account google
     implementation ("com.google.android.gms:play-services-auth:20.7.0")
     implementation("com.google.firebase:firebase-auth:22.3.0")
+    implementation ("com.firebaseui:firebase-ui-firestore:8.0.2")
 
     //preference
     implementation("androidx.datastore:datastore-preferences:1.0.0")
-
-
 
     //navigation
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")

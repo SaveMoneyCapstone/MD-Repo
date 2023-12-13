@@ -123,44 +123,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title_char" />
 
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/rv_company_profile"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/title_produck" />-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_transaction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_produck" />
 
-<!--        <ProgressBar-->
-<!--            android:id="@+id/progresBar"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/chart" />-->
 
-<!--        <TextView-->
-<!--            android:id="@+id/tv_message"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/progresBar" />-->
-
-<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--            android:id="@+id/fab"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:backgroundTint="@color/blue"-->
-<!--            android:contentDescription="@string/add_expenditure"-->
-<!--            android:tooltipText="@string/add_expenditure"-->
-<!--            app:srcCompat="@android:drawable/ic_input_add"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            la-->
-<!--            app:layout_constraintTop_toBottomOf="parent"-->
-<!--            app:tint="@android:color/white" />-->
+        <!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+        <!--            android:id="@+id/fab"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:backgroundTint="@color/blue"-->
+        <!--            android:contentDescription="@string/add_expenditure"-->
+        <!--            android:tooltipText="@string/add_expenditure"-->
+        <!--            app:srcCompat="@android:drawable/ic_input_add"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            la-->
+        <!--            app:layout_constraintTop_toBottomOf="parent"-->
+        <!--            app:tint="@android:color/white" />-->
 
         <TextView
             android:id="@+id/title_char"

@@ -1,10 +1,12 @@
 package com.dicoding.savemoney.firebase.auth
 
+import android.content.*
 import android.util.Log
+import com.dicoding.savemoney.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class FirebaseAuthManager {
+class FirebaseAuthManager(private val context: Context) {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
@@ -31,12 +33,16 @@ class FirebaseAuthManager {
                                 onSuccess.invoke()
                             }
                             .addOnFailureListener { _ ->
-                                onFailure.invoke("Failed to save user data.")
+                                onFailure.invoke(context.getString(R.string.failed_to_save_user_data))
                             }
                     }
                 } else {
                     Log.e("FirebaseAuthManager", "Registration failed", task.exception)
-                    onFailure.invoke("Registration failed: ${task.exception?.message}")
+                    onFailure.invoke(
+                        context.getString(
+                            R.string.registration_failed,
+                            task.exception?.message
+                        ))
                 }
             }
     }

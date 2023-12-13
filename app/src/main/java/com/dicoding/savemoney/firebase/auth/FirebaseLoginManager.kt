@@ -1,8 +1,10 @@
 package com.dicoding.savemoney.firebase.auth
 
+import android.app.*
 import android.content.*
 import android.util.*
 import android.widget.*
+import com.dicoding.savemoney.R
 import com.google.firebase.auth.*
 
 class FirebaseLoginManager(private val context: Context) {
@@ -19,14 +21,20 @@ class FirebaseLoginManager(private val context: Context) {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     // Login berhasil
-                    Toast.makeText(context, "Login berhasil", Toast.LENGTH_SHORT).show()
+                    showToast(context.getString(R.string.login_berhasil))
                     onSuccess.invoke()
                 } else {
                     // Login gagal
                     Log.e("FirebaseAuthManager", "Login gagal", task.exception)
-                    Toast.makeText(context, "Login gagal", Toast.LENGTH_SHORT).show()
+                    showToast(context.getString(R.string.login_gagal))
                     onFailure.invoke()
                 }
             }
+    }
+
+    private fun showToast(message: String) {
+        (context as? Activity)?.runOnUiThread {
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        }
     }
 }
