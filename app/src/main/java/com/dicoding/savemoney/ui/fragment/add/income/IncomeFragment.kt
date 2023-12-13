@@ -6,6 +6,8 @@ import android.widget.*
 import androidx.fragment.app.*
 import com.dicoding.savemoney.databinding.*
 import com.dicoding.savemoney.firebase.*
+import com.dicoding.savemoney.ui.add.AddTransactionActivity.Companion.dueDateMillis
+import com.dicoding.savemoney.utils.DatePickerFragment
 
 class IncomeFragment : Fragment() {
     private var _binding: FragmentIncomeBinding? = null
@@ -27,19 +29,24 @@ class IncomeFragment : Fragment() {
         binding.btnAddIncome.setOnClickListener {
             saveIncome()
         }
+        binding.date.setOnClickListener {
+            val dialogFragment = DatePickerFragment()
+            dialogFragment.show(requireActivity().supportFragmentManager, "datePicker")
+        }
     }
 
     private fun saveIncome() {
         val amount = binding.addEdAmount.text.toString().toDoubleOrNull()
         val category = binding.spCategory.selectedItem.toString()
         val note = binding.addEdDescription.text.toString()
+        val date = dueDateMillis
 
         if (amount == null || category.isEmpty()) {
             Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show()
             return
         }
 
-        firebaseIncomeManager.saveIncome(amount, category, note) { success ->
+        firebaseIncomeManager.saveIncome(0,amount, category, note,date) { success ->
             if (success) {
                 Toast.makeText(requireContext(), "Income saved successfully", Toast.LENGTH_SHORT)
                     .show()

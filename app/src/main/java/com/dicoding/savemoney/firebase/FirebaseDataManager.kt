@@ -6,6 +6,7 @@ import com.dicoding.savemoney.data.local.entity.UserData
 import com.dicoding.savemoney.utils.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
+import java.sql.Timestamp
 import java.util.Date
 
 class FirebaseDataManager {
@@ -110,11 +111,43 @@ class FirebaseDataManager {
         val userId = firebaseAuth.currentUser?.uid
         if (userId != null) {
             // Fetch data from Firebase and call the callback
-            val incomesRef = firestore.collection("users").document(userId).collection("incomes")
-            val expensesRef = firestore.collection("users").document(userId).collection("expense")
+            val incomesRef = firestore.collection("users").document(userId).collection("incomes").orderBy("date",Query.Direction.DESCENDING)
+            val expensesRef = firestore.collection("users").document(userId).collection("expense").orderBy("date", Query.Direction.DESCENDING)
             var userList: ArrayList<Transaction>
             userList = arrayListOf()
             incomesRef.get().addOnSuccessListener { incomesSnapshot ->
+
+                for (incomeDocument in incomesSnapshot) {
+                    userList.add(incomeDocument.toObject(Transaction::class.java))
+                }
+
+                expensesRef.get().addOnSuccessListener { expensesSnapshot ->
+                    for (expenseDocument in expensesSnapshot) {
+                        userList.add(expenseDocument.toObject(Transaction::class.java))
+
+                    }
+                    callback.invoke(userList)
+                }
+
+            }
+        } else {
+            Log.e("LineChartManager", "Error fetching data")
+        }
+
+    }
+
+    fun getHistoryMonth(
+        callback: (List<Transaction>) -> Unit
+    ) {
+        val userId = firebaseAuth.currentUser?.uid
+        if (userId != null) {
+            // Fetch data from Firebase and call the callback
+            val incomesRef = firestore.collection("users").document(userId).collection("incomes").orderBy("date",Query.Direction.DESCENDING)
+            val expensesRef = firestore.collection("users").document(userId).collection("expense").orderBy("date",Query.Direction.DESCENDING)
+            var userList: ArrayList<Transaction>
+            userList = arrayListOf()
+            incomesRef.get().addOnSuccessListener { incomesSnapshot ->
+
                 for (incomeDocument in incomesSnapshot) {
                     userList.add(incomeDocument.toObject(Transaction::class.java))
                 }

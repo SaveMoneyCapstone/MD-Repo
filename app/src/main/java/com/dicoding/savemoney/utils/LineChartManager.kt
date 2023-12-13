@@ -81,8 +81,8 @@ class LineChartManager(private val lineChart: LineChart) {
         callback: (List<Float>, List<Float>, List<Date>) -> Unit
     ) {
         // Fetch data from Firebase and call the callback
-        val incomesRef = firestore.collection("users").document(userId).collection("incomes")
-        val expensesRef = firestore.collection("users").document(userId).collection("expense")
+        val incomesRef = firestore.collection("users").document(userId).collection("incomes").orderBy("date", Query.Direction.ASCENDING)
+        val expensesRef = firestore.collection("users").document(userId).collection("expense").orderBy("date", Query.Direction.ASCENDING)
 
         val dataIncome = mutableListOf<Float>()
         val dataExpense = mutableListOf<Float>()
@@ -92,7 +92,7 @@ class LineChartManager(private val lineChart: LineChart) {
             for (incomeDocument in incomesSnapshot) {
                 val amount = incomeDocument.getDouble("amount") ?: 0.0
                 val category = incomeDocument.getString("category")
-                val timestamp = incomeDocument.getTimestamp("timestamp")
+                val timestamp = incomeDocument.getTimestamp("date")
                 dataIncome.add(amount.toFloat())
                 timestamps.add(timestamp?.toDate() ?: Date())
             }
@@ -100,7 +100,7 @@ class LineChartManager(private val lineChart: LineChart) {
             expensesRef.get().addOnSuccessListener { expensesSnapshot ->
                 for (expenseDocument in expensesSnapshot) {
                     val amount = expenseDocument.getDouble("amount") ?: 0.0
-                    val timestamp = expenseDocument.getTimestamp("timestamp")
+                    val timestamp = expenseDocument.getTimestamp("date")
                     dataExpense.add(amount.toFloat())
                     timestamps.add(timestamp?.toDate() ?: Date())
                 }

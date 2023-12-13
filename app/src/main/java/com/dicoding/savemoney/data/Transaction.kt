@@ -3,7 +3,7 @@ package com.dicoding.savemoney.data
 import java.util.Date
 
 // Transaction.kt
-data class Transaction(var amount: Double ?= null, var category: String ?= null, var note: String ?= null, var timestamp: Date ?= null
+data class Transaction(var iconCode: Int ?= null, var amount: Double ?= null, var category: String ?= null, var note: String ?= null, var date: Date ?= null
 )
 
 // Expense.kt

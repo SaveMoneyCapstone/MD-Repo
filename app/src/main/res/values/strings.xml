@@ -97,6 +97,9 @@
     <string name="portal">Portal</string>
     <string name="saham">Saham</string>
 
+    <string name="last_month">Last Month</string>
+    <string name="this_month">This Month</string>
+
 
     <string name="name_required_error">name_required_error</string>
     <string name="email_required_error">email_required_error</string>
