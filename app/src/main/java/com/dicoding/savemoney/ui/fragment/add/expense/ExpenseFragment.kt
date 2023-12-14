@@ -1,13 +1,20 @@
 package com.dicoding.savemoney.ui.fragment.add.expense
 
+import android.app.*
+import android.content.Intent
 import android.os.*
 import android.view.*
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.*
+import androidx.fragment.app.Fragment
+import com.dicoding.savemoney.R
 import com.dicoding.savemoney.databinding.*
+import com.dicoding.savemoney.databinding.FragmentExpenseBinding
 import com.dicoding.savemoney.firebase.*
 import com.dicoding.savemoney.ui.add.AddTransactionActivity.Companion.dueDateMillis
+import com.dicoding.savemoney.ui.fragment.dashboard.DashboardFragment
+import com.dicoding.savemoney.ui.main.MainActivity
 import com.dicoding.savemoney.utils.DatePickerFragment
 
 class ExpenseFragment : Fragment() {
@@ -15,6 +22,8 @@ class ExpenseFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val firebaseExpenseManager: FirebaseExpenseManager = FirebaseExpenseManager()
+    private lateinit var progressDialog: ProgressDialog
+
 
 
     override fun onCreateView(
@@ -46,18 +55,37 @@ class ExpenseFragment : Fragment() {
         val note = binding.addEdDescription.text.toString()
         val date = dueDateMillis
         if (amount == null || category.isEmpty()) {
-            Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(),
+                getString(R.string.please_fill_in_all_fields), Toast.LENGTH_SHORT).show()
             return
         }
+        isLoading(true)
 
-        firebaseExpenseManager.saveExpense(1,amount, category, note, date) { success ->
+
+        firebaseExpenseManager.saveExpense(amount, category, note, date) { success ->
+            isLoading(false)
             if (success) {
-                Toast.makeText(requireContext(), "Income saved successfully", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(),
+                    getString(R.string.expense_saved_successfully), Toast.LENGTH_SHORT)
                     .show()
+                binding.addEdAmount.text?.clear()
+                binding.addEdDescription.text?.clear()
+                val intent = Intent(requireActivity(), MainActivity::class.java)
+                startActivity(intent)
             } else {
-                Toast.makeText(requireContext(), "Failed to save income", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(),
+                    getString(R.string.failed_to_save_expense), Toast.LENGTH_SHORT)
                     .show()
             }
+        }
+    }
+    private fun isLoading(isLoading: Boolean) {
+        if (isLoading) {
+            progressDialog = ProgressDialog(requireContext())
+            progressDialog.setMessage("Loading...")
+            progressDialog.show()
+        } else {
+            progressDialog.dismiss()
         }
     }
 }

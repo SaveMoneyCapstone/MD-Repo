@@ -9,11 +9,10 @@ class FirebaseIncomeManager {
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
-    fun saveIncome(iconCode: Int, amount: Double, category: String, note: String, date: Long, callback: (Boolean) -> Unit) {
+    fun saveIncome(amount: Double, category: String, note: String, date: Long, callback: (Boolean) -> Unit) {
         val userId = firebaseAuth.currentUser?.uid
         if (userId != null) {
             val incomeData = hashMapOf(
-                "iconCode" to iconCode,
                 "amount" to amount,
                 "category" to category,
                 "note" to note,

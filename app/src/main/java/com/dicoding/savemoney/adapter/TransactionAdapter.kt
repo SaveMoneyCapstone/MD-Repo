@@ -1,6 +1,7 @@
 package com.dicoding.savemoney.adapter
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,38 +10,52 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.savemoney.R
+import com.dicoding.savemoney.data.Income
 import com.dicoding.savemoney.data.Transaction
+import com.dicoding.savemoney.data.model.TransactionModel
 import com.dicoding.savemoney.databinding.ItemTransactionsBinding
 import com.dicoding.savemoney.firebase.FirebaseDataManager
+import com.dicoding.savemoney.ui.DetailTransactionsActivity
 import com.dicoding.savemoney.utils.DateConverter
 import com.dicoding.savemoney.utils.RupiahConverter
+import com.dicoding.savemoney.utils.TransactionType
 
-class TransactionAdapter: ListAdapter<Transaction, TransactionAdapter.MyViewHolder>(DIFF_CALLBACK) {
-
-    private lateinit var firebaseDataManager: FirebaseDataManager
-
+class TransactionAdapter: ListAdapter<TransactionModel, TransactionAdapter.MyViewHolder>(DIFF_CALLBACK) {
     inner class MyViewHolder(private val binding: ItemTransactionsBinding) :
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         @RequiresApi(Build.VERSION_CODES.O)
-        fun bind(userData: Transaction) {
+        fun bind(userData: TransactionModel) {
            with(binding) {
-               when(userData.iconCode) {
-                   0 -> {
-                       icon.setImageResource(R.drawable.income)
-                       amount.text = "+" + RupiahConverter.convertToRupiah(userData.amount)
-                   }
-                   1 -> {
-                       amount.text = "-" + RupiahConverter.convertToRupiah(userData.amount)
-                       icon.setImageResource(R.drawable.expenses)
-                   }
+               binding.amount.text = if (userData.transactionType == TransactionType.EXPENSE) {
+                   "-" + RupiahConverter.convertToRupiah(userData.amount)
+               } else {
+                   "+" + RupiahConverter.convertToRupiah(userData.amount)
                }
+
+               val arrowIconRes = if (userData.transactionType == TransactionType.EXPENSE) {
+                   R.drawable.expenses
+               } else {
+                   R.drawable.income
+               }
+               binding.icon.setImageResource(arrowIconRes)
                category.text = userData.category.toString()
                date.text = DateConverter.convertDate(userData.date)
            }
+            itemView.setOnClickListener {
+                val intent = Intent(itemView.context, DetailTransactionsActivity::class.java)
+                intent.putExtra(DetailTransactionsActivity.ID,userData)
+                it.context.startActivity(intent)
+            }
         }
     }
 
+//    @SuppressLint("NotifyDataSetChanged")
+//    fun updateTransactions(updatedTransactions: MutableList<TransactionModel>) {
+//        transactions.clear()
+//        transactions.addAll(updatedTransactions)
+//        notifyDataSetChanged()
+//    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding =
             ItemTransactionsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -53,16 +68,21 @@ class TransactionAdapter: ListAdapter<Transaction, TransactionAdapter.MyViewHold
         holder.bind(user)
     }
 
+    override fun submitList(list: MutableList<TransactionModel>?) {
+        if(list?.size?:0>5) super.submitList(list?.take(3))
+        else super.submitList(list)
+    }
+
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Transaction>() {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TransactionModel>() {
 
-            override fun areItemsTheSame(oldItem: Transaction, newItem: Transaction): Boolean {
-                TODO("Not yet implemented")
+            override fun areItemsTheSame(oldItem: TransactionModel, newItem: TransactionModel): Boolean {
+               return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: Transaction, newItem: Transaction): Boolean {
-                TODO("Not yet implemented")
+            override fun areContentsTheSame(oldItem: TransactionModel, newItem: TransactionModel): Boolean {
+                return oldItem.id == newItem.id
             }
         }
     }

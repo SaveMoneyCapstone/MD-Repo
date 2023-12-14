@@ -97,6 +97,7 @@
     <string name="portal">Portal</string>
     <string name="saham">Saham</string>
 
+
     <string name="last_month">Last Month</string>
     <string name="this_month">This Month</string>
 
@@ -108,7 +109,24 @@
     <string name="malformed_email_error">malformed_email_error</string>
     <string name="tanggal_pendapatan">Tanggal pendapatan</string>
     <string name="tambahkan_pendapatan">Tambahkan Pendapatan</string>
+    <string name="please_fill_in_all_fields">Please fill in all fields</string>
+    <string name="expense_saved_successfully">Expense saved successfully</string>
+    <string name="failed_to_save_expense">Failed to save Expense</string>
+    <string name="income_saved_successfully">Income saved successfully</string>
+    <string name="failed_to_save_income">Failed to save income</string>
+    <string name="login_berhasil">Login berhasil</string>
+    <string name="login_gagal">Login gagal</string>
+    <string name="failed_to_save_user_data">Failed to save user data.</string>
+    <string name="registration_failed">Registration failed: %1$s</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="message_forgot_password">Email reset password telah dikirim ke %1$s</string>
+    <string name="message_error_forgotpw">Gagal mengirim email reset password. Periksa kembali alamat email Anda.</string>
+    <string name="lupa_password">Lupa Password</string>
+    <string name="message_invalid">Masukkan alamat email yang valid</string>
+    <string name="message_email_not_registered">Email tidak terdaftar</string>
+    <string name="jumlah_pendapatan">Jumlah pendapatan</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="category">Category</string>
 
 </resources>

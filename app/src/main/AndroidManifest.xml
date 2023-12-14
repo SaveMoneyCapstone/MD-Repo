@@ -16,16 +16,19 @@
         android:theme="@style/Theme.SaveMoney"
         tools:targetApi="31">
         <activity
-            android:name=".ui.DetailTransactionsActivity"
+            android:name=".ui.EditTransactionsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.NewsActivity"
+            android:name=".ui.login.ForgotPasswordActivity"
             android:exported="false" />
         <activity
             android:name=".ui.fragment.sahamtrending.DetailSahamTrendingActivity"
             android:exported="false" />
         <activity
             android:name=".ui.fragment.ojk.DetailOjkInvestmentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.DetailTransactionsActivity"
             android:exported="false" />
         <activity
             android:name=".ui.setting.SettingsActivity"

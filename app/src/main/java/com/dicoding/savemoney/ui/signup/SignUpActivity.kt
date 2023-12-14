@@ -16,8 +16,9 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        authManager = FirebaseAuthManager()
+        authManager = FirebaseAuthManager(this)
 
         binding.loginButtonText.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
@@ -53,5 +54,10 @@ class SignUpActivity : AppCompatActivity() {
                 )
             }
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return true
     }
 }

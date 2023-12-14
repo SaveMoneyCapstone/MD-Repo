@@ -2,12 +2,10 @@ package com.dicoding.savemoney.firebase
 
 import android.util.Log
 import com.dicoding.savemoney.data.Transaction
-import com.dicoding.savemoney.data.local.entity.UserData
+import com.dicoding.savemoney.data.model.TransactionModel
 import com.dicoding.savemoney.utils.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
-import java.sql.Timestamp
-import java.util.Date
 
 class FirebaseDataManager {
 
@@ -106,32 +104,65 @@ class FirebaseDataManager {
     }
 
     fun getHistory(
-        callback: (List<Transaction>) -> Unit
+        callback: (MutableList<TransactionModel>) -> Unit
     ) {
         val userId = firebaseAuth.currentUser?.uid
         if (userId != null) {
             // Fetch data from Firebase and call the callback
             val incomesRef = firestore.collection("users").document(userId).collection("incomes").orderBy("date",Query.Direction.DESCENDING)
             val expensesRef = firestore.collection("users").document(userId).collection("expense").orderBy("date", Query.Direction.DESCENDING)
-            var userList: ArrayList<Transaction>
-            userList = arrayListOf()
+            var incomeList: ArrayList<TransactionModel>
+            incomeList = arrayListOf()
+            var expenseList: ArrayList<TransactionModel>
+            expenseList = arrayListOf()
             incomesRef.get().addOnSuccessListener { incomesSnapshot ->
-
-                for (incomeDocument in incomesSnapshot) {
-                    userList.add(incomeDocument.toObject(Transaction::class.java))
-                }
-
                 expensesRef.get().addOnSuccessListener { expensesSnapshot ->
-                    for (expenseDocument in expensesSnapshot) {
-                        userList.add(expenseDocument.toObject(Transaction::class.java))
+                for (document in incomesSnapshot) {
+                    val id = document.id
+                    val amount = document.getDouble("amount") ?: 0.0
+                    val category = document.getString("category") ?: ""
+                    val note = document.getString("note") ?: ""
+                    val date = document.getTimestamp("date")?.toDate()
+                    val transaction = TransactionModel(
+                        id,
+                        amount,
+                        category,
+                        note,
+                        date,
+                        TransactionType.INCOME
+                    )
+                    incomeList.add(transaction)
+                }
+                    for (document in expensesSnapshot) {
+                    val id = document.id
+                    val amount = document.getDouble("amount") ?: 0.0
+                    val category = document.getString("category") ?: ""
+                    val note = document.getString("note") ?: ""
+                    val date = document.getTimestamp("date")?.toDate()
+                    val transaction = TransactionModel(
+                        id,
+                        amount,
+                        category,
+                        note,
+                        date,
+                        TransactionType.EXPENSE
+                    )
+                    expenseList.add(transaction)
+                }
+                    val combinedList = mutableListOf<TransactionModel>()
+                    combinedList.addAll(incomeList)
+                    combinedList.addAll(expenseList)
+                    combinedList.sortByDescending { it.date }
 
-                    }
-                    callback.invoke(userList)
+
+                    callback.invoke(combinedList)
                 }
 
             }
+                .addOnFailureListener {e ->
+                    Log.e("FirebaseTransactionManager", "Error getting transactions", e)
+                }
         } else {
-            Log.e("LineChartManager", "Error fetching data")
         }
 
     }

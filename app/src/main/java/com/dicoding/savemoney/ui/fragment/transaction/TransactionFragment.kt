@@ -18,7 +18,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 class TransactionFragment : Fragment() {
     private var _binding: FragmentTransactionBinding? = null
     private val binding get() = _binding!!
-    private lateinit var transactionViewModel: TransactionViewModel
 
 
     override fun onCreateView(

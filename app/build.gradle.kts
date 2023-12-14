@@ -65,8 +65,6 @@ dependencies {
     //preference
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
-
-
     //navigation
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")

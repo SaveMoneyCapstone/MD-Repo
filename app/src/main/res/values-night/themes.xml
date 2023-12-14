@@ -6,6 +6,14 @@
 
     </style>
 
+    <style name="NoBorderOutlinedBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeColor">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+
+
     <style name="NavigationBar" >
         <item name="colorPrimary">@color/blue</item>
 

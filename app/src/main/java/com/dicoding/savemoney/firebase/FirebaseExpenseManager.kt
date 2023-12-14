@@ -14,11 +14,10 @@ class FirebaseExpenseManager {
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun saveExpense(iconCode: Int, amount: Double, category: String, note: String, date: Long, callback: (Boolean) -> Unit) {
+    fun saveExpense(amount: Double, category: String, note: String, date: Long, callback: (Boolean) -> Unit) {
         val userId = firebaseAuth.currentUser?.uid
         if (userId != null) {
             val expenseData = hashMapOf(
-                "iconCode" to iconCode,
                 "amount" to amount,
                 "category" to category,
                 "note" to note,
