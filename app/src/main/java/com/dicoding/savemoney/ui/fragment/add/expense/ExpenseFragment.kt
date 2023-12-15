@@ -1,6 +1,9 @@
+@file:Suppress("DEPRECATION")
+
 package com.dicoding.savemoney.ui.fragment.add.expense
 
 import android.app.ProgressDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -99,8 +102,10 @@ class ExpenseFragment : Fragment() {
                     )
                         .show()
                     finishEditing()
-
-
+                    _binding?.addEdTitle?.text?.clear()
+                    _binding?.addEdDescription?.text?.clear()
+                    activity?.supportFragmentManager?.popBackStack()
+                    (activity as? DetailTransactionActivity)?.showContent()
                 } else {
                     Toast.makeText(
                         requireContext(),

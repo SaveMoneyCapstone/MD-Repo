@@ -1,10 +1,13 @@
 package com.dicoding.savemoney.ui.detail
 
 import android.os.*
+import android.util.*
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.*
 import androidx.fragment.app.*
+import androidx.lifecycle.*
+import androidx.swiperefreshlayout.widget.*
 import com.dicoding.savemoney.R
 import com.dicoding.savemoney.data.model.*
 import com.dicoding.savemoney.databinding.*
@@ -18,7 +21,7 @@ import java.util.*
 
 @Suppress("DEPRECATION")
 class DetailTransactionActivity : AppCompatActivity() {
-
+private lateinit var viewModel: DetailTransactionViewModel
     private lateinit var binding: ActivityDetailTransactionBinding
     private lateinit var transactionId: String
     private lateinit var firebaseTransactionManager: FirebaseTransactionManager
@@ -30,10 +33,21 @@ class DetailTransactionActivity : AppCompatActivity() {
         binding = ActivityDetailTransactionBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        val swipeRefreshLayout: SwipeRefreshLayout = findViewById(R.id.swipeRefreshLayout)
+
+        swipeRefreshLayout.setOnRefreshListener {
+            loadTransactionDetails()
+            showToast("Data berhasil di update")
+            swipeRefreshLayout.isRefreshing = false
+        }
+
+        viewModel = ViewModelProvider(this)[DetailTransactionViewModel::class.java]
+        viewModel.transactionData.observe(this) { updatedTransaction ->
+            displayTransactionDetails(updatedTransaction)
+        }
 
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         firebaseTransactionManager = FirebaseTransactionManager(userId ?: "")
-
         firebaseExpenseManager = FirebaseExpenseManager()
         firebaseIncomeManager = FirebaseIncomeManager()
 
@@ -60,6 +74,7 @@ class DetailTransactionActivity : AppCompatActivity() {
                 val selectedTransaction = allTransactions.find { it.id == transactionId }
                 selectedTransaction?.let {
                     displayTransactionDetails(it)
+                    viewModel.updateTransactionData(it)
                     setActionBarTitle(it.transactionType)
                 } ?: run {
                     // Handle the case where the selected transaction is not found
@@ -164,7 +179,7 @@ class DetailTransactionActivity : AppCompatActivity() {
         }
     }
 
-    private fun showContent() {
+     fun showContent() {
         binding.apply {
             tvAmount.visibility = View.VISIBLE
             tvDate.visibility = View.VISIBLE

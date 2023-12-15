@@ -10,6 +10,7 @@ import android.widget.*
 import androidx.fragment.app.*
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.*
+import androidx.swiperefreshlayout.widget.*
 import com.dicoding.savemoney.*
 import com.dicoding.savemoney.R
 import com.dicoding.savemoney.adapter.*
@@ -34,6 +35,7 @@ import com.google.firebase.firestore.*
 import java.text.*
 import java.util.*
 
+@Suppress("SameParameterValue")
 class DashboardFragment : Fragment() {
     private lateinit var lineChartManager: LineChartManager
     private var _binding: FragmentDashboardBinding? = null
@@ -57,6 +59,15 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.refrestLayout.setOnRefreshListener {
+            loadTransactionDataExpense()
+            loadTransactionDataIncome()
+            loadDataCard()
+            updateAdapterData()
+            showToast("Data berhasil di update")
+            binding.refrestLayout.isRefreshing = false
+        }
+
         firebaseDataManager = FirebaseDataManager()
 
         lineChartManager = LineChartManager(binding.chart)
@@ -64,6 +75,17 @@ class DashboardFragment : Fragment() {
 
         adapterTransactionAdapter = TransactionAdapter(mutableListOf(), requireContext())
 
+        binding.rvTransaction.apply {
+            layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
+            adapter = adapterTransactionAdapter
+        }
+        loadDataCard()
+        loadTransactionDataExpense()
+        loadTransactionDataIncome()
+    }
+
+    private fun loadDataCard() {
         // view data user to dashboard
         val currentUser = FirebaseAuth.getInstance().currentUser
         currentUser?.let {
@@ -85,15 +107,6 @@ class DashboardFragment : Fragment() {
                 binding.lotsOfExpense.text = getString(R.string.expenses, expense)
             }
         }
-
-        binding.rvTransaction.apply {
-            layoutManager = LinearLayoutManager(context)
-            setHasFixedSize(true)
-            adapter = adapterTransactionAdapter
-        }
-
-        loadTransactionDataExpense()
-        loadTransactionDataIncome()
     }
 
     override fun onDestroyView() {
@@ -142,5 +155,9 @@ class DashboardFragment : Fragment() {
         combinedList.addAll(expenseTransactionList)
         combinedList.sortByDescending { it.timestamp }
         adapterTransactionAdapter.updateTransactions(combinedList)
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }

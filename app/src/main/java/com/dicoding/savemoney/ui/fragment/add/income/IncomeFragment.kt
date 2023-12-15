@@ -12,6 +12,7 @@ import com.dicoding.savemoney.R
 import com.dicoding.savemoney.data.model.TransactionModel
 import com.dicoding.savemoney.databinding.FragmentIncomeBinding
 import com.dicoding.savemoney.firebase.*
+import com.dicoding.savemoney.ui.detail.*
 import com.google.firebase.auth.FirebaseAuth
 import java.util.*
 
@@ -101,6 +102,10 @@ class IncomeFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                     finishEditing()
+                    _binding?.addEdTitle?.text?.clear()
+                    _binding?.addEdDescription?.text?.clear()
+                    activity?.supportFragmentManager?.popBackStack()
+                    (activity as? DetailTransactionActivity)?.showContent()
                 } else {
                     Toast.makeText(
                         requireContext(),
