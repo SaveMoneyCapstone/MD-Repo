@@ -62,7 +62,7 @@ class DashboardFragment : Fragment() {
         lineChartManager = LineChartManager(binding.chart)
         lineChartManager.setupLineChart()
 
-        adapterTransactionAdapter = TransactionAdapter(mutableListOf())
+        adapterTransactionAdapter = TransactionAdapter(mutableListOf(), requireContext())
 
         // view data user to dashboard
         val currentUser = FirebaseAuth.getInstance().currentUser

@@ -1,21 +1,26 @@
 package com.dicoding.savemoney.adapter
 
-import android.annotation.*
-import android.view.*
-import android.widget.*
-import androidx.recyclerview.widget.*
+import com.dicoding.savemoney.ui.detail.DetailTransactionActivity
+import android.annotation.SuppressLint
+import android.content.*
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.savemoney.*
-import com.dicoding.savemoney.data.model.*
+import com.dicoding.savemoney.data.model.TransactionModel
+import com.dicoding.savemoney.databinding.ItemTransactionBinding
 import com.dicoding.savemoney.utils.*
-import java.text.*
+import java.text.SimpleDateFormat
 import java.util.*
 
+@Suppress("DEPRECATION")
 class TransactionAdapter(
-    private val transactions: MutableList<TransactionModel>
+    private val transactions: MutableList<TransactionModel>,
+    private val context: Context,
 ) :
     RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder>() {
 
-    private val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+    private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateTransactions(updatedTransactions: List<TransactionModel>) {
@@ -24,37 +29,53 @@ class TransactionAdapter(
         notifyDataSetChanged()
     }
 
-    inner class TransactionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textViewAmount: TextView = itemView.findViewById(R.id.tvAmount)
-        val textViewCategory: TextView = itemView.findViewById(R.id.tvCategory)
-        val textViewNote: TextView = itemView.findViewById(R.id.tvNote)
-        val textViewTimestamp: TextView = itemView.findViewById(R.id.tvTimestamp)
-        val imageArrow: ImageView = itemView.findViewById(R.id.imageViewArrow)
+    inner class TransactionViewHolder(private val binding: ItemTransactionBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val transaction = transactions[position]
+                    navigateToTransactionDetail(transaction)
+                }
+            }
+        }
+
+        fun bind(transaction: TransactionModel) {
+            val sign = if (transaction.transactionType == TransactionType.EXPENSE) "-" else "+"
+            val formattedAmount = "$sign${formatCurrencyTransaction(transaction.amount)}"
+
+            binding.tvAmount.text = formattedAmount
+            binding.tvCategory.text = transaction.category
+            binding.tvTimestamp.text = dateFormat.format(transaction.timestamp ?: Date())
+
+            val arrowIconRes = if (transaction.transactionType == TransactionType.EXPENSE) {
+                R.drawable.ic_transaction_type_expense
+            } else {
+                R.drawable.ic_transaction_type_income
+            }
+            binding.imageViewArrow.setImageResource(arrowIconRes)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_transaction, parent, false)
-        return TransactionViewHolder(itemView)
+        val binding =
+            ItemTransactionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return TransactionViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: TransactionViewHolder, position: Int) {
         val transaction = transactions[position]
-
-        holder.textViewAmount.text = formatCurrencyTransaction(transaction.amount)
-        holder.textViewCategory.text = transaction.category
-        holder.textViewNote.text = transaction.note
-        holder.textViewTimestamp.text = dateFormat.format(transaction.timestamp ?: Date())
-
-        val arrowIconRes = if (transaction.transactionType == TransactionType.EXPENSE) {
-            R.drawable.ic_red_arrow
-        } else {
-            R.drawable.ic_green_arrow
-        }
-        holder.imageArrow.setImageResource(arrowIconRes)
+        holder.bind(transaction)
     }
 
     override fun getItemCount(): Int {
         return transactions.size
+    }
+
+    private fun navigateToTransactionDetail(transaction: TransactionModel) {
+        val intent = Intent(context, DetailTransactionActivity::class.java)
+        intent.putExtra("TRANSACTION_ID", transaction.id)
+        context.startActivity(intent)
     }
 }
