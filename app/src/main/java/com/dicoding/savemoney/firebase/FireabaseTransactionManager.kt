@@ -1,18 +1,30 @@
 package com.dicoding.savemoney.firebase
 
-import android.util.*
-import com.dicoding.savemoney.data.model.*
-import com.dicoding.savemoney.utils.*
+import android.util.Log
+import com.dicoding.savemoney.data.model.TransactionModel
+import com.dicoding.savemoney.utils.TransactionType
 import com.google.firebase.firestore.*
 
 class FirebaseTransactionManager(private val userId: String) {
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
-    fun loadExpenseTransactions(callback: (List<TransactionModel>) -> Unit) {
+    companion object {
+        const val COLLECTION_EXPENSE = "expense"
+        const val COLLECTION_INCOMES = "incomes"
+    }
+
+    private inline fun <reified T> mapTransaction(document: DocumentSnapshot): T? {
+        if (document.exists()) {
+            return document.toObject(T::class.java)
+        }
+        return null
+    }
+
+    private fun loadTransactions(collectionName: String, callback: (List<TransactionModel>) -> Unit) {
         val transactionsRef = firestore
             .collection("users")
             .document(userId)
-            .collection("expense")
+            .collection(collectionName)
 
         transactionsRef
             .orderBy("timestamp", Query.Direction.DESCENDING)
@@ -34,75 +46,67 @@ class FirebaseTransactionManager(private val userId: String) {
                         note,
                         date,
                         TransactionType.EXPENSE
+                        timestamp,
+                        if (collectionName == COLLECTION_EXPENSE) TransactionType.EXPENSE else TransactionType.INCOME
                     )
                     transactionList.add(transaction)
                 }
                 callback.invoke(transactionList)
             }
             .addOnFailureListener { e ->
-                Log.e("FirebaseTransactionManager", "Error getting expense transactions", e)
+                Log.e("FirebaseTransactionManager", "Error getting $collectionName transactions", e)
             }
+    }
+
+    fun loadExpenseTransactions(callback: (List<TransactionModel>) -> Unit) {
+        loadTransactions(COLLECTION_EXPENSE, callback)
     }
 
     fun loadIncomeTransactions(callback: (List<TransactionModel>) -> Unit) {
-        val transactionsRef = firestore
-            .collection("users")
-            .document(userId)
-            .collection("incomes")
+        loadTransactions(COLLECTION_INCOMES, callback)
+    }
 
-        transactionsRef
-            .orderBy("timestamp", Query.Direction.DESCENDING)
+    fun getTransactionDetailsIncomeById(
+        transactionId: String,
+        onComplete: (TransactionModel?) -> Unit
+    ) {
+        if (transactionId.isEmpty()) {
+            onComplete(null)
+            return
+        }
+
+        val transactionsCollection = firestore.collection("users").document(userId)
+            .collection(COLLECTION_INCOMES)
+
+        transactionsCollection.document(transactionId)
             .get()
-            .addOnSuccessListener { querySnapshot ->
-                val transactionList = mutableListOf<TransactionModel>()
-                for (document in querySnapshot.documents) {
-                    val id = document.id
-                    val amount = document.getDouble("amount") ?: 0.0
-                    val category = document.getString("category") ?: ""
-                    val note = document.getString("note") ?: ""
-                    val date = document.getTimestamp("date")?.toDate()
-
-                    // Add transaction data to the list
-                    val transaction = TransactionModel(
-                        id,
-                        amount,
-                        category,
-                        note,
-                        date,
-                        TransactionType.INCOME
-                    )
-                    transactionList.add(transaction)
-                }
-                callback.invoke(transactionList)
+            .addOnSuccessListener { documentSnapshot ->
+                onComplete(mapTransaction(documentSnapshot))
             }
-            .addOnFailureListener { e ->
-                Log.e("FirebaseTransactionManager", "Error getting income transactions", e)
+            .addOnFailureListener {
+                onComplete(null)
             }
     }
 
-    fun deleteTransactionIncome(transactionId: String, onComplete: (Boolean) -> Unit) {
-        val transactionsCollection = firestore.collection("incomes")
-        transactionsCollection.document(transactionId)
-            .delete()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    onComplete(true)
-                } else {
-                    onComplete(false)
-                }
-            }
-    }
+    fun getTransactionDetailsExpenseById(
+        transactionId: String,
+        onComplete: (TransactionModel?) -> Unit
+    ) {
+        if (transactionId.isEmpty()) {
+            onComplete(null)
+            return
+        }
 
-    fun deleteTransactionExpense(transactionId: String, onComplete: (Boolean) -> Unit) {
-        val transactionsCollection = firestore.collection("expense")
+        val transactionsCollection = firestore.collection("users").document(userId)
+            .collection(COLLECTION_EXPENSE)
+
         transactionsCollection.document(transactionId)
-            .delete()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    onComplete(true)
-                } else {
-                    onComplete(false)
-                }
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                onComplete(mapTransaction(documentSnapshot))
+            }
+            .addOnFailureListener {
+                onComplete(null)
             }
     }
 }

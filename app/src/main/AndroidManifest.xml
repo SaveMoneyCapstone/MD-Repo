@@ -25,6 +25,9 @@
             android:name=".ui.NewsActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.detail.DetailTransactionActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.login.ForgotPasswordActivity"
             android:exported="false" />
         <activity
@@ -32,9 +35,6 @@
             android:exported="false" />
         <activity
             android:name=".ui.fragment.ojk.DetailOjkInvestmentActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.DetailTransactionsActivity"
             android:exported="false" />
         <activity
             android:name=".ui.setting.SettingsActivity"

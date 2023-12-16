@@ -11,6 +11,7 @@ import androidx.activity.viewModels
 import androidx.fragment.app.*
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.*
+import androidx.swiperefreshlayout.widget.*
 import com.dicoding.savemoney.*
 import com.dicoding.savemoney.R
 import com.dicoding.savemoney.adapter.*
@@ -37,12 +38,12 @@ import com.google.firebase.auth.*
 import com.google.firebase.firestore.*
 import java.text.*
 import java.util.*
-import kotlin.collections.ArrayList
 
+@Suppress("SameParameterValue")
 class DashboardFragment : Fragment() {
     private lateinit var lineChartManager: LineChartManager
     private var _binding: FragmentDashboardBinding? = null
-    private var userList: MutableList<Transaction> = mutableListOf()
+    private lateinit var adapterTransactionAdapter: TransactionAdapter
     private val expenseTransactionList: MutableList<TransactionModel> = mutableListOf()
     private val incomeTransactionList: MutableList<TransactionModel> = mutableListOf()
     private val binding get() = _binding!!
@@ -53,6 +54,8 @@ class DashboardFragment : Fragment() {
         ViewModelFactory.getInstance()
     }
     private lateinit var firebaseDataManager: FirebaseDataManager
+
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -65,6 +68,15 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.refrestLayout.setOnRefreshListener {
+            loadTransactionDataExpense()
+            loadTransactionDataIncome()
+            loadDataCard()
+            updateAdapterData()
+            showToast("Data berhasil di update")
+            binding.refrestLayout.isRefreshing = false
+        }
+
         firebaseDataManager = FirebaseDataManager()
 
         lineChartManager = LineChartManager(binding.chart)
@@ -72,6 +84,19 @@ class DashboardFragment : Fragment() {
         var layoutManager = LinearLayoutManager(requireActivity())
         binding.rvRecent.layoutManager = layoutManager
 
+        adapterTransactionAdapter = TransactionAdapter(mutableListOf(), requireContext())
+
+        binding.rvTransaction.apply {
+            layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
+            adapter = adapterTransactionAdapter
+        }
+        loadDataCard()
+        loadTransactionDataExpense()
+        loadTransactionDataIncome()
+    }
+
+    private fun loadDataCard() {
         adapterTransactionAdapter = TransactionAdapter()
         adapterNewsAdapter = NewsAdapter()
         userList = arrayListOf()
@@ -95,6 +120,7 @@ class DashboardFragment : Fragment() {
             firebaseDataManager.getExpense { expense ->
                 binding.lotsOfExpense.text = getString(R.string.expenses, expense)
             }
+        }
 
           firebaseDataManager.getHistory {
                 binding.rvRecent.apply {
@@ -201,4 +227,7 @@ class DashboardFragment : Fragment() {
 //        combinedList.sortByDescending { it.date }
 //        adapterTransactionAdapter.submitList(combinedList)
 //    }
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
 }

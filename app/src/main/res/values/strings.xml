@@ -130,5 +130,22 @@
     <string name="category">Category</string>
     <string name="title">title\n</string>
     <string name="published_date">Published Date\n</string>
+    <string name="detail_pemasukan">Detail Pemasukan</string>
+    <string name="detail_pengeluaran">Detail Pengeluaran</string>
+    <string name="hapus">Hapus</string>
+    <string name="edit">Edit</string>
+    <string name="add_income">Tambahkan</string>
+    <string name="add_expense">Tambahkan</string>
+    <string name="save">Save</string>
+
+    <string name="income_updated_successfully">Pemasukan berhasil diperbarui</string>
+    <string name="failed_to_update_income">Gagal untuk memperbarui pemasukan</string>
+
+    <string name="expenses_updated_successfully">Pengeluaran berhasil diperbarui</string>
+    <string name="failed_to_update_expenses">Gagal untuk memperbarui pengeluaran</string>
+    <string name="konfirmasi">Konfirmasi</string>
+    <string name="confirmation_delete">Apakah anda ingin menghapus transaksi ini?</string>
+    <string name="delete_transaction">hapus</string>
+    <string name="cancel">batal</string>
 
 </resources>

@@ -31,4 +31,52 @@ class FirebaseIncomeManager {
             callback.invoke(false)
         }
     }
+
+    fun updateTransactionIncome(
+        userId: String,
+        transactionId: String,
+        amount: Double,
+        category: String,
+        note: String,
+        onComplete: (Boolean) -> Unit
+    ) {
+        val transactionsCollection = firestore.collection("users").document(userId)
+
+        transactionsCollection.collection("incomes").document(transactionId)
+            .update(
+                mapOf(
+                    "amount" to amount,
+                    "category" to category,
+                    "note" to note
+                )
+            )
+            .addOnSuccessListener {
+                onComplete(true)
+            }
+            .addOnFailureListener {
+                onComplete(false)
+            }
+    }
+
+
+    fun deleteTransactionIncome(transactionId: String, onComplete: (Boolean) -> Unit) {
+        val userId = firebaseAuth.currentUser?.uid
+        if (userId != null) {
+            val transactionsCollection = firestore.collection("users").document(userId)
+                .collection("incomes")
+
+            transactionsCollection.document(transactionId)
+                .delete()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        onComplete(true)
+                    } else {
+                        onComplete(false)
+                    }
+                }
+        } else {
+            onComplete(false)
+        }
+    }
+
 }
