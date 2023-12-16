@@ -14,8 +14,9 @@ import com.google.android.play.integrity.internal.*
 
 @Suppress("UNCHECKED_CAST")
 class ViewModelFactory private constructor(
-    private val sahamTrendingRepository: SahamTrendingRepository,
+    private val stockRecommendationRepository: StockRecommendationRepository,
     private val ojkInvestmentRepository: OjkInvestmentRepository,
+    private val newsRepository: NewsRepository
 ) :
     ViewModelProvider.NewInstanceFactory() {
 
@@ -24,7 +25,10 @@ class ViewModelFactory private constructor(
         if (modelClass.isAssignableFrom(OjkInvestmentViewModel::class.java)) {
             return OjkInvestmentViewModel(ojkInvestmentRepository) as T
         } else if (modelClass.isAssignableFrom(SahamTrendingViewModel::class.java)) {
-            return SahamTrendingViewModel(sahamTrendingRepository) as T
+            return SahamTrendingViewModel(stockRecommendationRepository) as T
+        }
+        else if (modelClass.isAssignableFrom(DashboardViewModel::class.java)) {
+            return DashboardViewModel(newsRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }
@@ -35,8 +39,9 @@ class ViewModelFactory private constructor(
         fun getInstance(): ViewModelFactory =
             instance ?: synchronized(this) {
                 instance ?: ViewModelFactory(
-                    Injection.provideProfileCompanyRepository(),
+                    Injection.provideStockRepository(),
                     Injection.provideOjkInvestmentRepository(),
+                    Injection.provideNewsRepository()
                 )
             }.also { instance = it }
     }

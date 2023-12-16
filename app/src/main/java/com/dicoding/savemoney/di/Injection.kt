@@ -17,4 +17,15 @@ object Injection {
         val apiService = ApiConfig.getApiService( gateAPI2)
         return OjkInvestmentRepository.getInstance(apiService)
     }
+
+    fun provideStockRepository(): StockRecommendationRepository {
+        val gateAPI3 = GateApi.API3
+        val apiService = ApiConfig.getApiService( gateAPI3)
+        return StockRecommendationRepository.getInstance(apiService)
+    }
+    fun provideNewsRepository(): NewsRepository {
+        val gateAPI3 = GateApi.API3
+        val apiService = ApiConfig.getApiService( gateAPI3)
+        return NewsRepository.getInstance(apiService)
+    }
 }

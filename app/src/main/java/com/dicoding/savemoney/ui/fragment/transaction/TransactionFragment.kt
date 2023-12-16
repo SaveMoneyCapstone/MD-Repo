@@ -36,13 +36,12 @@ class TransactionFragment : Fragment() {
         TabLayoutMediator(
             binding.tabs, binding.viewPager
         ) { tab: TabLayout.Tab, position: Int ->
-            tab.text = resources.getString(TransactionFragment.TAB_TITLES[position])
+            tab.text = resources.getString(TAB_TITLES[position])
         }.attach()
     }
 
     companion object {
         @StringRes
         private val TAB_TITLES = intArrayOf(R.string.last_month, R.string.this_month)
-
     }
 }

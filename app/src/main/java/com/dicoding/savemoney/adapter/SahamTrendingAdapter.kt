@@ -14,7 +14,7 @@ import com.dicoding.savemoney.ui.fragment.sahamtrending.*
 import com.dicoding.savemoney.utils.*
 
 class SahamTrendingAdapter :
-    ListAdapter<ResultsItemSaham, SahamTrendingAdapter.ViewHolder>(
+    ListAdapter<RecomendationsItem, SahamTrendingAdapter.ViewHolder>(
         DIFF_CALLBACK
     ) {
     class ViewHolder(
@@ -25,26 +25,27 @@ class SahamTrendingAdapter :
 
 
         @SuppressLint("SetTextI18n")
-        fun bind(resultsItemSaham: ResultsItemSaham) {
+        fun bind(resultsItemSaham: RecomendationsItem) {
 
             binding.tvSymbol.text = resultsItemSaham.symbol
-            binding.tvName.text = resultsItemSaham.company?.name
+            binding.tvName.text = resultsItemSaham.companyName
             binding.tvClose.text =
                 context.getString(R.string.close, formatCurrency(resultsItemSaham.close ?: 0))
             binding.tvChange.text =
-                context.getString(R.string.change, formatCurrency(resultsItemSaham.change ?: 0))
+                context.getString(R.string.change, formatCurrency(resultsItemSaham.close.minus(resultsItemSaham.open)))
+            val change_percent = resultsItemSaham.close.minus(resultsItemSaham.open).div(resultsItemSaham.open)
             binding.tvPercent.text =
-                context.getString(R.string.percent, resultsItemSaham.percent.toString()) + " %"
+                context.getString(R.string.percent, "$change_percent %")
 
-            binding.ivLogo.load(resultsItemSaham.company?.logo) {
+            binding.ivLogo.load(resultsItemSaham.companyLogo) {
                 crossfade(true)
                 transformations(CircleCropTransformation())
             }
-            itemView.setOnClickListener {
-                val intent = Intent(context, DetailSahamTrendingActivity::class.java)
-                intent.putExtra(DetailSahamTrendingActivity.TAG, resultsItemSaham)
-                context.startActivity(intent)
-            }
+    //            itemView.setOnClickListener {
+    //                val intent = Intent(context, DetailSahamTrendingActivity::class.java)
+    //                intent.putExtra(DetailSahamTrendingActivity.TAG, resultsItemSaham)
+    //                context.startActivity(intent)
+    //            }
         }
     }
 
@@ -63,17 +64,17 @@ class SahamTrendingAdapter :
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ResultsItemSaham>() {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<RecomendationsItem>() {
             override fun areItemsTheSame(
-                oldItem: ResultsItemSaham,
-                newItem: ResultsItemSaham
+                oldItem: RecomendationsItem,
+                newItem: RecomendationsItem
             ): Boolean {
                 return oldItem.symbol == newItem.symbol
             }
 
             override fun areContentsTheSame(
-                oldItem: ResultsItemSaham,
-                newItem: ResultsItemSaham
+                oldItem: RecomendationsItem,
+                newItem: RecomendationsItem
             ): Boolean {
                 return oldItem == newItem
             }

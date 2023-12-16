@@ -12,10 +12,12 @@ class ApiConfig {
 
         private const val BASE_URL_IDX = "https://api.goapi.io/"
         private const val BASE_URL_OJK = "https://ojk-invest-api.vercel.app/"
+        private const val BASE_URL_ML = " https://savemoney-flask-rdiyde43ea-uc.a.run.app/"
         fun getApiService(apyType: GateApi): ApiService {
             val baseUrl = when(apyType) {
                 GateApi.API1 -> BASE_URL_OJK
                 GateApi.API2 -> BASE_URL_IDX
+                GateApi.API3 -> BASE_URL_ML
             }
             val loggingInterceptor = if (BuildConfig.DEBUG) {
                 HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)

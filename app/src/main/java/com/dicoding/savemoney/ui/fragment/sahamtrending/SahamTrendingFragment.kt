@@ -8,13 +8,17 @@ import androidx.recyclerview.widget.*
 import com.dicoding.savemoney.*
 import com.dicoding.savemoney.adapter.*
 import com.dicoding.savemoney.data.*
+import com.dicoding.savemoney.data.response.UserData
 import com.dicoding.savemoney.databinding.*
+import com.dicoding.savemoney.firebase.FirebaseDataManager
+import com.google.firebase.auth.FirebaseAuth
+import kotlin.math.exp
 
 class SahamTrendingFragment : Fragment() {
     private lateinit var sahamTrendingAdapter: SahamTrendingAdapter
     private var _binding: FragmentSahamTrendingBinding? = null
     private val binding get() = _binding!!
-
+    private lateinit var firebaseDataManager: FirebaseDataManager
     private val viewModel: SahamTrendingViewModel by viewModels {
         ViewModelFactory.getInstance()
     }
@@ -31,26 +35,38 @@ class SahamTrendingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         sahamTrendingAdapter = SahamTrendingAdapter()
+        firebaseDataManager = FirebaseDataManager()
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        currentUser?.let {
+            val userId = it.uid
+            firebaseDataManager.fetchData {incomes, expense ->
+                val userData = UserData(expense,incomes)
 
-        viewModel.fetchSahamTrending.observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is ResultState.Loading -> {
-                    isLoading(true)
-                }
+                    viewModel.fetchStockResponse(userData).observe(viewLifecycleOwner) { result ->
+                        when (result) {
+                            is ResultState.Loading -> {
+                                isLoading(true)
+                            }
 
-                is ResultState.Success -> {
-                    isLoading(false)
-                    showNoDataMessage(null)
-                    sahamTrendingAdapter.submitList(result.data.data?.results)
-                }
+                            is ResultState.Success -> {
+                                isLoading(false)
+                                showNoDataMessage(null)
+                                sahamTrendingAdapter.submitList(result.data.data.recomendations)
+                            }
 
-                is ResultState.Error -> {
-                    isLoading(false)
-                    showNoDataMessage(result.error)
-                    Toast.makeText(requireContext(), result.error, Toast.LENGTH_SHORT).show()
-                }
+                            is ResultState.Error -> {
+                                isLoading(false)
+                                showNoDataMessage(result.error)
+                                Toast.makeText(requireContext(), result.error, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+
+
+
             }
         }
+
 
         binding.rvSahamTrending.apply {
             layoutManager = LinearLayoutManager(context)

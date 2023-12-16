@@ -1,8 +1,11 @@
 package com.dicoding.savemoney.ui
 
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.annotation.RequiresApi
 import com.dicoding.savemoney.R
 import com.dicoding.savemoney.data.model.TransactionModel
@@ -11,6 +14,7 @@ import com.dicoding.savemoney.utils.DateConverter
 
 class DetailTransactionsActivity : AppCompatActivity() {
     private val binding by lazy { ActivityDetailTransactionsBinding.inflate(layoutInflater) }
+    private lateinit var transactionModel: TransactionModel
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +38,27 @@ class DetailTransactionsActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.detail_transactions_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.menu_edit_transactions -> {
+                val intent = Intent(this, EditTransactionsActivity::class.java)
+                intent.putExtra(EditTransactionsActivity.ID, transactionModel)
+                startActivity(intent)
+                true
+            }
+            R.id.menu_delete_tx -> {
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

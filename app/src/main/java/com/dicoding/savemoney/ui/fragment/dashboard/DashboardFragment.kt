@@ -7,6 +7,7 @@ import android.os.*
 import android.util.*
 import android.view.*
 import android.widget.*
+import androidx.activity.viewModels
 import androidx.fragment.app.*
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.*
@@ -18,10 +19,12 @@ import com.dicoding.savemoney.data.Transaction
 import com.dicoding.savemoney.data.model.*
 import com.dicoding.savemoney.databinding.*
 import com.dicoding.savemoney.firebase.*
+import com.dicoding.savemoney.ui.NewsActivity
 import com.dicoding.savemoney.ui.add.*
 import com.dicoding.savemoney.ui.fragment.sahamtrending.*
 import com.dicoding.savemoney.ui.fragment.transaction.*
 import com.dicoding.savemoney.ui.login.*
+import com.dicoding.savemoney.ui.main.MainActivity
 import com.dicoding.savemoney.ui.setting.*
 import com.dicoding.savemoney.utils.*
 import com.github.mikephil.charting.charts.*
@@ -44,9 +47,12 @@ class DashboardFragment : Fragment() {
     private val incomeTransactionList: MutableList<TransactionModel> = mutableListOf()
     private val binding get() = _binding!!
     private lateinit var adapterTransactionAdapter: TransactionAdapter
+    private lateinit var adapterNewsAdapter: NewsAdapter
 
+    private val viewModel by viewModels<DashboardViewModel> {
+        ViewModelFactory.getInstance()
+    }
     private lateinit var firebaseDataManager: FirebaseDataManager
-    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -67,7 +73,7 @@ class DashboardFragment : Fragment() {
         binding.rvRecent.layoutManager = layoutManager
 
         adapterTransactionAdapter = TransactionAdapter()
-
+        adapterNewsAdapter = NewsAdapter()
         userList = arrayListOf()
         // view data user to dashboard
         val currentUser = FirebaseAuth.getInstance().currentUser
@@ -98,9 +104,24 @@ class DashboardFragment : Fragment() {
                     adapterTransactionAdapter.submitList(it)
 
                 }
-
             }
         }
+        binding.viewMore.setOnClickListener {
+            val intent = Intent(requireActivity(), NewsActivity::class.java)
+            startActivity(intent)
+        }
+
+//        viewModel.getNews().observe(viewLifecycleOwner) {
+//            viewModel.news.observe(viewLifecycleOwner) {
+//                binding.rvNews.apply {
+//                    layoutManager = LinearLayoutManager(context)
+//                    setHasFixedSize(true)
+//                    adapter = adapterNewsAdapter
+//                    adapterNewsAdapter.submitList(it)
+//                }
+//            }
+//        }
+        showNews()
 //        binding.rvRecent.apply {
 //            layoutManager = LinearLayoutManager(context)
 //            setHasFixedSize(true)
@@ -109,11 +130,33 @@ class DashboardFragment : Fragment() {
 //        }
         loadTransactionDataExpense()
         loadTransactionDataIncome()
+
+        viewModel.isLoading().observe(viewLifecycleOwner) {
+            showLoading(it)
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+    private fun showNews() {
+        viewModel.getNews()
+        viewModel.news.observe(viewLifecycleOwner) {
+            listNews(it)
+        }
+    }
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun listNews(news: List<PostsItem>) {
+        val adapter = NewsAdapter()
+        binding.rvNews.layoutManager = LinearLayoutManager(context)
+        binding.rvNews.setHasFixedSize(true)
+
+        adapter.submitList(news.take(3))
+        binding.rvNews.adapter =adapter
     }
 
     private fun loadTransactionDataExpense() {

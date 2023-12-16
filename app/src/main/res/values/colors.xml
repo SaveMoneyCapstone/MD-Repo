@@ -4,7 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#2992F0</color>
     <color name="red">#FF1A43</color>
-    <color name="grey">#EAEAEA</color>
+    <color name="grey">#606060</color>
     <color name="bg_fab">#29ADB2</color>
 
     <color name="bg_nav_bar">#7D7C7C</color>
@@ -19,6 +19,8 @@
     <color name="blue_close">#0707ad</color>
     <color name="red_change">#d91427</color>
     <color name="green_percent">#3ae81c</color>
+    <color name="blue_savemoney">#359FC6</color>
+    <color name="blue_save_money">#E9F9FF</color>
 
 
 

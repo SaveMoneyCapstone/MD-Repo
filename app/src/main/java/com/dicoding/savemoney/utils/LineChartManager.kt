@@ -72,6 +72,11 @@ class LineChartManager(private val lineChart: LineChart) {
 
                 // Animate the chart
                 lineChart.animateXY(100, 500)
+
+                lineChart.axisLeft.textColor = Color.LTGRAY
+                lineChart.axisRight.textColor = Color.LTGRAY
+                lineChart.legend.textColor = Color.LTGRAY
+                lineChart.description.textColor = Color.LTGRAY
             }
         }
     }

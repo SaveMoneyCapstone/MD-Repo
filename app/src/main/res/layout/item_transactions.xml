@@ -9,7 +9,6 @@
     android:layout_marginRight="8dp"
     android:layout_marginBottom="4dp"
     android:layout_marginEnd="8dp"
-    card_view:cardBackgroundColor="@color/blue"
     card_view:cardCornerRadius="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,7 +42,7 @@
             android:layout_marginTop="8dp"
             android:text="Lorem Ipsum"
             android:textSize="16sp"
-
+            android:textColor="@color/black"
             android:textStyle="bold"
             card_view:layout_constraintStart_toEndOf="@+id/card"
             card_view:layout_constraintTop_toTopOf="parent" />
@@ -67,6 +66,7 @@
             android:layout_marginEnd="8dp"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:textColor="@color/black"
             android:text="10000"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintTop_toTopOf="parent" />
