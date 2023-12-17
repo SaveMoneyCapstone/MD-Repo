@@ -7,6 +7,7 @@ import android.view.*
 import android.widget.*
 import androidx.activity.*
 import androidx.appcompat.app.*
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.*
 import androidx.navigation.ui.*
 import com.dicoding.savemoney.*
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 //        ViewModelFactory.getInstance()
 //    }
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint("MissingInflatedId", "RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -64,46 +65,11 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             supportActionBar?.title = when (destination.id) {
                 R.id.navigation_dashboard -> "Dashboard"
-                R.id.navigation_transaction -> "Transaksi"
-                R.id.navigation_saham -> "Produk Saham"
-                R.id.navigation_other -> "Portal Investasi OJK"
+                R.id.navigation_transaction -> "Transactions History"
+                R.id.navigation_saham -> "Stock Recommendations"
+                R.id.navigation_other -> "Investment Portal OJK"
                 else -> "Save Money"
             }
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.appbar_dashboard_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.menu_notification -> {
-                Toast.makeText(this, "Notification Menu Clicked", Toast.LENGTH_SHORT).show()
-                true
-            }
-
-            R.id.menu_profile -> {
-                Toast.makeText(this, "Profile Menu Clicked", Toast.LENGTH_SHORT).show()
-                true
-            }
-
-            R.id.setting -> {
-                val intent = Intent(this, SettingsActivity::class.java)
-                startActivity(intent)
-                true
-            }
-
-            R.id.logout -> {
-                userSessionManager.logoutUser()
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-                finish()
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
         }
     }
 }

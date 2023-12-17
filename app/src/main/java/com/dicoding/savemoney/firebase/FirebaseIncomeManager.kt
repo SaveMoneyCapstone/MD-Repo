@@ -38,6 +38,7 @@ class FirebaseIncomeManager {
         amount: Double,
         category: String,
         note: String,
+        date: Long,
         onComplete: (Boolean) -> Unit
     ) {
         val transactionsCollection = firestore.collection("users").document(userId)
@@ -47,7 +48,8 @@ class FirebaseIncomeManager {
                 mapOf(
                     "amount" to amount,
                     "category" to category,
-                    "note" to note
+                    "note" to note,
+                    "date" to Timestamp(date/1000,0)
                 )
             )
             .addOnSuccessListener {

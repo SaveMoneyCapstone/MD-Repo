@@ -11,10 +11,6 @@ interface ApiService {
     @GET("api/apps/")
     suspend fun getOjkInvestment(): Response<OjkResponse>
 
-    @GET("stock/idx/trending")
-    suspend fun getSahamTrending(
-        @Header("X-API-KEY") apiKey: String,
-    ): Response<SahamTrendingResponse>
 
     @POST("recomendation")
     suspend fun getRecommendation(

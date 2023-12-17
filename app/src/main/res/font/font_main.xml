@@ -3,5 +3,5 @@
     <font
         app:fontStyle="normal"
         app:fontWeight="400"
-        app:font="@font/archivo_regular" />
+        app:font="@font/plusjktsans" />
 </font-family>

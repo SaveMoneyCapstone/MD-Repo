@@ -27,7 +27,6 @@ class FirebaseTransactionManager(private val userId: String) {
             .collection(collectionName)
 
         transactionsRef
-            .orderBy("timestamp", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { querySnapshot ->
                 val transactionList = mutableListOf<TransactionModel>()
@@ -45,8 +44,6 @@ class FirebaseTransactionManager(private val userId: String) {
                         category,
                         note,
                         date,
-                        TransactionType.EXPENSE
-                        timestamp,
                         if (collectionName == COLLECTION_EXPENSE) TransactionType.EXPENSE else TransactionType.INCOME
                     )
                     transactionList.add(transaction)

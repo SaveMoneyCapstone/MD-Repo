@@ -11,11 +11,6 @@ import java.util.Date
 class FirebaseExpenseManager {
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
-
-
-
-    fun saveExpense(amount: Double, category: String, note: String, callback: (Boolean) -> Unit) {
-
     @RequiresApi(Build.VERSION_CODES.O)
     fun saveExpense(amount: Double, category: String, note: String, date: Long, callback: (Boolean) -> Unit) {
         val userId = firebaseAuth.currentUser?.uid
@@ -47,6 +42,7 @@ class FirebaseExpenseManager {
         amount: Double,
         category: String,
         note: String,
+        date: Long,
         onComplete: (Boolean) -> Unit
     ) {
         val transactionsCollection = firestore.collection("users").document(userId)
@@ -56,7 +52,8 @@ class FirebaseExpenseManager {
                 mapOf(
                     "amount" to amount,
                     "category" to category,
-                    "note" to note
+                    "note" to note,
+                    "date" to Timestamp(date/1000,0)
                 )
             )
             .addOnCompleteListener { task ->

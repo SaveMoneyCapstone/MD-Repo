@@ -25,28 +25,56 @@ class LineChartHelper(private val lineChart: LineChart) {
 
         val rightAxis = lineChart.axisRight
         rightAxis.isEnabled = false
+
+        lineChart.animateXY(100, 500)
+
+        lineChart.axisLeft.textColor = Color.LTGRAY
+        lineChart.axisLeft.textSize = 12F
+        lineChart.axisRight.textColor = Color.LTGRAY
+        lineChart.legend.textColor = Color.LTGRAY
+        lineChart.xAxis.textColor = Color.LTGRAY
+        lineChart.xAxis.textSize = 12F
     }
 
-    fun createLineData(sahamDataList: List<ResultsItemSaham>): LineData {
+    fun createLineData(sahamDataList: List<RecomendationsItem>): LineData {
         // Create entries for close, change, and percent
+
+        val openEntries = sahamDataList.mapIndexed {index, saham ->
+            Entry(index.toFloat(), saham.open!!.toFloat())
+
+        }
+
         val closeEntries = sahamDataList.mapIndexed { index, saham ->
             Entry(index.toFloat(), saham.close!!.toFloat())
         }
 
-        val changeEntries = sahamDataList.mapIndexed { index, saham ->
-            Entry(index.toFloat(), saham.change!!.toFloat())
+        val high = sahamDataList.mapIndexed { index, saham ->
+            Entry(index.toFloat(), saham.high!!.toFloat())
+        }
+
+        val low = sahamDataList.mapIndexed { index, saham ->
+            Entry(index.toFloat(), saham.low!!.toFloat())
+        }
+
+        val mean = sahamDataList.mapIndexed { index, saham ->
+            Entry(index.toFloat(), saham.hasil_mean!!.toFloat())
         }
 
         val percentEntries = sahamDataList.mapIndexed { index, saham ->
-            Entry(index.toFloat(), saham.percent.toString().toFloat())
+            val percent = (saham.close.minus(saham.open))/((saham.close).toDouble())
+            val percentage = (percent)*100
+            Entry(index.toFloat(), "%.2f".format(percentage).toFloat())
         }
 
+        val openDataSet = createLineDataSet(openEntries, "Open", Color.GRAY)
         val closeDataSet = createLineDataSet(closeEntries, "Close", Color.BLUE)
-        val changeDataSet = createLineDataSet(changeEntries, "Change", Color.RED)
-        val percentDataSet = createLineDataSet(percentEntries, "Percent", Color.GREEN)
+        val highDataSet = createLineDataSet(high, "High", Color.GREEN)
+        val lowDataSet = createLineDataSet(low, "Low", Color.RED)
+        val meanDataSet = createLineDataSet(mean, "Mean", Color.CYAN)
+
 
         // Combine LineDataSets into LineData
-        return LineData(closeDataSet, changeDataSet, percentDataSet)
+        return LineData(openDataSet, closeDataSet, highDataSet, lowDataSet, meanDataSet)
     }
 
     private fun createLineDataSet(entries: List<Entry>, label: String, color: Int): LineDataSet {

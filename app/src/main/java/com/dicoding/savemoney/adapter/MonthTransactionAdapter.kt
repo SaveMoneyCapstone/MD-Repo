@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.savemoney.R
 import com.dicoding.savemoney.data.model.TransactionModel
 import com.dicoding.savemoney.databinding.ItemTransactionsBinding
-import com.dicoding.savemoney.ui.DetailTransactionsActivity
+import com.dicoding.savemoney.ui.detail.DetailTransactionActivity
 import com.dicoding.savemoney.utils.DateConverter
 import com.dicoding.savemoney.utils.RupiahConverter
 import com.dicoding.savemoney.utils.TransactionType
@@ -41,8 +41,8 @@ class MonthTransactionAdapter: ListAdapter<TransactionModel, MonthTransactionAda
                 date.text = DateConverter.convertDate(userData.date)
             }
             itemView.setOnClickListener {
-                val intent = Intent(itemView.context, DetailTransactionsActivity::class.java)
-                intent.putExtra(DetailTransactionsActivity.ID, userData)
+                val intent = Intent(itemView.context, DetailTransactionActivity::class.java)
+                intent.putExtra(DetailTransactionActivity.ID, userData)
                 it.context.startActivity(intent)
             }
         }

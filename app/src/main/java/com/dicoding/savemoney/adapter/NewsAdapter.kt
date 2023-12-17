@@ -2,20 +2,16 @@ package com.dicoding.savemoney.adapter
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ListAdapter
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.dicoding.savemoney.data.model.News
 import com.dicoding.savemoney.data.model.PostsItem
 import com.dicoding.savemoney.databinding.ItemListNewsBinding
 import com.dicoding.savemoney.ui.DetailNewsActivity
-import com.dicoding.savemoney.ui.DetailTransactionsActivity
 import com.dicoding.savemoney.utils.DateConverter
 import java.util.TimeZone
 

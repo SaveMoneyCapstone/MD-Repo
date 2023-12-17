@@ -1,6 +1,7 @@
 package com.dicoding.savemoney.adapter
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.view.LayoutInflater
@@ -10,17 +11,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.savemoney.R
-import com.dicoding.savemoney.data.Income
-import com.dicoding.savemoney.data.Transaction
 import com.dicoding.savemoney.data.model.TransactionModel
 import com.dicoding.savemoney.databinding.ItemTransactionsBinding
-import com.dicoding.savemoney.firebase.FirebaseDataManager
-import com.dicoding.savemoney.ui.DetailTransactionsActivity
+import com.dicoding.savemoney.ui.detail.DetailTransactionActivity
 import com.dicoding.savemoney.utils.DateConverter
 import com.dicoding.savemoney.utils.RupiahConverter
 import com.dicoding.savemoney.utils.TransactionType
 
-class TransactionAdapter: ListAdapter<TransactionModel, TransactionAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class TransactionAdapter(private val context: Context): ListAdapter<TransactionModel, TransactionAdapter.MyViewHolder>(DIFF_CALLBACK) {
     inner class MyViewHolder(private val binding: ItemTransactionsBinding) :
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
@@ -32,7 +30,6 @@ class TransactionAdapter: ListAdapter<TransactionModel, TransactionAdapter.MyVie
                } else {
                    "+" + RupiahConverter.convertToRupiah(userData.amount)
                }
-
                val arrowIconRes = if (userData.transactionType == TransactionType.EXPENSE) {
                    R.drawable.expenses
                } else {
@@ -43,8 +40,8 @@ class TransactionAdapter: ListAdapter<TransactionModel, TransactionAdapter.MyVie
                date.text = DateConverter.convertDate(userData.date)
            }
             itemView.setOnClickListener {
-                val intent = Intent(itemView.context, DetailTransactionsActivity::class.java)
-                intent.putExtra(DetailTransactionsActivity.ID,userData)
+                val intent = Intent(itemView.context, DetailTransactionActivity::class.java)
+                intent.putExtra(DetailTransactionActivity.ID, userData)
                 it.context.startActivity(intent)
             }
         }

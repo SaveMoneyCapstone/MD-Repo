@@ -1,6 +1,8 @@
 package com.dicoding.savemoney.data.response
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 data class RecommendationResponse(
 
@@ -8,9 +10,9 @@ data class RecommendationResponse(
 	val data: Data,
 
 	@field:SerializedName("status")
-	val status: Status? = null,
+	val status: Status? = null
 )
-
+@Parcelize
 data class RecomendationsItem(
 
 	@field:SerializedName("date")
@@ -25,11 +27,12 @@ data class RecomendationsItem(
 	@field:SerializedName("high")
 	val high: Int,
 
-	@field:SerializedName("hasil_mean")
-	val hasilMean: Any,
-
 	@field:SerializedName("low")
 	val low: Int,
+
+
+	@field:SerializedName("hasil_mean")
+	val hasil_mean: Double,
 
 	@field:SerializedName("company.logo")
 	val companyLogo: String,
@@ -42,7 +45,7 @@ data class RecomendationsItem(
 
 	@field:SerializedName("open")
 	val open: Int
-)
+) : Parcelable
 
 data class Status(
 
@@ -50,17 +53,10 @@ data class Status(
 	val code: Int,
 
 	@field:SerializedName("message")
-	val message: String,
+	val message: String
 )
 
 data class Data(
-
-	@field:SerializedName("Pengeluaran User")
-	val pengeluaranUser: List<Int>,
-
-	@field:SerializedName("Pemasukan User")
-	val pemasukanUser: List<Int>,
-
 	@field:SerializedName("recomendations")
-	val recomendations: List<RecomendationsItem>
+	val recomendations: List<RecomendationsItem>? = null
 )

@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import coil.*
 import coil.transform.*
 import com.dicoding.savemoney.*
-import com.dicoding.savemoney.data.response.ResultsItemSaham
+import com.dicoding.savemoney.data.response.RecomendationsItem
 import com.dicoding.savemoney.databinding.ActivityDetailSahamTrendingBinding
 
 @Suppress("DEPRECATION")
@@ -26,7 +26,7 @@ class DetailSahamTrendingActivity : AppCompatActivity() {
         lineChartHelper = LineChartHelper(lineChart)
         lineChartHelper.setupLineChart()
 
-        val resultsItemSaham: ResultsItemSaham? = intent.getParcelableExtra(TAG)
+         val resultsItemSaham: RecomendationsItem? = intent.getParcelableExtra(SYMBOL)
         if (resultsItemSaham != null) {
             val lineData = lineChartHelper.createLineData(listOf(resultsItemSaham))
 
@@ -35,8 +35,17 @@ class DetailSahamTrendingActivity : AppCompatActivity() {
             lineChart.invalidate()
         }
 
-        binding.tvName.text = resultsItemSaham?.company?.name
-        binding.ivLogo.load(resultsItemSaham?.company?.logo) {
+        with(binding) {
+            volume.text = String.format("%.2fM", resultsItemSaham?.volume?.toDouble()?.div(1000000)
+                ?: 0).toString()
+            high.text = resultsItemSaham?.high?.toFloat().toString()
+            low.text = resultsItemSaham?.low?.toFloat().toString()
+            mean.text = resultsItemSaham?.hasil_mean.toString()
+            date.text = resultsItemSaham?.date
+        }
+
+       binding.tvName.text = resultsItemSaham?.companyName
+        binding.ivLogo.load(resultsItemSaham?.companyLogo) {
             crossfade(true)
         }
     }
@@ -47,6 +56,6 @@ class DetailSahamTrendingActivity : AppCompatActivity() {
     }
 
     companion object {
-         const val TAG = "resultsItemSaham"
+         const val SYMBOL = "symbol"
     }
 }

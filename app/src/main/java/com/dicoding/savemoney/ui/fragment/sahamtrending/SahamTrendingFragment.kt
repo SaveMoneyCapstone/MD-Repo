@@ -33,6 +33,7 @@ class SahamTrendingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(false)
 
         sahamTrendingAdapter = SahamTrendingAdapter()
         firebaseDataManager = FirebaseDataManager()
@@ -41,8 +42,7 @@ class SahamTrendingFragment : Fragment() {
             val userId = it.uid
             firebaseDataManager.fetchData {incomes, expense ->
                 val userData = UserData(expense,incomes)
-
-                    viewModel.fetchStockResponse(userData).observe(viewLifecycleOwner) { result ->
+                viewModel.fetchStockResponse(userData).observe(viewLifecycleOwner) { result ->
                         when (result) {
                             is ResultState.Loading -> {
                                 isLoading(true)
@@ -56,8 +56,7 @@ class SahamTrendingFragment : Fragment() {
 
                             is ResultState.Error -> {
                                 isLoading(false)
-                                showNoDataMessage(result.error)
-                                Toast.makeText(requireContext(), result.error, Toast.LENGTH_SHORT).show()
+                                showNoDataMessage("There are no stock recommendations at this time.")
                             }
                         }
                     }

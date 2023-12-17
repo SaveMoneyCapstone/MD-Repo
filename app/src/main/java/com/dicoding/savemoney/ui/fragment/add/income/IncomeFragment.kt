@@ -23,6 +23,7 @@ import com.dicoding.savemoney.ui.main.MainActivity
 import com.dicoding.savemoney.utils.DatePickerFragment
 import com.dicoding.savemoney.ui.detail.*
 import com.google.firebase.auth.FirebaseAuth
+import java.text.SimpleDateFormat
 import java.util.*
 
 @Suppress("DEPRECATION")
@@ -52,6 +53,11 @@ class IncomeFragment : Fragment() {
             saveIncome()
         }
 
+        binding.date.setOnClickListener {
+            val dialogFragment = DatePickerFragment()
+            dialogFragment.show(requireActivity().supportFragmentManager, "datePicker")
+        }
+
         arguments?.let {
             transactionId = it.getString(TRANSACTION_ID, "") ?: ""
             if (transactionId.isNotEmpty()) {
@@ -75,8 +81,15 @@ class IncomeFragment : Fragment() {
     }
 
     private fun displayTransactionDetails(transaction: TransactionModel) {
-        binding.addEdTitle.setText(transaction.amount.toString())
+        val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+        val formattedTimestamp = dateFormat.format(transaction.date ?: Date())
+        binding.addEdAmount.setText(transaction.amount.toString())
         binding.addEdDescription.setText(transaction.note)
+        binding.addTvDueDate.setText(formattedTimestamp)
+        binding.date.setOnClickListener {
+            val dialogFragment = DatePickerFragment()
+            dialogFragment.show(requireActivity().supportFragmentManager, "datePicker")
+        }
     }
 
     @SuppressLint("UseRequireInsteadOfGet")
@@ -84,9 +97,10 @@ class IncomeFragment : Fragment() {
         val amount = binding.addEdAmount.text.toString().toDoubleOrNull()
         val category = binding.spCategory.selectedItem.toString()
         val note = binding.addEdDescription.text.toString()
+        val dateText = binding.addTvDueDate.text.toString()
         val date = dueDateMillis
 
-        if (amount == null || category.isEmpty()) {
+        if (amount == null || category.isEmpty() || dateText.isEmpty()) {
             Toast.makeText(
                 requireContext(),
                 R.string.please_fill_in_all_fields,
@@ -102,7 +116,8 @@ class IncomeFragment : Fragment() {
                 transactionId,
                 amount,
                 category,
-                note
+                note,
+                date
             ) { success ->
                 isLoading(false)
                 if (success) {
@@ -112,7 +127,7 @@ class IncomeFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                     finishEditing()
-                    _binding?.addEdTitle?.text?.clear()
+                    _binding?.addEdAmount?.text?.clear()
                     _binding?.addEdDescription?.text?.clear()
                     activity?.supportFragmentManager?.popBackStack()
                     (activity as? DetailTransactionActivity)?.showContent()
@@ -125,7 +140,7 @@ class IncomeFragment : Fragment() {
                 }
             }
         } else {
-            firebaseIncomeManager.saveIncome(amount, category, note) { success ->
+            firebaseIncomeManager.saveIncome(amount, category, note, date) { success ->
                 isLoading(false)
                 if (success) {
                     Toast.makeText(
@@ -133,8 +148,10 @@ class IncomeFragment : Fragment() {
                         getString(R.string.income_saved_successfully),
                         Toast.LENGTH_SHORT
                     ).show()
-                    _binding?.addEdTitle?.text?.clear()
+                    _binding?.addEdAmount?.text?.clear()
                     _binding?.addEdDescription?.text?.clear()
+                    val intent = Intent(requireActivity(), MainActivity::class.java)
+                    startActivity(intent)
                 } else {
                     Toast.makeText(
                         requireContext(),

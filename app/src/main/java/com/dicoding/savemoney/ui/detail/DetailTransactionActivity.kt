@@ -12,6 +12,8 @@ import com.dicoding.savemoney.R
 import com.dicoding.savemoney.data.model.*
 import com.dicoding.savemoney.databinding.*
 import com.dicoding.savemoney.firebase.*
+import com.dicoding.savemoney.ui.add.AddTransactionActivity
+import com.dicoding.savemoney.ui.add.AddTransactionActivity.Companion.dueDateMillis
 import com.dicoding.savemoney.ui.fragment.add.expense.*
 import com.dicoding.savemoney.ui.fragment.add.income.*
 import com.dicoding.savemoney.utils.*
@@ -20,7 +22,7 @@ import java.text.*
 import java.util.*
 
 @Suppress("DEPRECATION")
-class DetailTransactionActivity : AppCompatActivity() {
+class DetailTransactionActivity : AppCompatActivity(), DatePickerFragment.DialogDateListener {
 private lateinit var viewModel: DetailTransactionViewModel
     private lateinit var binding: ActivityDetailTransactionBinding
     private lateinit var transactionId: String
@@ -51,13 +53,16 @@ private lateinit var viewModel: DetailTransactionViewModel
         firebaseExpenseManager = FirebaseExpenseManager()
         firebaseIncomeManager = FirebaseIncomeManager()
 
-        transactionId = intent.getStringExtra("TRANSACTION_ID") ?: ""
+        val data = intent.getParcelableExtra<TransactionModel>(ID)
+
+        if (data != null) {
+            transactionId = data.id.toString()
+            loadTransactionDetails()
+            Toast.makeText(this, transactionId, Toast.LENGTH_SHORT).show()
+        }
 
         if (transactionId.isNotEmpty()) {
             loadTransactionDetails()
-        } else {
-            // Handle the case where transactionId is empty
-            finish()
         }
     }
 
@@ -85,11 +90,11 @@ private lateinit var viewModel: DetailTransactionViewModel
     }
 
     private fun displayTransactionDetails(transaction: TransactionModel) {
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        val formattedTimestamp = dateFormat.format(transaction.timestamp ?: Date())
+        val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+        val formattedTimestamp = dateFormat.format(transaction.date ?: Date())
 
         with(binding) {
-            tvAmount.text = formatCurrencyTransaction(transaction.amount)
+            tvAmount.text = transaction.amount?.let { formatCurrencyTransaction(it) }
             tvCategory.text = transaction.category
             tvNote.text = transaction.note
             tvDate.text = formattedTimestamp
@@ -226,5 +231,18 @@ private lateinit var viewModel: DetailTransactionViewModel
         onBackPressedDispatcher.onBackPressed()
         showContent()
         return true
+    }
+
+    companion object {
+        val ID = "id"
+    }
+
+    override fun onDialogDateSet(tag: String?, year: Int, month: Int, dayOfMonth: Int) {
+        val calendar = Calendar.getInstance()
+        calendar.set(year, month, dayOfMonth)
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        findViewById<TextView>(R.id.add_tv_due_date).text = dateFormat.format(calendar.time)
+
+        dueDateMillis = dateFormat.calendar.timeInMillis
     }
 }

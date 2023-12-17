@@ -26,6 +26,7 @@ class LineChartManager(private val lineChart: LineChart) {
         dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
         dataSet.color = color
         dataSet.circleRadius = 5f
+        dataSet.valueTextSize = 5f
         dataSet.setCircleColor(color)
 
         return dataSet
@@ -74,8 +75,11 @@ class LineChartManager(private val lineChart: LineChart) {
                 lineChart.animateXY(100, 500)
 
                 lineChart.axisLeft.textColor = Color.LTGRAY
+                lineChart.axisLeft.textSize = 12F
                 lineChart.axisRight.textColor = Color.LTGRAY
                 lineChart.legend.textColor = Color.LTGRAY
+                lineChart.xAxis.textColor = Color.LTGRAY
+                lineChart.xAxis.textSize = 12F
                 lineChart.description.textColor = Color.LTGRAY
             }
         }

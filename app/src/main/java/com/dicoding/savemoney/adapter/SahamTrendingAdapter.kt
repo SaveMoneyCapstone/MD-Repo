@@ -2,6 +2,7 @@ package com.dicoding.savemoney.adapter
 
 import android.annotation.*
 import android.content.*
+import android.graphics.Color
 import android.view.*
 import androidx.recyclerview.widget.*
 import coil.*
@@ -12,6 +13,7 @@ import com.dicoding.savemoney.databinding.*
 import com.dicoding.savemoney.ui.fragment.ojk.*
 import com.dicoding.savemoney.ui.fragment.sahamtrending.*
 import com.dicoding.savemoney.utils.*
+import kotlin.math.roundToInt
 
 class SahamTrendingAdapter :
     ListAdapter<RecomendationsItem, SahamTrendingAdapter.ViewHolder>(
@@ -31,21 +33,36 @@ class SahamTrendingAdapter :
             binding.tvName.text = resultsItemSaham.companyName
             binding.tvClose.text =
                 context.getString(R.string.close, formatCurrency(resultsItemSaham.close ?: 0))
-            binding.tvChange.text =
-                context.getString(R.string.change, formatCurrency(resultsItemSaham.close.minus(resultsItemSaham.open)))
-            val change_percent = resultsItemSaham.close.minus(resultsItemSaham.open).div(resultsItemSaham.open)
-            binding.tvPercent.text =
-                context.getString(R.string.percent, "$change_percent %")
+                if(resultsItemSaham.close.minus(resultsItemSaham.open) < 0) {
+                    binding.tvChange.setTextColor(Color.RED)
+                    binding.tvChange.text = context.getString(R.string.change, formatCurrency(resultsItemSaham.close.minus(resultsItemSaham.open)))
+                } else {
+                    binding.tvChange.setTextColor(Color.GREEN)
+                    binding.tvChange.text = context.getString(R.string.change, formatCurrency(resultsItemSaham.close.minus(resultsItemSaham.open)))
+                }
+            val percent = (resultsItemSaham.close.minus(resultsItemSaham.open))/((resultsItemSaham.close).toDouble())
+            val percentage = (percent)*100
+            if(percentage < 0) {
+                binding.tvPercent.setTextColor(Color.RED)
+                binding.tvPercent.text = context.getString(R.string.percent, "%.2f".format(percentage).toString() + "%")
+            } else if (percentage == 0.0) {
+                binding.tvPercent.setTextColor(Color.GRAY)
+                binding.tvPercent.text = context.getString(R.string.percent, "%.2f".format(percentage).toString() + "%")
+            } else {
+                binding.tvPercent.setTextColor(Color.GREEN)
+                binding.tvPercent.text = context.getString(R.string.percent, "%.2f".format(percentage).toString() + "%")
+            }
+
 
             binding.ivLogo.load(resultsItemSaham.companyLogo) {
                 crossfade(true)
                 transformations(CircleCropTransformation())
             }
-    //            itemView.setOnClickListener {
-    //                val intent = Intent(context, DetailSahamTrendingActivity::class.java)
-    //                intent.putExtra(DetailSahamTrendingActivity.TAG, resultsItemSaham)
-    //                context.startActivity(intent)
-    //            }
+               itemView.setOnClickListener {
+                  val intent = Intent(context, DetailSahamTrendingActivity::class.java)
+                   intent.putExtra(DetailSahamTrendingActivity.SYMBOL, resultsItemSaham)
+                   context.startActivity(intent)
+                }
         }
     }
 

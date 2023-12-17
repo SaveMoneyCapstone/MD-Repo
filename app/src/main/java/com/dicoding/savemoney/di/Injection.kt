@@ -6,11 +6,7 @@ import com.dicoding.savemoney.utils.*
 
 object Injection {
 
-    fun provideProfileCompanyRepository(): SahamTrendingRepository {
-        val gateAPI1 = GateApi.API2
-        val apiService = ApiConfig.getApiService(gateAPI1)
-        return SahamTrendingRepository.getInstance(apiService)
-    }
+
 
     fun provideOjkInvestmentRepository(): OjkInvestmentRepository {
         val gateAPI2 = GateApi.API1

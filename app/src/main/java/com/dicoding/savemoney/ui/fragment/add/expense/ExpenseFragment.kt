@@ -8,7 +8,6 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.*
 import android.app.ProgressDialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -35,6 +34,9 @@ class ExpenseFragment : Fragment() {
 
     private val firebaseExpenseManager: FirebaseExpenseManager = FirebaseExpenseManager()
     private lateinit var progressDialog: ProgressDialog
+    private var isEditing = false
+    private lateinit var transactionId: String
+    private lateinit var userId: String
 
 
 
@@ -67,7 +69,7 @@ class ExpenseFragment : Fragment() {
     }
 
     private fun displayTransactionDetails(transaction: TransactionModel) {
-        binding.addEdTitle.setText(transaction.amount.toString())
+        binding.addEdAmount.setText(transaction.amount.toString())
         binding.addEdDescription.setText(transaction.note)
     }
 
@@ -91,8 +93,9 @@ class ExpenseFragment : Fragment() {
         val amount = binding.addEdAmount.text.toString().toDoubleOrNull()
         val category = binding.spCategory.selectedItem.toString()
         val note = binding.addEdDescription.text.toString()
+        val dateText = binding.addTvDueDate.text.toString()
         val date = dueDateMillis
-        if (amount == null || category.isEmpty()) {
+        if (amount == null || category.isEmpty() || dateText.isEmpty() ) {
             Toast.makeText(
                 requireContext(),
                 getString(R.string.please_fill_in_all_fields), Toast.LENGTH_SHORT
@@ -107,7 +110,8 @@ class ExpenseFragment : Fragment() {
                 transactionId,
                 amount,
                 category,
-                note
+                note,
+                date
             ) { success ->
                 isLoading(false)
                 if (success) {
@@ -117,7 +121,7 @@ class ExpenseFragment : Fragment() {
                     )
                         .show()
                     finishEditing()
-                    _binding?.addEdTitle?.text?.clear()
+                    _binding?.addEdAmount?.text?.clear()
                     _binding?.addEdDescription?.text?.clear()
                     activity?.supportFragmentManager?.popBackStack()
                     (activity as? DetailTransactionActivity)?.showContent()
@@ -130,7 +134,7 @@ class ExpenseFragment : Fragment() {
                 }
             }
         } else {
-            firebaseExpenseManager.saveExpense(amount, category, note) { success ->
+            firebaseExpenseManager.saveExpense(amount, category, note, date) { success ->
                 isLoading(false)
                 if (success) {
                     Toast.makeText(
@@ -138,8 +142,10 @@ class ExpenseFragment : Fragment() {
                         getString(R.string.expense_saved_successfully), Toast.LENGTH_SHORT
                     )
                         .show()
-                    _binding?.addEdTitle?.text?.clear()
+                    _binding?.addEdAmount?.text?.clear()
                     _binding?.addEdDescription?.text?.clear()
+                    val intent = Intent(requireActivity(), MainActivity::class.java)
+                    startActivity(intent)
                 } else {
                     Toast.makeText(
                         requireContext(),
@@ -178,7 +184,6 @@ class ExpenseFragment : Fragment() {
 
     companion object {
         private const val TRANSACTION_ID = "TRANSACTION_ID"
-
         fun newInstance(transactionId: String): ExpenseFragment {
             val fragment = ExpenseFragment()
             val args = Bundle()
