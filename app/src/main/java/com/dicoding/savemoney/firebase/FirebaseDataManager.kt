@@ -166,8 +166,8 @@ class FirebaseDataManager {
                 }
         } else {
         }
-
     }
+
 
     fun fetchData(
         callback: (List<Int>, List<Int>) -> Unit

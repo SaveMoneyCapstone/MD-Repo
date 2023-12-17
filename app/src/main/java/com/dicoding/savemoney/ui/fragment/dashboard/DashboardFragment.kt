@@ -19,6 +19,7 @@ import com.dicoding.savemoney.data.*
 import com.dicoding.savemoney.data.Transaction
 import com.dicoding.savemoney.data.model.*
 import com.dicoding.savemoney.data.preference.UserSessionManager
+import com.dicoding.savemoney.data.response.UserData
 import com.dicoding.savemoney.databinding.*
 import com.dicoding.savemoney.firebase.*
 import com.dicoding.savemoney.ui.NewsActivity
@@ -77,7 +78,7 @@ class DashboardFragment : Fragment() {
             loadTransactionDataExpense()
             loadTransactionDataIncome()
             loadDataCard()
-            showToast("Data berhasil di update")
+            showToast("The data has been successfully updated")
             binding.refreshLayout.isRefreshing = false
         }
 
@@ -146,6 +147,26 @@ class DashboardFragment : Fragment() {
             //get data expense firestore to dashboard
             firebaseDataManager.getExpense { expense ->
                 binding.lotsOfExpense.text = getString(R.string.expenses, expense)
+            }
+
+            firebaseDataManager.fetchData() { income, expense ->
+                val userData = UserData(expense, income)
+                viewModel.fetchPredictRecom(userData).observe(viewLifecycleOwner) { result ->
+                    when (result) {
+                        is ResultState.Loading -> {
+                            
+                        }
+
+                        is ResultState.Success -> {
+                            binding.predict.text = RupiahConverter.convertToRupiah(result.data.data.prediksiPengeluaranBesok.toDouble())
+                            binding.recommendation.text = RupiahConverter.convertToRupiah(result.data.data.rekomendasiPengeluaran.toDouble())
+                        }
+
+                        is ResultState.Error -> {
+                        }
+                    }
+                }
+
             }
 
             firebaseDataManager.getHistory {

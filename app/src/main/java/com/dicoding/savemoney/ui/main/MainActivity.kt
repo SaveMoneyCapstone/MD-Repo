@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             supportActionBar?.title = when (destination.id) {
                 R.id.navigation_dashboard -> "Dashboard"
                 R.id.navigation_transaction -> "Transactions History"
-                R.id.navigation_saham -> "Stock Recommendations"
+                R.id.navigation_saham -> "Stock Recommendation"
                 R.id.navigation_other -> "Investment Portal OJK"
                 else -> "Save Money"
             }

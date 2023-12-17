@@ -19,10 +19,10 @@ class DetailNewsActivity : AppCompatActivity() {
 
         webView.settings.javaScriptEnabled = true
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "News"
+
         webView.webViewClient = object : WebViewClient() {
-            override fun onPageFinished(view: WebView, url: String) {
-                view.loadUrl("javascript:alert('success')")
-            }
         }
 
         webView.webChromeClient = object : WebChromeClient() {
@@ -36,6 +36,11 @@ class DetailNewsActivity : AppCompatActivity() {
         if (detail != null) {
             webView.loadUrl(detail.link)
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return true
     }
 
     companion object {

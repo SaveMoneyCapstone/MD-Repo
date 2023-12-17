@@ -60,7 +60,7 @@
 
         <TextView
             android:id="@+id/amount"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
@@ -68,6 +68,7 @@
             android:textStyle="bold"
             android:textColor="@color/black"
             android:text="10000"
+            android:gravity="center|end"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintTop_toTopOf="parent" />
 

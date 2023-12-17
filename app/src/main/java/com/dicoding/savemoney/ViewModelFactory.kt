@@ -28,7 +28,7 @@ class ViewModelFactory private constructor(
             return SahamTrendingViewModel(stockRecommendationRepository) as T
         }
         else if (modelClass.isAssignableFrom(DashboardViewModel::class.java)) {
-            return DashboardViewModel(newsRepository) as T
+            return DashboardViewModel(newsRepository, stockRecommendationRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

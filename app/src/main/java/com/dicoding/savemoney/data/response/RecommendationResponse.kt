@@ -1,13 +1,15 @@
 package com.dicoding.savemoney.data.response
 
 import android.os.Parcelable
+import com.dicoding.savemoney.data.response.predict.Data
+import com.dicoding.savemoney.data.response.predict.Status
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 data class RecommendationResponse(
 
 	@field:SerializedName("data")
-	val data: Data,
+	val data: com.dicoding.savemoney.data.response.Data,
 
 	@field:SerializedName("status")
 	val status: Status? = null
