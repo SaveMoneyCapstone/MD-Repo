@@ -56,22 +56,7 @@ class LastMonthFragment : Fragment() {
     }
 
     private fun setupFirebase() {
-        val calendar = Calendar.getInstance()
-        val month = calendar.get(Calendar.MONTH)
-        val year = calendar.get(Calendar.YEAR)
-        val first= "$year-$month-01"
-        var date: Date
-        val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        date = formatter.parse(first)
-        var firstDateMillis: Long = System.currentTimeMillis()
-        var endDateMillis: Long = System.currentTimeMillis()
-        firstDateMillis = date.time
-        val end = "$year-$month-31"
-        var endDate: Date
-        val formatterend = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        endDate = formatterend.parse(end)
-        endDateMillis = endDate.time
-        firebaseDataManager.getHistoryMonth(firstDateMillis/1000,endDateMillis/1000) { list, incomes, expense ->
+        firebaseDataManager.getLastMonth() { list, incomes, expense, avgExpense ->
             binding.rvRecent.setHasFixedSize(true)
             binding.rvRecent.adapter = adapter
             adapter.submitList(list)

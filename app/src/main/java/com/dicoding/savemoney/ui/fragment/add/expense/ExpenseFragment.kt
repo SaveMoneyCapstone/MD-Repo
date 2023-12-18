@@ -8,18 +8,21 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.*
 import android.app.ProgressDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.dicoding.savemoney.R
 import com.dicoding.savemoney.data.model.TransactionModel
 import com.dicoding.savemoney.databinding.FragmentExpenseBinding
 import com.dicoding.savemoney.firebase.*
 import com.dicoding.savemoney.ui.add.AddTransactionActivity.Companion.dueDateMillis
-import com.dicoding.savemoney.ui.fragment.dashboard.DashboardFragment
 import com.dicoding.savemoney.ui.main.MainActivity
 import com.dicoding.savemoney.utils.DatePickerFragment
 import com.dicoding.savemoney.firebase.FirebaseExpenseManager
@@ -31,12 +34,14 @@ import com.google.firebase.auth.FirebaseAuth
 class ExpenseFragment : Fragment() {
     private var _binding: FragmentExpenseBinding? = null
     private val binding get() = _binding!!
-
+    private val firebaseDataManager: FirebaseDataManager = FirebaseDataManager()
     private val firebaseExpenseManager: FirebaseExpenseManager = FirebaseExpenseManager()
     private lateinit var progressDialog: ProgressDialog
     private var isEditing = false
     private lateinit var transactionId: String
     private lateinit var userId: String
+    private lateinit var oneTimeWorkRequest: OneTimeWorkRequest
+    private lateinit var workManager: WorkManager
 
 
 
@@ -66,6 +71,9 @@ class ExpenseFragment : Fragment() {
                 loadTransactionDetails()
             }
         }
+        workManager = WorkManager.getInstance(requireContext())
+
+
     }
 
     private fun displayTransactionDetails(transaction: TransactionModel) {
@@ -144,6 +152,7 @@ class ExpenseFragment : Fragment() {
                         .show()
                     _binding?.addEdAmount?.text?.clear()
                     _binding?.addEdDescription?.text?.clear()
+                    setUpNotif()
                     val intent = Intent(requireActivity(), MainActivity::class.java)
                     startActivity(intent)
                 } else {
@@ -156,6 +165,41 @@ class ExpenseFragment : Fragment() {
             }
         }
     }
+
+
+    fun setUpNotif() {
+
+        firebaseDataManager.getHistoryMonth() { list, incomes, expense, avgExpense ->
+            firebaseDataManager.getExpenseForToday { today ->
+                val percentage = (today.toDouble()).div(avgExpense)*100
+
+                if(percentage > 100) {
+                    val notificationManager = requireActivity().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                    val builder = NotificationCompat.Builder(requireActivity(), CHANNEL_ID)
+                        .setContentTitle("Expense Reminder")
+                        .setSmallIcon(R.drawable.logo_app)
+                        .setContentText("Your spending today is above the average daily spending this month")
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        val channel = NotificationChannel(
+                            CHANNEL_ID,
+                            CHANNEL_NAME,
+                            NotificationManager.IMPORTANCE_DEFAULT
+                        )
+                        builder.setChannelId(CHANNEL_ID)
+                        notificationManager.createNotificationChannel(channel)
+                    }
+                    val notification = builder.build()
+                    notificationManager.notify(NOTIFICATION_ID, notification)
+                } else {
+
+                }
+            }
+        }
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -184,6 +228,9 @@ class ExpenseFragment : Fragment() {
 
     companion object {
         private const val TRANSACTION_ID = "TRANSACTION_ID"
+        private const val NOTIFICATION_ID = 1
+        private const val CHANNEL_ID = "channel_01"
+        private const val CHANNEL_NAME = "savemoney channel"
         fun newInstance(transactionId: String): ExpenseFragment {
             val fragment = ExpenseFragment()
             val args = Bundle()

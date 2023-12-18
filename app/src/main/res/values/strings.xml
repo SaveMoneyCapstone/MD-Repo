@@ -14,7 +14,7 @@
     <!--    signup pages-->
     <string name="message_password">Password must be at least 8 characters</string>
     <string name="title_register">Register</string>
-    <string name="name">Nama</string>
+    <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="message_regis">create an account to access all the features of SaveMoney</string>
@@ -22,15 +22,15 @@
 
     <!--   bottom navigation bar-->
     <string name="dashboard">Dashboard</string>
-    <string name="transaction">Transaksi</string>
+    <string name="transaction">Transactions</string>
     <string name="news">News</string>
-    <string name="other">Lainnya</string>
-    <string name="add_expenditure">Tambah</string>
+    <string name="other">Other</string>
+    <string name="add_expenditure">Add</string>
 
     <!--    dashboard-->
     <string name="welcome">Welcome, %1$s!</string>
-    <string name="income_text">Pemasukan</string>
-    <string name="expenses_text">Pengeluaran</string>
+    <string name="income_text">Income</string>
+    <string name="expenses_text">Expenses</string>
     <string name="balance">%1$s</string>
     <string name="income">%1$s</string>
     <string name="expenses">%1$s</string>
@@ -73,7 +73,7 @@
 
     <!--    news-->
     <string name="label_news">label</string>
-    <string name="simbol_news">simbol</string>
+    <string name="simbol_news">symbol</string>
     <string name="news_data_tidak_tersedia">Data Tidak Tersedia</string>
     <string name="news_gagal_memuat_data">Gagal Memuat Data</string>
     <string name="news_memuat_data">Memuat Data…</string>
@@ -88,14 +88,14 @@
     <string name="percent_8_91">Percent: %1$s</string>
     <string name="logo">logo</string>
     <string name="symbol">symbol</string>
-    <string name="close">Harga Penutupan: %1$s</string>
-    <string name="change">Perubahan Harga: %1$s</string>
-    <string name="percent">Persentase Perubahan: %1$s</string>
+    <string name="close">Closing Price: %1$s</string>
+    <string name="change">Price Change: %1$s</string>
+    <string name="percent">Change Percentage: %1$s</string>
     <string name="saham_trending">Saham Trending</string>
     <string name="grafik_saham">Traffic</string>
     <string name="logout">Logout</string>
     <string name="portal">Portal</string>
-    <string name="saham">Saham</string>
+    <string name="saham">Stock</string>
 
 
     <string name="last_month">Last Month</string>
@@ -130,22 +130,29 @@
     <string name="category">Category</string>
     <string name="title">title\n</string>
     <string name="published_date">Published Date\n</string>
-    <string name="detail_pemasukan">Detail Pemasukan</string>
-    <string name="detail_pengeluaran">Detail Pengeluaran</string>
-    <string name="hapus">Hapus</string>
+    <string name="detail_pemasukan">Income Detail</string>
+    <string name="detail_pengeluaran">Expense Detail</string>
+    <string name="hapus">Delete</string>
     <string name="edit">Edit</string>
-    <string name="add_income">Tambahkan</string>
-    <string name="add_expense">Tambahkan</string>
+    <string name="add_income">Add</string>
+    <string name="add_expense">Add</string>
     <string name="save">Save</string>
 
-    <string name="income_updated_successfully">Pemasukan berhasil diperbarui</string>
-    <string name="failed_to_update_income">Gagal untuk memperbarui pemasukan</string>
+    <string name="income_updated_successfully">Income has been updated</string>
+    <string name="failed_to_update_income">Failed to update income</string>
 
-    <string name="expenses_updated_successfully">Pengeluaran berhasil diperbarui</string>
-    <string name="failed_to_update_expenses">Gagal untuk memperbarui pengeluaran</string>
-    <string name="konfirmasi">Konfirmasi</string>
-    <string name="confirmation_delete">Apakah anda ingin menghapus transaksi ini?</string>
-    <string name="delete_transaction">hapus</string>
-    <string name="cancel">batal</string>
+    <string name="expenses_updated_successfully">Expense has been updated</string>
+    <string name="failed_to_update_expenses">Failed to update Expenses</string>
+    <string name="konfirmasi">Confirm</string>
+    <string name="confirmation_delete">Are you sure to delete this transactions?</string>
+    <string name="delete_transaction">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="percent_from_month_average">(%1$s from Month Average)</string>
+
+    <string name="pref_key_notify">key_notification</string>
+    <string name="pref_notify_name">Notification</string>
+    <string name="pref_notify_summary">Reminder when countdown has finished.</string>
+    <string name="notify_channel_name">Habit Reminder</string>
+    <string name="notify_content">Time Up!</string>
 
 </resources>

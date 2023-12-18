@@ -9,8 +9,7 @@ import com.dicoding.savemoney.utils.*
 
 class SettingsFragment: PreferenceFragmentCompat() {
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-setPreferencesFromResource(R.xml.root_preference, rootKey)
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {setPreferencesFromResource(R.xml.root_preference, rootKey)
         val switchTheme: ListPreference = findPreference(getString(R.string.pref_key_dark))!!
         switchTheme.setOnPreferenceChangeListener { _, newValue ->
             val stringValue = newValue.toString()

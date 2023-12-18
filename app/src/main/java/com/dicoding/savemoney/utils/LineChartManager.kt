@@ -43,7 +43,7 @@ class LineChartManager(private val lineChart: LineChart) {
 
                 // Create LineDataSet for expense
                 val expenseDataSet =
-                    createLineDataSet(dataExpense, "Expense", Color.BLUE)
+                    createLineDataSet(dataExpense, "Expense", Color.RED)
 
                 // Configure Y-axis to display values as integers
                 val leftAxis = lineChart.axisLeft

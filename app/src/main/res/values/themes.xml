@@ -14,7 +14,7 @@
 
     <style name="NavigationBar" >
         <item name="colorPrimary">@color/blue</item>
-
+        <item name="android:actionOverflowButtonStyle">@style/Widget.ActionButton.Overflow</item>
     </style>
 
     <style name="Base.Theme.Auth" parent="Theme.Material3.DayNight.NoActionBar">
@@ -39,7 +39,11 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/blue</item>
+        <item name="android:actionOverflowButtonStyle">@style/Widget.ActionButton.Overflow</item>
     </style>
 
+    <style name="Widget.ActionButton.Overflow" parent="@android:style/Widget.Holo.ActionButton.Overflow">
+        <item name="android:src">@drawable/baseline_account_circle_24</item>
+    </style>
 
 </resources>

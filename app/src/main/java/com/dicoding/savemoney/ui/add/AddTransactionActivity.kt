@@ -1,11 +1,17 @@
 package com.dicoding.savemoney.ui.add
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.os.*
 import android.widget.TextView
 import androidx.annotation.*
 import androidx.appcompat.app.*
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.dicoding.savemoney.*
 import com.dicoding.savemoney.databinding.*
+import com.dicoding.savemoney.ui.fragment.add.expense.ExpenseFragment
 import com.dicoding.savemoney.utils.DatePickerFragment
 import com.google.android.material.tabs.*
 import java.text.SimpleDateFormat
@@ -15,6 +21,7 @@ import java.util.Locale
 class AddTransactionActivity : AppCompatActivity(), DatePickerFragment.DialogDateListener {
 
     private lateinit var binding: ActivityAddTransactionBinding
+    private lateinit var notificationManager : NotificationManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddTransactionBinding.inflate(layoutInflater)
@@ -30,6 +37,7 @@ class AddTransactionActivity : AppCompatActivity(), DatePickerFragment.DialogDat
         }.attach()
         supportActionBar?.elevation = 0f
         supportActionBar?.title = getString(R.string.tambah_data)
+        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -48,6 +56,7 @@ class AddTransactionActivity : AppCompatActivity(), DatePickerFragment.DialogDat
     companion object {
         @StringRes
         private val TAB_TITLES = intArrayOf(R.string.title_pager_income, R.string.title_pager_expense)
+
 
         var dueDateMillis: Long = System.currentTimeMillis()
     }

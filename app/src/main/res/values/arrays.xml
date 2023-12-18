@@ -12,7 +12,7 @@
         <item>Salary</item>
         <item>Selling</item>
         <item>Gift</item>
-        <item>Oters</item>
+        <item>@string/other_category</item>
     </string-array>
 
     <string-array name="dark_mode">

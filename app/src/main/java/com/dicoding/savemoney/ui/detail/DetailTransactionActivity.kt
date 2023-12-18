@@ -39,7 +39,7 @@ private lateinit var viewModel: DetailTransactionViewModel
 
         swipeRefreshLayout.setOnRefreshListener {
             loadTransactionDetails()
-            showToast("Data berhasil di update")
+            showToast("Data berhasil diupdate")
             swipeRefreshLayout.isRefreshing = false
         }
 
@@ -58,7 +58,6 @@ private lateinit var viewModel: DetailTransactionViewModel
         if (data != null) {
             transactionId = data.id.toString()
             loadTransactionDetails()
-            Toast.makeText(this, transactionId, Toast.LENGTH_SHORT).show()
         }
 
         if (transactionId.isNotEmpty()) {

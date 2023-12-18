@@ -12,5 +12,9 @@
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
+    <SwitchPreference
+        app:key="@string/pref_key_notify"
+        app:summary="@string/pref_notify_summary"
+        app:title="@string/pref_notify_name" />
 
 </PreferenceScreen>

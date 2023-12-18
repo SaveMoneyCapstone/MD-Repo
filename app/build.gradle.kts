@@ -99,4 +99,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-ktx:1.7.2")
     implementation ("androidx.room:room-ktx:2.5.1")
+
+    implementation("androidx.work:work-runtime:2.8.1")
+    implementation("com.loopj.android:android-async-http:1.4.10")
 }

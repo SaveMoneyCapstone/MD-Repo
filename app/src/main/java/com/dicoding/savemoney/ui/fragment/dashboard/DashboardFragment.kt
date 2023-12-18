@@ -12,6 +12,10 @@ import androidx.fragment.app.*
 import androidx.lifecycle.*
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.*
+import androidx.work.Data
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.dicoding.savemoney.*
 import com.dicoding.savemoney.R
 import com.dicoding.savemoney.adapter.*
@@ -21,6 +25,7 @@ import com.dicoding.savemoney.data.model.*
 import com.dicoding.savemoney.data.preference.UserSessionManager
 import com.dicoding.savemoney.data.response.UserData
 import com.dicoding.savemoney.databinding.*
+import com.dicoding.savemoney.databinding.FragmentDashboardBinding
 import com.dicoding.savemoney.firebase.*
 import com.dicoding.savemoney.ui.NewsActivity
 import com.dicoding.savemoney.ui.add.*
@@ -50,7 +55,7 @@ class DashboardFragment : Fragment() {
     private val expenseTransactionList: MutableList<TransactionModel> = mutableListOf()
     private val incomeTransactionList: MutableList<TransactionModel> = mutableListOf()
     private lateinit var adapterNewsAdapter: NewsAdapter
-
+    private lateinit var oneTimeWorkRequest: OneTimeWorkRequest
     private lateinit var userSessionManager: UserSessionManager
     private val viewModel by viewModels<DashboardViewModel> {
         ViewModelFactory.getInstance()
@@ -94,14 +99,6 @@ class DashboardFragment : Fragment() {
         lineChartManager.setupLineChart()
         var layoutManager = LinearLayoutManager(requireActivity())
         binding.rvRecent.layoutManager = layoutManager
-
-        //adapterTransactionAdapter = TransactionAdapter(mutableListOf(), requireContext())
-
-//        binding.rvTransaction.apply {
-//            layoutManager = LinearLayoutManager(context)
-//            setHasFixedSize(true)
-//            adapter = adapterTransactionAdapter
-//        }
         loadDataCard()
         loadTransactionDataExpense()
         loadTransactionDataIncome()
@@ -112,12 +109,6 @@ class DashboardFragment : Fragment() {
         }
 
         showNews()
-//        binding.rvRecent.apply {
-//            layoutManager = LinearLayoutManager(context)
-//            setHasFixedSize(true)
-//            adapter = adapterTransactionAdapter
-////            updateAdapterData()
-//        }
         loadTransactionDataExpense()
         loadTransactionDataIncome()
 
@@ -175,6 +166,20 @@ class DashboardFragment : Fragment() {
                     setHasFixedSize(true)
                     adapter = adapterTransactionAdapter
                     adapterTransactionAdapter.submitList(it)
+                }
+            }
+            firebaseDataManager.getHistoryMonth() { list, incomes, expense, avgExpense ->
+                firebaseDataManager.getExpenseForToday { today ->
+                    with(binding) {
+                        todayExpense.text = RupiahConverter.convertToRupiah(today.toDouble())
+                        val percentage = (today.toDouble()).div(avgExpense)*100
+                        if(percentage > 100) {
+                            percent.setTextColor(Color.RED)
+                        } else {
+                            percent.setTextColor(Color.GREEN)
+                        }
+                        percent.text = getString(R.string.percent_from_month_average, "%.2f".format(percentage) + "%")
+                    }
 
                 }
             }
@@ -195,7 +200,7 @@ class DashboardFragment : Fragment() {
 //        }
 
 
-
+  
 
     private fun showNews() {
         viewModel.getNews()
@@ -269,10 +274,6 @@ class DashboardFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.menu_notification -> {
-                Toast.makeText(requireActivity(), "Notification Menu Clicked", Toast.LENGTH_SHORT).show()
-                true
-            }
 
             R.id.menu_profile -> {
                 Toast.makeText(requireActivity(), "Profile Menu Clicked", Toast.LENGTH_SHORT).show()

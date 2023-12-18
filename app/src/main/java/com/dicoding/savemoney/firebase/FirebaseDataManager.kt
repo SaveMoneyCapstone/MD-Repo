@@ -7,7 +7,13 @@ import com.dicoding.savemoney.utils.*
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
+import com.google.firebase.firestore.AggregateField.average
+import com.google.firestore.v1.StructuredAggregationQuery.Aggregation.AVG_FIELD_NUMBER
+import com.google.firestore.v1.StructuredAggregationQuery.Aggregation.Avg
+import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 class FirebaseDataManager {
 
@@ -204,77 +210,220 @@ class FirebaseDataManager {
         }
     }
 
-    fun getHistoryMonth(startDay:Long, endDay: Long,
-        callback: (MutableList<TransactionModel>, Double, Double) -> Unit
+    fun getHistoryMonth(callback: (MutableList<TransactionModel>, Double, Double, Double) -> Unit
     ) {
         val userId = firebaseAuth.currentUser?.uid
         if (userId != null) {
+            val calendar = Calendar.getInstance()
+            val month = calendar.get(Calendar.MONTH)+1
+            val year = calendar.get(Calendar.YEAR)
+            val first= "$year-$month-01"
+            val date: Date? = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(first)
+            val firstDateMillis: Long = date!!.time/1000
+            val end = "$year-$month-31"
+            val endDate: Date? = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(end)
+            val endDateMillis: Long = endDate!!.time/1000
             // Fetch data from Firebase and call the callback
             val incomesRef = firestore.collection("users").document(userId)
                 .collection("incomes")
-                .whereGreaterThanOrEqualTo("date", Timestamp(startDay,0))
-                .whereLessThanOrEqualTo("date", Timestamp(endDay,0))
-                .orderBy("date",Query.Direction.DESCENDING)
+                .whereGreaterThanOrEqualTo("date", Timestamp(firstDateMillis, 0))
+                .whereLessThanOrEqualTo("date", Timestamp(endDateMillis, 0))
+                .orderBy("date", Query.Direction.DESCENDING)
             val expensesRef = firestore.collection("users").document(userId)
-                .collection("expense").whereGreaterThanOrEqualTo("date", Timestamp(startDay,0))
-                .whereLessThanOrEqualTo("date",Timestamp(endDay,0))
-                .orderBy("date",Query.Direction.DESCENDING)
+                .collection("expense").whereGreaterThanOrEqualTo("date", Timestamp(firstDateMillis, 0))
+                .whereLessThanOrEqualTo("date", Timestamp(endDateMillis, 0))
+                .orderBy("date", Query.Direction.DESCENDING)
+            val expensesCount = expensesRef.count()
             var incomeList: ArrayList<TransactionModel>
             incomeList = arrayListOf()
             var expenseList: ArrayList<TransactionModel>
             expenseList = arrayListOf()
             var balanceIncome = 0.0
             var balanceExpense = 0.0
+            var expenseAverage = 0.0
             incomesRef.get().addOnSuccessListener { incomesSnapshot ->
                 expensesRef.get().addOnSuccessListener { expensesSnapshot ->
-                    for (document in incomesSnapshot) {
-                        val id = document.id
-                        val amount = document.getDouble("amount") ?: 0.0
-                        val category = document.getString("category") ?: ""
-                        val note = document.getString("note") ?: ""
-                        val date = document.getTimestamp("date")?.toDate()
-                        val transaction = TransactionModel(
-                            id,
-                            amount,
-                            category,
-                            note,
-                            date,
-                            TransactionType.INCOME
-                        )
-                        balanceIncome += amount
-                        incomeList.add(transaction)
-                    }
-                    for (document in expensesSnapshot) {
-                        val id = document.id
-                        val amount = document.getDouble("amount") ?: 0.0
-                        val category = document.getString("category") ?: ""
-                        val note = document.getString("note") ?: ""
-                        val date = document.getTimestamp("date")?.toDate()
-                        val transaction = TransactionModel(
-                            id,
-                            amount,
-                            category,
-                            note,
-                            date,
-                            TransactionType.EXPENSE
-                        )
-                        expenseList.add(transaction)
-                        balanceExpense += amount
-                    }
-                    val combinedList = mutableListOf<TransactionModel>()
-                    combinedList.addAll(incomeList)
-                    combinedList.addAll(expenseList)
-                    combinedList.sortByDescending { it.date }
+                    expensesCount.get(AggregateSource.SERVER).addOnCompleteListener {task ->
+                        for (document in incomesSnapshot) {
+                            val id = document.id
+                            val amount = document.getDouble("amount") ?: 0.0
+                            val category = document.getString("category") ?: ""
+                            val note = document.getString("note") ?: ""
+                            val date = document.getTimestamp("date")?.toDate()
+                            val transaction = TransactionModel(
+                                id,
+                                amount,
+                                category,
+                                note,
+                                date,
+                                TransactionType.INCOME
+                            )
+                            balanceIncome += amount
+                            incomeList.add(transaction)
+                        }
+                        for (document in expensesSnapshot) {
+                            val id = document.id
+                            val amount = document.getDouble("amount") ?: 0.0
+                            val category = document.getString("category") ?: ""
+                            val note = document.getString("note") ?: ""
+                            val date = document.getTimestamp("date")?.toDate()
+                            val transaction = TransactionModel(
+                                id,
+                                amount,
+                                category,
+                                note,
+                                date,
+                                TransactionType.EXPENSE
+                            )
+                            val snapshot = task.result
+                            balanceExpense += amount
+                            expenseList.add(transaction)
+                            expenseAverage = balanceExpense/snapshot.count
+                        }
+                        val combinedList = mutableListOf<TransactionModel>()
+                        combinedList.addAll(incomeList)
+                        combinedList.addAll(expenseList)
+                        combinedList.sortByDescending { it.date }
 
 
-                    callback.invoke(combinedList, balanceIncome, balanceExpense)
+                        callback.invoke(
+                            combinedList,
+                            balanceIncome,
+                            balanceExpense,
+                            expenseAverage
+                        )
+                    }
+
                 }
-
+                    .addOnFailureListener { e ->
+                        Log.e("FirebaseTransactionManager", "Error getting transactions", e)
+                    }
             }
-                .addOnFailureListener {e ->
-                    Log.e("FirebaseTransactionManager", "Error getting transactions", e)
+        }
+    }
+
+    fun getLastMonth(callback: (MutableList<TransactionModel>, Double, Double, Double) -> Unit
+    ) {
+        val userId = firebaseAuth.currentUser?.uid
+        if (userId != null) {
+            val calendar = Calendar.getInstance()
+            val month = calendar.get(Calendar.MONTH)
+            val year = calendar.get(Calendar.YEAR)
+            val first= "$year-$month-01"
+            val date: Date? = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(first)
+            val firstDateMillis: Long = date!!.time/1000
+            val end = "$year-$month-31"
+            val endDate: Date? = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(end)
+            val endDateMillis: Long = endDate!!.time/1000
+            // Fetch data from Firebase and call the callback
+            val incomesRef = firestore.collection("users").document(userId)
+                .collection("incomes")
+                .whereGreaterThanOrEqualTo("date", Timestamp(firstDateMillis, 0))
+                .whereLessThanOrEqualTo("date", Timestamp(endDateMillis, 0))
+                .orderBy("date", Query.Direction.DESCENDING)
+            val expensesRef = firestore.collection("users").document(userId)
+                .collection("expense").whereGreaterThanOrEqualTo("date", Timestamp(firstDateMillis, 0))
+                .whereLessThanOrEqualTo("date", Timestamp(endDateMillis, 0))
+                .orderBy("date", Query.Direction.DESCENDING)
+            val expensesCount = expensesRef.count()
+            var incomeList: ArrayList<TransactionModel> = arrayListOf()
+            var expenseList: ArrayList<TransactionModel> = arrayListOf()
+            var balanceIncome = 0.0
+            var balanceExpense = 0.0
+            var expenseAverage = 0.0
+            incomesRef.get().addOnSuccessListener { incomesSnapshot ->
+                expensesRef.get().addOnSuccessListener { expensesSnapshot ->
+                    expensesCount.get(AggregateSource.SERVER).addOnCompleteListener {task ->
+                        for (document in incomesSnapshot) {
+                            val id = document.id
+                            val amount = document.getDouble("amount") ?: 0.0
+                            val category = document.getString("category") ?: ""
+                            val note = document.getString("note") ?: ""
+                            val date = document.getTimestamp("date")?.toDate()
+                            val transaction = TransactionModel(
+                                id,
+                                amount,
+                                category,
+                                note,
+                                date,
+                                TransactionType.INCOME
+                            )
+                            balanceIncome += amount
+                            incomeList.add(transaction)
+                        }
+                        for (document in expensesSnapshot) {
+                            val id = document.id
+                            val amount = document.getDouble("amount") ?: 0.0
+                            val category = document.getString("category") ?: ""
+                            val note = document.getString("note") ?: ""
+                            val date = document.getTimestamp("date")?.toDate()
+                            val transaction = TransactionModel(
+                                id,
+                                amount,
+                                category,
+                                note,
+                                date,
+                                TransactionType.EXPENSE
+                            )
+                            val snapshot = task.result
+                            balanceExpense += amount
+                            expenseList.add(transaction)
+                            expenseAverage = balanceExpense/snapshot.count
+                        }
+                        val combinedList = mutableListOf<TransactionModel>()
+                        combinedList.addAll(incomeList)
+                        combinedList.addAll(expenseList)
+                        combinedList.sortByDescending { it.date }
+
+
+                        callback.invoke(
+                            combinedList,
+                            balanceIncome,
+                            balanceExpense,
+                            expenseAverage
+                        )
+                    }
+
+                }
+                    .addOnFailureListener { e ->
+                        Log.e("FirebaseTransactionManager", "Error getting transactions", e)
+                    }
+            }
+        }
+    }
+
+    fun getExpenseForToday(callback: (Int) -> Unit) {
+        val userId = firebaseAuth.currentUser?.uid
+        if (userId != null) {
+            val calendar = Calendar.getInstance()
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+            val tomorrow = calendar.get(Calendar.DAY_OF_MONTH)+1
+            val month = calendar.get(Calendar.MONTH)+1
+            val year = calendar.get(Calendar.YEAR)
+            val first= "$year-$month-$day"
+            val date: Date? = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(first)
+            val firstDate: Long = date!!.time/1000
+            val end = "$year-$month-$tomorrow"
+            val date2: Date? = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(end)
+            val secondDate: Long = date2!!.time/1000
+
+            firestore.collection("users").document(userId).collection("expense").whereGreaterThanOrEqualTo("date", Timestamp(firstDate,0))
+                .whereLessThanOrEqualTo("date", Timestamp(secondDate,0))
+                .get()
+                .addOnSuccessListener { querySnapshot ->
+                    var balance = 0.0
+                    for (document in querySnapshot) {
+                        val amount = document.getDouble("amount") ?: 0.0
+                        balance += amount
+                    }
+                    val formattedExpense = balance
+                    callback.invoke(formattedExpense.toInt())
+                }
+                .addOnFailureListener {
+                    callback.invoke(0)
                 }
         } else {
+            callback.invoke(0)
         }
     }
 }

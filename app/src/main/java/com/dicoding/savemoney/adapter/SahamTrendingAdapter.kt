@@ -31,12 +31,11 @@ class SahamTrendingAdapter :
 
             binding.tvSymbol.text = resultsItemSaham.symbol
             binding.tvName.text = resultsItemSaham.companyName
-            binding.tvClose.text =
-                context.getString(R.string.close, formatCurrency(resultsItemSaham.close ?: 0))
-                if(resultsItemSaham.close.minus(resultsItemSaham.open) < 0) {
+            binding.tvClose.text = context.getString(R.string.close, formatCurrency(resultsItemSaham.close ?: 0))
+            if(resultsItemSaham.close.minus(resultsItemSaham.open) < 0) {
                     binding.tvChange.setTextColor(Color.RED)
                     binding.tvChange.text = context.getString(R.string.change, formatCurrency(resultsItemSaham.close.minus(resultsItemSaham.open)))
-                } else {
+            } else {
                     binding.tvChange.setTextColor(Color.GREEN)
                     binding.tvChange.text = context.getString(R.string.change, formatCurrency(resultsItemSaham.close.minus(resultsItemSaham.open)))
                 }
