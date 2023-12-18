@@ -2,6 +2,7 @@
 SaveMoney : Easy Save Your Money, Makes You Happy
 
 This project starts with people's consumption patterns in Indonesia after the COVID-19 pandemic—an increase in consumption patterns due to the ease of online shopping. Managing finances is an essential skill for individuals. By managing personal finances well, individuals can avoid financial problems, prepare emergency funds, future saving, and achieve financial prosperity.
+
 Therefore, this application is designed to help users monitor and manage their finances efficiently. With a user-friendly and intuitive interface, this application can help users to track their expenses more easily. These apps also serve as comprehensive tools that improve financial literacy and help individuals achieve their financial goals.
 
 - [Installation](#installation)
