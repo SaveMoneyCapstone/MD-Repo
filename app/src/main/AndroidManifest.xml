@@ -64,6 +64,10 @@
             android:name=".ui.main.MainActivity"
             android:exported="true">
         </activity>
+        <meta-data
+            android:name="com.dicoding.savemoney.messaging.default_notification_icon"
+            android:resource="@drawable/logo_app"/>
+
     </application>
 
 </manifest>
