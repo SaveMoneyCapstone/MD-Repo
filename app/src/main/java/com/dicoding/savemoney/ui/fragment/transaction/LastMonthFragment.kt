@@ -6,24 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dicoding.savemoney.R
 import com.dicoding.savemoney.adapter.MonthTransactionAdapter
 import com.dicoding.savemoney.data.Transaction
 import com.dicoding.savemoney.databinding.FragmentLastMonthBinding
-import com.dicoding.savemoney.databinding.FragmentThisMonthBinding
 import com.dicoding.savemoney.firebase.FirebaseDataManager
 import com.dicoding.savemoney.utils.RupiahConverter
 import com.google.firebase.auth.FirebaseAuth
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 
 class LastMonthFragment : Fragment() {
     private lateinit var firebaseDataManager: FirebaseDataManager
@@ -34,7 +22,7 @@ class LastMonthFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentLastMonthBinding.inflate(inflater, container, false)
         return binding.root
@@ -45,18 +33,17 @@ class LastMonthFragment : Fragment() {
         adapter = MonthTransactionAdapter()
         firebaseDataManager = FirebaseDataManager()
 
-        var layoutManager = LinearLayoutManager(requireParentFragment().requireContext())
+        val layoutManager = LinearLayoutManager(requireParentFragment().requireContext())
         binding.rvRecent.layoutManager = layoutManager
         userList = arrayListOf()
         val currentUser = FirebaseAuth.getInstance().currentUser
         currentUser?.let {
-            val userId = it.uid
             setupFirebase()
         }
     }
 
     private fun setupFirebase() {
-        firebaseDataManager.getLastMonth() { list, incomes, expense, avgExpense ->
+        firebaseDataManager.getLastMonth { list, incomes, expense, _ ->
             binding.rvRecent.setHasFixedSize(true)
             binding.rvRecent.adapter = adapter
             adapter.submitList(list)
@@ -66,7 +53,4 @@ class LastMonthFragment : Fragment() {
         }
     }
 
-    companion object {
-
-    }
 }

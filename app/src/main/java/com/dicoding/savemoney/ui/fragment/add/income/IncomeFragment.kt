@@ -18,7 +18,6 @@ import com.dicoding.savemoney.data.model.TransactionModel
 import com.dicoding.savemoney.databinding.FragmentIncomeBinding
 import com.dicoding.savemoney.firebase.*
 import com.dicoding.savemoney.ui.add.AddTransactionActivity.Companion.dueDateMillis
-import com.dicoding.savemoney.ui.fragment.dashboard.DashboardFragment
 import com.dicoding.savemoney.ui.main.MainActivity
 import com.dicoding.savemoney.utils.DatePickerFragment
 import com.dicoding.savemoney.ui.detail.*

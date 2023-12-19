@@ -12,7 +12,6 @@ import com.dicoding.savemoney.R
 import com.dicoding.savemoney.data.model.*
 import com.dicoding.savemoney.databinding.*
 import com.dicoding.savemoney.firebase.*
-import com.dicoding.savemoney.ui.add.AddTransactionActivity
 import com.dicoding.savemoney.ui.add.AddTransactionActivity.Companion.dueDateMillis
 import com.dicoding.savemoney.ui.fragment.add.expense.*
 import com.dicoding.savemoney.ui.fragment.add.income.*
@@ -39,7 +38,7 @@ private lateinit var viewModel: DetailTransactionViewModel
 
         swipeRefreshLayout.setOnRefreshListener {
             loadTransactionDetails()
-            showToast("Data berhasil diupdate")
+            showToast("Data successfully updated")
             swipeRefreshLayout.isRefreshing = false
         }
 
@@ -56,7 +55,7 @@ private lateinit var viewModel: DetailTransactionViewModel
         val data = intent.getParcelableExtra<TransactionModel>(ID)
 
         if (data != null) {
-            transactionId = data.id.toString()
+            transactionId = data.id
             loadTransactionDetails()
         }
 
@@ -233,7 +232,7 @@ private lateinit var viewModel: DetailTransactionViewModel
     }
 
     companion object {
-        val ID = "id"
+        const val ID = "id"
     }
 
     override fun onDialogDateSet(tag: String?, year: Int, month: Int, dayOfMonth: Int) {

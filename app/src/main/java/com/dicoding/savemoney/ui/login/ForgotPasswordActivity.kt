@@ -50,7 +50,6 @@ class ForgotPasswordActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val signInMethods = task.result?.signInMethods
                     Log.d("ForgotPasswordActivity", "SignInMethods: ${signInMethods?.joinToString()}")
-
                     if (signInMethods.isNullOrEmpty()) {
                         // Jika email tidak terdaftar, tampilkan pesan
                         showToast(getString(R.string.message_email_not_registered))

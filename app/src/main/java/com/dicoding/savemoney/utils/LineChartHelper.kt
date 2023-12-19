@@ -40,31 +40,26 @@ class LineChartHelper(private val lineChart: LineChart) {
         // Create entries for close, change, and percent
 
         val openEntries = sahamDataList.mapIndexed {index, saham ->
-            Entry(index.toFloat(), saham.open!!.toFloat())
+            Entry(index.toFloat(), saham.open.toFloat())
 
         }
 
         val closeEntries = sahamDataList.mapIndexed { index, saham ->
-            Entry(index.toFloat(), saham.close!!.toFloat())
+            Entry(index.toFloat(), saham.close.toFloat())
         }
 
         val high = sahamDataList.mapIndexed { index, saham ->
-            Entry(index.toFloat(), saham.high!!.toFloat())
+            Entry(index.toFloat(), saham.high.toFloat())
         }
 
         val low = sahamDataList.mapIndexed { index, saham ->
-            Entry(index.toFloat(), saham.low!!.toFloat())
+            Entry(index.toFloat(), saham.low.toFloat())
         }
 
         val mean = sahamDataList.mapIndexed { index, saham ->
-            Entry(index.toFloat(), saham.hasil_mean!!.toFloat())
+            Entry(index.toFloat(), saham.hasil_mean.toFloat())
         }
 
-        val percentEntries = sahamDataList.mapIndexed { index, saham ->
-            val percent = (saham.close.minus(saham.open))/((saham.close).toDouble())
-            val percentage = (percent)*100
-            Entry(index.toFloat(), "%.2f".format(percentage).toFloat())
-        }
 
         val openDataSet = createLineDataSet(openEntries, "Open", Color.GRAY)
         val closeDataSet = createLineDataSet(closeEntries, "Close", Color.BLUE)

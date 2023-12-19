@@ -1,15 +1,11 @@
 package com.dicoding.savemoney.firebase
 
 import android.util.Log
-import com.dicoding.savemoney.data.Transaction
 import com.dicoding.savemoney.data.model.TransactionModel
 import com.dicoding.savemoney.utils.*
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
-import com.google.firebase.firestore.AggregateField.average
-import com.google.firestore.v1.StructuredAggregationQuery.Aggregation.AVG_FIELD_NUMBER
-import com.google.firestore.v1.StructuredAggregationQuery.Aggregation.Avg
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -119,10 +115,8 @@ class FirebaseDataManager {
             // Fetch data from Firebase and call the callback
             val incomesRef = firestore.collection("users").document(userId).collection("incomes").orderBy("date",Query.Direction.DESCENDING)
             val expensesRef = firestore.collection("users").document(userId).collection("expense").orderBy("date", Query.Direction.DESCENDING)
-            var incomeList: ArrayList<TransactionModel>
-            incomeList = arrayListOf()
-            var expenseList: ArrayList<TransactionModel>
-            expenseList = arrayListOf()
+            val incomeList: ArrayList<TransactionModel> = arrayListOf()
+            val expenseList: ArrayList<TransactionModel> = arrayListOf()
             incomesRef.get().addOnSuccessListener { incomesSnapshot ->
                 expensesRef.get().addOnSuccessListener { expensesSnapshot ->
                 for (document in incomesSnapshot) {
@@ -170,7 +164,6 @@ class FirebaseDataManager {
                 .addOnFailureListener {e ->
                     Log.e("FirebaseTransactionManager", "Error getting transactions", e)
                 }
-        } else {
         }
     }
 
@@ -234,10 +227,8 @@ class FirebaseDataManager {
                 .whereLessThanOrEqualTo("date", Timestamp(endDateMillis, 0))
                 .orderBy("date", Query.Direction.DESCENDING)
             val expensesCount = expensesRef.count()
-            var incomeList: ArrayList<TransactionModel>
-            incomeList = arrayListOf()
-            var expenseList: ArrayList<TransactionModel>
-            expenseList = arrayListOf()
+            val incomeList: ArrayList<TransactionModel> = arrayListOf()
+            val expenseList: ArrayList<TransactionModel> = arrayListOf()
             var balanceIncome = 0.0
             var balanceExpense = 0.0
             var expenseAverage = 0.0
@@ -326,8 +317,8 @@ class FirebaseDataManager {
                 .whereLessThanOrEqualTo("date", Timestamp(endDateMillis, 0))
                 .orderBy("date", Query.Direction.DESCENDING)
             val expensesCount = expensesRef.count()
-            var incomeList: ArrayList<TransactionModel> = arrayListOf()
-            var expenseList: ArrayList<TransactionModel> = arrayListOf()
+            val incomeList: ArrayList<TransactionModel> = arrayListOf()
+            val expenseList: ArrayList<TransactionModel> = arrayListOf()
             var balanceIncome = 0.0
             var balanceExpense = 0.0
             var expenseAverage = 0.0

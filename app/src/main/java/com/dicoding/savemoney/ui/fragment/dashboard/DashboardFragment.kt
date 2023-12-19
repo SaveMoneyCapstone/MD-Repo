@@ -7,23 +7,17 @@ import android.os.*
 import android.util.*
 import android.view.*
 import android.widget.*
-import androidx.activity.viewModels
 import androidx.fragment.app.*
 import androidx.lifecycle.*
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.*
-import androidx.work.Data
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
 import com.dicoding.savemoney.*
 import com.dicoding.savemoney.R
 import com.dicoding.savemoney.adapter.*
 import com.dicoding.savemoney.data.*
-import com.dicoding.savemoney.data.Transaction
 import com.dicoding.savemoney.data.model.*
 import com.dicoding.savemoney.data.preference.UserSessionManager
 import com.dicoding.savemoney.data.response.UserData
+import com.dicoding.savemoney.data.response.UserPredict
 import com.dicoding.savemoney.databinding.*
 import com.dicoding.savemoney.databinding.FragmentDashboardBinding
 import com.dicoding.savemoney.firebase.*
@@ -32,7 +26,6 @@ import com.dicoding.savemoney.ui.add.*
 import com.dicoding.savemoney.ui.fragment.sahamtrending.*
 import com.dicoding.savemoney.ui.fragment.transaction.*
 import com.dicoding.savemoney.ui.login.*
-import com.dicoding.savemoney.ui.main.MainActivity
 import com.dicoding.savemoney.ui.setting.*
 import com.dicoding.savemoney.ui.splash.SplashScreenActivity
 import com.dicoding.savemoney.utils.*
@@ -52,36 +45,28 @@ class DashboardFragment : Fragment() {
     private lateinit var lineChartManager: LineChartManager
     private val binding by lazy { FragmentDashboardBinding.inflate(layoutInflater) }
     private lateinit var adapterTransactionAdapter: TransactionAdapter
-    private val expenseTransactionList: MutableList<TransactionModel> = mutableListOf()
-    private val incomeTransactionList: MutableList<TransactionModel> = mutableListOf()
     private lateinit var adapterNewsAdapter: NewsAdapter
-    private lateinit var oneTimeWorkRequest: OneTimeWorkRequest
     private lateinit var userSessionManager: UserSessionManager
     private val viewModel by viewModels<DashboardViewModel> {
         ViewModelFactory.getInstance()
     }
     private lateinit var firebaseDataManager: FirebaseDataManager
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
+
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return binding.root
-        setHasOptionsMenu(true)
+        val _binding = binding
+        return _binding.root
     }
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setHasOptionsMenu(true)
         binding.refreshLayout.setOnRefreshListener {
-            loadTransactionDataExpense()
-            loadTransactionDataIncome()
             loadDataCard()
             showToast("The data has been successfully updated")
             binding.refreshLayout.isRefreshing = false
@@ -97,11 +82,9 @@ class DashboardFragment : Fragment() {
 
         lineChartManager = LineChartManager(binding.chart)
         lineChartManager.setupLineChart()
-        var layoutManager = LinearLayoutManager(requireActivity())
+        val layoutManager = LinearLayoutManager(requireActivity())
         binding.rvRecent.layoutManager = layoutManager
         loadDataCard()
-        loadTransactionDataExpense()
-        loadTransactionDataIncome()
 
         binding.viewMore.setOnClickListener {
             val intent = Intent(requireActivity(), NewsActivity::class.java)
@@ -109,8 +92,6 @@ class DashboardFragment : Fragment() {
         }
 
         showNews()
-        loadTransactionDataExpense()
-        loadTransactionDataIncome()
 
         viewModel.isLoading().observe(viewLifecycleOwner) {
             showLoading(it)
@@ -140,8 +121,8 @@ class DashboardFragment : Fragment() {
                 binding.lotsOfExpense.text = getString(R.string.expenses, expense)
             }
 
-            firebaseDataManager.fetchData() { income, expense ->
-                val userData = UserData(expense, income)
+            firebaseDataManager.fetchData { income, expense ->
+                val userData = UserPredict(expense)
                 viewModel.fetchPredictRecom(userData).observe(viewLifecycleOwner) { result ->
                     when (result) {
                         is ResultState.Loading -> {
@@ -168,7 +149,7 @@ class DashboardFragment : Fragment() {
                     adapterTransactionAdapter.submitList(it)
                 }
             }
-            firebaseDataManager.getHistoryMonth() { list, incomes, expense, avgExpense ->
+            firebaseDataManager.getHistoryMonth { _, _, _, avgExpense ->
                 firebaseDataManager.getExpenseForToday { today ->
                     with(binding) {
                         todayExpense.text = RupiahConverter.convertToRupiah(today.toDouble())
@@ -186,19 +167,6 @@ class DashboardFragment : Fragment() {
 
         }
         }
-
-
-//        viewModel.getNews().observe(viewLifecycleOwner) {
-//            viewModel.news.observe(viewLifecycleOwner) {
-//                binding.rvNews.apply {
-//                    layoutManager = LinearLayoutManager(context)
-//                    setHasFixedSize(true)
-//                    adapter = adapterNewsAdapter
-//                    adapterNewsAdapter.submitList(it)
-//                }
-//            }
-//        }
-
 
   
 
@@ -220,58 +188,17 @@ class DashboardFragment : Fragment() {
         adapter.submitList(news.take(3))
         binding.rvNews.adapter =adapter
     }
-
-    private fun loadTransactionDataExpense() {
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        currentUser?.let { user ->
-            val userId = user.uid
-            val firebaseTransactionManager = FirebaseTransactionManager(userId)
-            firebaseTransactionManager.loadExpenseTransactions { transactions ->
-                activity?.runOnUiThread {
-                    expenseTransactionList.clear()
-                    expenseTransactionList.addAll(transactions.map {
-                        it.copy(transactionType = TransactionType.EXPENSE)
-                    })
-//                    updateAdapterData()
-                }
-            }
-        }
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun loadTransactionDataIncome() {
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        currentUser?.let { user ->
-            val userId = user.uid
-            val firebaseTransactionManager = FirebaseTransactionManager(userId)
-            firebaseTransactionManager.loadIncomeTransactions { transactions ->
-                activity?.runOnUiThread {
-                    incomeTransactionList.clear()
-                    incomeTransactionList.addAll(transactions.map {
-                        it.copy(transactionType = TransactionType.INCOME)
-                    })
-//                    updateAdapterData()
-                }
-            }
-        }
-    }
-
-//    private fun updateAdapterData() {
-//        val combinedList = mutableListOf<TransactionModel>()
-//        combinedList.addAll(incomeTransactionList)
-//        combinedList.addAll(expenseTransactionList)
-//        combinedList.sortByDescending { it.date }
-//        adapterTransactionAdapter.submitList(combinedList)
-//    }
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.appbar_dashboard_menu, menu)
         return super.onCreateOptionsMenu(menu,inflater)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
 
@@ -295,8 +222,5 @@ class DashboardFragment : Fragment() {
 
             else -> super.onOptionsItemSelected(item)
         }
-    }
-    companion object {
-        val ID = "id"
     }
 }

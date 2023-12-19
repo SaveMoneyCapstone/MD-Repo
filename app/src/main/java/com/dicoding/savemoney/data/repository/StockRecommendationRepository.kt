@@ -7,6 +7,7 @@ import com.dicoding.savemoney.data.api.ApiService
 import com.dicoding.savemoney.data.response.predict.PredictResponse
 import com.dicoding.savemoney.data.response.RecommendationResponse
 import com.dicoding.savemoney.data.response.UserData
+import com.dicoding.savemoney.data.response.UserPredict
 
 class StockRecommendationRepository(private val apiService: ApiService) {
 
@@ -31,7 +32,7 @@ class StockRecommendationRepository(private val apiService: ApiService) {
         }
     }
 
-    fun getPredict(userData: UserData): LiveData<ResultState<PredictResponse>> = liveData {
+    fun getPredict(userData: UserPredict): LiveData<ResultState<PredictResponse>> = liveData {
         emit(ResultState.Loading)
         try {
             val response = apiService.getPredict(userData)

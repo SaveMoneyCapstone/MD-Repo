@@ -6,21 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dicoding.savemoney.R
 import com.dicoding.savemoney.adapter.MonthTransactionAdapter
-import com.dicoding.savemoney.adapter.TransactionAdapter
 import com.dicoding.savemoney.data.Transaction
-import com.dicoding.savemoney.databinding.FragmentDashboardBinding
 import com.dicoding.savemoney.databinding.FragmentThisMonthBinding
 import com.dicoding.savemoney.firebase.FirebaseDataManager
 import com.dicoding.savemoney.utils.RupiahConverter
 import com.google.firebase.auth.FirebaseAuth
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
-import kotlin.math.exp
-
 class ThisMonthFragment : Fragment() {
     private lateinit var firebaseDataManager: FirebaseDataManager
     private var _binding: FragmentThisMonthBinding? = null
@@ -30,7 +21,7 @@ class ThisMonthFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentThisMonthBinding.inflate(inflater, container, false)
         return binding.root
@@ -41,12 +32,12 @@ class ThisMonthFragment : Fragment() {
         adapter = MonthTransactionAdapter()
         firebaseDataManager = FirebaseDataManager()
 
-        var layoutManager = LinearLayoutManager(requireParentFragment().requireContext())
+        val layoutManager = LinearLayoutManager(requireParentFragment().requireContext())
         binding.rvRecent.layoutManager = layoutManager
         userList = arrayListOf()
         val currentUser = FirebaseAuth.getInstance().currentUser
         currentUser?.let {
-            val userId = it.uid
+            it.uid
             setupFirebase()
         }
 
@@ -57,7 +48,7 @@ class ThisMonthFragment : Fragment() {
     }
 
     private fun setupFirebase() {
-        firebaseDataManager.getHistoryMonth() { list, incomes, expense, avgExpense ->
+        firebaseDataManager.getHistoryMonth { list, incomes, expense, _ ->
             binding.rvRecent.setHasFixedSize(true)
             binding.rvRecent.adapter = adapter
             adapter.submitList(list)
@@ -65,7 +56,5 @@ class ThisMonthFragment : Fragment() {
             binding.balanceExpense.text = RupiahConverter.convertToRupiah(expense)
             binding.change.text = RupiahConverter.convertToRupiah((incomes.toInt() - expense.toInt()).toDouble())
         }
-    }
-    companion object {
     }
 }

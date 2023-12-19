@@ -20,7 +20,7 @@ abstract class StockProductDatabase : RoomDatabase() {
                     context.applicationContext,
                     StockProductDatabase::class.java, "stockProduct"
                 )
-                    .addCallback(object : RoomDatabase.Callback() {
+                    .addCallback(object : Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
                             super.onCreate(db)
                         }

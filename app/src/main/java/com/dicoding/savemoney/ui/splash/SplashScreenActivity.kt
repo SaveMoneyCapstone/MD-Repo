@@ -7,6 +7,7 @@ import android.view.*
 import androidx.appcompat.app.*
 import androidx.lifecycle.*
 import com.dicoding.savemoney.*
+import com.dicoding.savemoney.data.preference.UserSessionManager
 import com.dicoding.savemoney.databinding.*
 import com.dicoding.savemoney.ui.login.*
 import com.dicoding.savemoney.ui.main.*
@@ -18,6 +19,7 @@ class SplashScreenActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySplashScreenBinding
 
     private val splashDelay: Long = 2000
+    private lateinit var userSessionManager: UserSessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,11 +28,17 @@ class SplashScreenActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         setupView()
-
+        userSessionManager = UserSessionManager(this)
         Handler().postDelayed({
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
+            if (userSessionManager.isUserLoggedIn()) {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            } else {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }, splashDelay)
     }
 

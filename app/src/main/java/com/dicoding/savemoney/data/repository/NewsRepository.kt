@@ -2,13 +2,9 @@ package com.dicoding.savemoney.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
-import com.dicoding.savemoney.data.ResultState
 import com.dicoding.savemoney.data.api.ApiService
 import com.dicoding.savemoney.data.model.NewsResponse
 import com.dicoding.savemoney.data.model.PostsItem
-import com.dicoding.savemoney.data.response.RecommendationResponse
-import com.dicoding.savemoney.data.response.UserData
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

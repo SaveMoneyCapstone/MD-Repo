@@ -1,6 +1,5 @@
 package com.dicoding.savemoney.firebase
 
-import com.dicoding.savemoney.utils.DateConverter
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.*
 import com.google.firebase.firestore.*

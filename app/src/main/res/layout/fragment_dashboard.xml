@@ -32,7 +32,7 @@
             android:layout_height="150dp"
             android:layout_margin="16dp"
             android:layout_marginStart="24dp"
-            app:cardBackgroundColor="@color/grey"
+            app:cardBackgroundColor="#606060"
             app:cardCornerRadius="9dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -129,7 +129,7 @@
                 android:id="@+id/today_expense_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 app:layout_constraintBottom_toTopOf="@id/predict_layout"
                 app:layout_constraintTop_toBottomOf="@id/card">
 
@@ -150,8 +150,8 @@
                     android:id="@+id/percent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/percent_from_month_average"
                     android:layout_marginStart="2dp"
+                    android:text="@string/percent_from_month_average"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -159,14 +159,15 @@
                 android:id="@+id/predict_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/today_expense_layout"
-                app:layout_constraintBottom_toTopOf="@id/recom_layout">
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toTopOf="@id/recom_layout"
+                app:layout_constraintTop_toBottomOf="@id/today_expense_layout">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Expense Predict for Tomorrow:"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/predict"
@@ -180,13 +181,14 @@
                 android:id="@+id/recom_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 app:layout_constraintTop_toBottomOf="@+id/predict_layout">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Expense Recommendation:"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/recommendation"
@@ -227,7 +229,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="@string/statistic"
-            android:textSize="14sp"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recom_layout" />
 

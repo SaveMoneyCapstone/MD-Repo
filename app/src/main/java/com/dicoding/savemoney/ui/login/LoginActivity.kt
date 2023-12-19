@@ -10,6 +10,7 @@ import com.dicoding.savemoney.databinding.*
 import com.dicoding.savemoney.firebase.auth.*
 import com.dicoding.savemoney.ui.main.*
 import com.dicoding.savemoney.ui.signup.*
+import com.dicoding.savemoney.ui.splash.SplashScreenActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -25,23 +26,22 @@ class LoginActivity : AppCompatActivity() {
 
         authManager = FirebaseLoginManager(this)
         userSessionManager = UserSessionManager(this)
-
         binding.registerButtonText.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }
 
-        binding.forgotPassword.setOnClickListener {
-            val intent = Intent(this, ForgotPasswordActivity::class.java)
-            startActivity(intent)
-        }
+//        binding.forgotPassword.setOnClickListener {
+//            val intent = Intent(this, ForgotPasswordActivity::class.java)
+//            startActivity(intent)
+//        }
 
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
 
             if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-                Toast.makeText(this, "Harap masukkan email dan password", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please fill in your email and password!", Toast.LENGTH_SHORT).show()
             } else {
                 authManager.loginUser(email, password,
                     onSuccess = {
@@ -52,11 +52,13 @@ class LoginActivity : AppCompatActivity() {
                         finish()
                     },
                     onFailure = {
-                        Toast.makeText(
-                            this,
-                            "Login gagal. Periksa kembali email dan password.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        val builder = AlertDialog.Builder(this)
+                        val alert = builder.create()
+                        builder
+                            .setMessage("Login failed. Please check again your email and password!")
+                            .setPositiveButton("OK") { _, _ ->
+                                alert.cancel()
+                            }.show()
                     }
                 )
             }

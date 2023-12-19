@@ -2,11 +2,9 @@ package com.dicoding.savemoney.firebase
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.dicoding.savemoney.utils.DateConverter
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.*
 import com.google.firebase.firestore.*
-import java.util.Date
 
 class FirebaseExpenseManager {
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()

@@ -1,17 +1,13 @@
 package com.dicoding.savemoney.ui.add
 
-import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.*
 import android.widget.TextView
 import androidx.annotation.*
 import androidx.appcompat.app.*
-import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
 import com.dicoding.savemoney.*
 import com.dicoding.savemoney.databinding.*
-import com.dicoding.savemoney.ui.fragment.add.expense.ExpenseFragment
 import com.dicoding.savemoney.utils.DatePickerFragment
 import com.google.android.material.tabs.*
 import java.text.SimpleDateFormat

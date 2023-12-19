@@ -1,13 +1,10 @@
 package com.dicoding.savemoney.ui
 
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dicoding.savemoney.R
 import com.dicoding.savemoney.ViewModelFactory
 import com.dicoding.savemoney.adapter.NewsAdapter
 import com.dicoding.savemoney.data.model.PostsItem

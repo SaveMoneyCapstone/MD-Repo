@@ -16,7 +16,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
-import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.dicoding.savemoney.R
 import com.dicoding.savemoney.data.model.TransactionModel
@@ -40,7 +39,6 @@ class ExpenseFragment : Fragment() {
     private var isEditing = false
     private lateinit var transactionId: String
     private lateinit var userId: String
-    private lateinit var oneTimeWorkRequest: OneTimeWorkRequest
     private lateinit var workManager: WorkManager
 
 
@@ -167,9 +165,9 @@ class ExpenseFragment : Fragment() {
     }
 
 
-    fun setUpNotif() {
+    private fun setUpNotif() {
 
-        firebaseDataManager.getHistoryMonth() { list, incomes, expense, avgExpense ->
+        firebaseDataManager.getHistoryMonth { _, _, _, avgExpense ->
             firebaseDataManager.getExpenseForToday { today ->
                 val percentage = (today.toDouble()).div(avgExpense)*100
 
@@ -180,6 +178,8 @@ class ExpenseFragment : Fragment() {
                         .setSmallIcon(R.drawable.logo_app)
                         .setContentText("Your spending today is above the average daily spending this month")
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setBadgeIconType(R.drawable.logo_app)
+
 
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -193,8 +193,6 @@ class ExpenseFragment : Fragment() {
                     }
                     val notification = builder.build()
                     notificationManager.notify(NOTIFICATION_ID, notification)
-                } else {
-
                 }
             }
         }

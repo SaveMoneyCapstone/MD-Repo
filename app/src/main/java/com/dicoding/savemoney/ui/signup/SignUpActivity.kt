@@ -31,25 +31,25 @@ class SignUpActivity : AppCompatActivity() {
             val password = binding.passwordEditText.text.toString()
 
             if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Harap isi semua kolom", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please fill out all required fields!", Toast.LENGTH_SHORT).show()
             } else {
                 authManager.signUpUser(email, password, name,
                     onSuccess = {
-                        Toast.makeText(
-                            this,
-                            "Pendaftaran berhasil!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        val intent = Intent(this, LoginActivity::class.java)
-                        startActivity(intent)
-                        finish()
+                        val builder = AlertDialog.Builder(this)
+                        builder
+                            .setMessage("Registration Successfully!")
+                            .setPositiveButton("Oke") { _, _ ->
+                                startActivity(Intent(this, LoginActivity::class.java))
+                            }.show()
                     },
                     onFailure = { errorMessage ->
-                        Toast.makeText(
-                            this,
-                            errorMessage,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        val builder = AlertDialog.Builder(this)
+                        val alert = builder.create()
+                        builder
+                            .setMessage(errorMessage)
+                            .setPositiveButton("OK") { _, _ ->
+                                alert.cancel()
+                            }.show()
                     }
                 )
             }

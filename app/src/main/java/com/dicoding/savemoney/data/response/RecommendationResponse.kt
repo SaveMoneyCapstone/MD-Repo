@@ -1,7 +1,6 @@
 package com.dicoding.savemoney.data.response
 
 import android.os.Parcelable
-import com.dicoding.savemoney.data.response.predict.Data
 import com.dicoding.savemoney.data.response.predict.Status
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize

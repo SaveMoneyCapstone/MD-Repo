@@ -3,9 +3,6 @@ package com.dicoding.savemoney.ui.fragment.transaction
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.dicoding.savemoney.ui.fragment.add.expense.ExpenseFragment
-import com.dicoding.savemoney.ui.fragment.add.income.IncomeFragment
-
 class TxSectionPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int {
         return 2

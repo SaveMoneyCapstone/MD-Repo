@@ -2,16 +2,10 @@ package com.dicoding.savemoney.ui.fragment.transaction
 
 import android.os.*
 import android.view.*
-import android.widget.*
 import androidx.annotation.StringRes
 import androidx.fragment.app.*
-import androidx.lifecycle.*
 import com.dicoding.savemoney.*
-import com.dicoding.savemoney.databinding.FragmentExpenseBinding
-import com.dicoding.savemoney.databinding.FragmentIncomeBinding
 import com.dicoding.savemoney.databinding.FragmentTransactionBinding
-import com.dicoding.savemoney.ui.add.AddTransactionActivity
-import com.dicoding.savemoney.ui.add.SectionPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -23,7 +17,7 @@ class TransactionFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentTransactionBinding.inflate(inflater, container, false)
         return binding.root
     }

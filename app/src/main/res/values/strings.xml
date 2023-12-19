@@ -4,7 +4,7 @@
     <!--    login pages-->
     <string name="title_login">Login</string>
     <string name="message_login">Please login to continue</string>
-    <string name="dont_have_an_account">Don\'t have an account? Registrasi</string>
+    <string name="dont_have_an_account">Don\'t have an account? Register</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="hint_password">Password</string>
     <string name="hint_email">Email</string>
@@ -35,7 +35,7 @@
     <string name="income">%1$s</string>
     <string name="expenses">%1$s</string>
     <string name="setting">Settings</string>
-    <string name="balance_text">Saldo</string>
+    <string name="balance_text">Balance</string>
 
     <!--    title view pager-->
     <string name="title_pager_income">Income</string>
@@ -114,8 +114,8 @@
     <string name="failed_to_save_expense">Failed to save Expense</string>
     <string name="income_saved_successfully">Income saved successfully</string>
     <string name="failed_to_save_income">Failed to save income</string>
-    <string name="login_berhasil">Login berhasil</string>
-    <string name="login_gagal">Login gagal</string>
+    <string name="login_berhasil">Login Success</string>
+    <string name="login_gagal">Login Failed</string>
     <string name="failed_to_save_user_data">Failed to save user data.</string>
     <string name="registration_failed">Registration failed: %1$s</string>
     <string name="reset_password">Reset Password</string>
@@ -144,7 +144,7 @@
     <string name="expenses_updated_successfully">Expense has been updated</string>
     <string name="failed_to_update_expenses">Failed to update Expenses</string>
     <string name="konfirmasi">Confirm</string>
-    <string name="confirmation_delete">Are you sure to delete this transactions?</string>
+    <string name="confirmation_delete">Are you sure to delete this transaction?</string>
     <string name="delete_transaction">Delete</string>
     <string name="cancel">Cancel</string>
     <string name="percent_from_month_average">(%1$s from Month Average)</string>

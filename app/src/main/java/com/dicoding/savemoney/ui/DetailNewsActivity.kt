@@ -1,5 +1,6 @@
 package com.dicoding.savemoney.ui
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.webkit.WebChromeClient
@@ -8,9 +9,9 @@ import android.webkit.WebViewClient
 import android.widget.Toast
 import com.dicoding.savemoney.R
 import com.dicoding.savemoney.data.model.PostsItem
-import com.dicoding.savemoney.data.model.TransactionModel
 
 class DetailNewsActivity : AppCompatActivity() {
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_news)
@@ -32,7 +33,7 @@ class DetailNewsActivity : AppCompatActivity() {
                 return true
             }
         }
-        val detail = intent.getParcelableExtra<PostsItem>(DetailNewsActivity.TITLE)
+        val detail = intent.getParcelableExtra<PostsItem>(TITLE)
         if (detail != null) {
             webView.loadUrl(detail.link)
         }
@@ -44,6 +45,6 @@ class DetailNewsActivity : AppCompatActivity() {
     }
 
     companion object {
-        val TITLE = "title"
+        const val TITLE = "title"
     }
 }

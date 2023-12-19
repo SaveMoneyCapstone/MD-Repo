@@ -2,7 +2,6 @@ package com.dicoding.savemoney.ui.fragment.sahamtrending
 
 import android.os.*
 import android.view.*
-import android.widget.*
 import androidx.fragment.app.*
 import androidx.recyclerview.widget.*
 import com.dicoding.savemoney.*
@@ -12,8 +11,6 @@ import com.dicoding.savemoney.data.response.UserData
 import com.dicoding.savemoney.databinding.*
 import com.dicoding.savemoney.firebase.FirebaseDataManager
 import com.google.firebase.auth.FirebaseAuth
-import kotlin.math.exp
-
 class SahamTrendingFragment : Fragment() {
     private lateinit var sahamTrendingAdapter: SahamTrendingAdapter
     private var _binding: FragmentSahamTrendingBinding? = null
@@ -33,13 +30,11 @@ class SahamTrendingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHasOptionsMenu(false)
 
         sahamTrendingAdapter = SahamTrendingAdapter()
         firebaseDataManager = FirebaseDataManager()
         val currentUser = FirebaseAuth.getInstance().currentUser
         currentUser?.let {
-            val userId = it.uid
             firebaseDataManager.fetchData {incomes, expense ->
                 val userData = UserData(expense,incomes)
                 viewModel.fetchStockResponse(userData).observe(viewLifecycleOwner) { result ->

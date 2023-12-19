@@ -34,14 +34,14 @@
                 android:id="@+id/iv_category"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginEnd="8dp"
                 android:src="@drawable/baseline_category_24" />
 
             <TextView
                 android:id="@+id/tv_category"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
+                android:textSize="24sp"
                 android:layout_weight="1" />
         </LinearLayout>
 
@@ -56,14 +56,13 @@
                 android:id="@+id/iv_amount"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginEnd="8dp"
                 android:src="@drawable/cash" />
 
             <TextView
                 android:id="@+id/tv_amount"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1" />
         </LinearLayout>
 
@@ -78,14 +77,13 @@
                 android:id="@+id/iv_note"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginEnd="8dp"
                 android:src="@drawable/icon_notes" />
 
             <TextView
                 android:id="@+id/tv_note"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1" />
         </LinearLayout>
 
@@ -100,14 +98,13 @@
                 android:id="@+id/iv_date"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:layout_marginEnd="8dp"
                 android:src="@drawable/baseline_date_range_24" />
 
             <TextView
                 android:id="@+id/tv_date"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1" />
         </LinearLayout>
 

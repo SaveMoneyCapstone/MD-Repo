@@ -15,12 +15,12 @@ interface ApiService {
 
     @POST("recomendation")
     suspend fun getRecommendation(
-        @Body() userData: UserData
+        @Body userData: UserData
         ) : Response<RecommendationResponse>
 
     @POST("predict")
     suspend fun getPredict(
-        @Body() userData: UserData
+        @Body userData: UserPredict
     ) : Response<PredictResponse>
 
     @GET("news")
